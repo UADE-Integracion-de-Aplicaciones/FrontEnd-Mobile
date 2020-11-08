@@ -1,5 +1,5 @@
 import React from 'react';
-import { ImageBackground, StyleSheet, StatusBar, Dimensions, Platform , View, TextInput} from 'react-native';
+import { ImageBackground, StyleSheet, StatusBar, Dimensions, Platform , View, TextInput, Keyboard, TouchableWithoutFeedback, ScrollView} from 'react-native';
 import { Block, Button, Text, theme } from 'galio-framework';
 
 const { height, width } = Dimensions.get('screen');
@@ -23,12 +23,16 @@ export default class LogIn extends React.Component {
       //   .required('Email Address is Required'),
       password: yup
         .string()
-        .min(8, ({ min }) => `La contraseña debe ser de al menos ${min} caracteres`)
-        .required('Contraseña necesaria'),
+        .min(8, ({ min }) => `La contraseña debe ser de al menos ${min} caracteres`),
+        // .required('Contraseña necesaria'),
     })  
     return (
-        // <KeyboardAwareScrollView style={{flex:1}}>
-          <Block flex style={{backgroundColor: materialTheme.COLORS.BACKGROUND, width:width, height:height}}>
+      // <TouchableWithoutFeedback  accessible={false}>
+
+      <ScrollView onPress={Keyboard.dismiss}>
+        <View>
+        {/* // <KeyboardAwareScrollView style={{flex:1}}> */}
+          <Block flex style={{backgroundColor: materialTheme.COLORS.BACKGROUND, width:width, height:height}} >
             {/* <StatusBar barStyle="light-content" /> */}
             <Block flex center>
               <ImageBackground
@@ -52,7 +56,7 @@ export default class LogIn extends React.Component {
             </Text> */}
             <View style={styles.loginContainer}>
               <Formik
-                enableReinitialize
+                // enableReinitialize
                 validationSchema={loginValidationSchema}
                 initialValues={{ usuario: '', password: '' }}
                 onSubmit={values => console.log(values)}
@@ -129,7 +133,10 @@ export default class LogIn extends React.Component {
               </View>
             </View>
           </Block>
-        // </KeyboardAwareScrollView>
+          </View>
+          </ScrollView>
+          // </TouchableWithoutFeedback>
+       
     );
   }
 }
