@@ -10,6 +10,7 @@ import materialTheme from '../constants/Theme';
 import Images from '../constants/Images';
 import Logo from '../assets/images/LogoBankMe.png';
 import { TouchableOpacity } from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 export default class LogIn extends React.Component {
   render() {
@@ -26,117 +27,122 @@ export default class LogIn extends React.Component {
         .required('Contraseña necesaria'),
     })  
     return (
-      <Block flex style={{backgroundColor: materialTheme.COLORS.BACKGROUND, width:width, height:height}}>
-        {/* <StatusBar barStyle="light-content" /> */}
-        <Block flex center>
-          <ImageBackground
-            source={Logo}
-            style={{ height: "90%", width: "90%", marginLeft: '-85%', marginTop:"10%", zIndex: 1 }}
-          />
-        </Block>
-        <Block flex space="between" style={{top:"-20%"}}>
-          <Block flex space="around" style={{ zIndex: 2 }}>
-              <Block>
-                <Text color="white" size={40} style={{padding:"10%"}}>Hola, Bienvenid@!</Text>
+        // <KeyboardAwareScrollView style={{flex:1}}>
+          <Block flex style={{backgroundColor: materialTheme.COLORS.BACKGROUND, width:width, height:height}}>
+            {/* <StatusBar barStyle="light-content" /> */}
+            <Block flex center>
+              <ImageBackground
+                source={Logo}
+                style={{ height: "90%", width: "90%", marginLeft: '-85%', marginTop:"10%", zIndex: 1 }}
+              />
+            </Block>
+            <Block flex space="between" style={{top:"-20%"}}>
+              <Block flex space="around" style={{ zIndex: 2 }}>
+                  <Block>
+                    <Text color="white" size={40} style={{padding:"10%"}}>Hola, Bienvenid@!</Text>
+                  </Block>
               </Block>
-          </Block>
-        </Block>
-        {/* <Text
-            style={{color: materialTheme.COLORS.BUTTON_COLOR, textDecorationLine: 'underline', top:"80%"}}
-            
-            //aca despues le pongo el onPress a la pag de registro
-        >
-          {"¿"}No te registraste todavia{"?"}
-        </Text> */}
-        <View style={styles.loginContainer}>
-          <Formik
-            enableReinitialize
-            validationSchema={loginValidationSchema}
-            initialValues={{ usuario: '', password: '' }}
-            onSubmit={values => console.log(values)}
-          >
-            {({
-              handleChange,
-              handleBlur,
-              handleSubmit,
-              values,
-              errors,
-              touched,
-              isValid,
-            }) => (
-              <>
-                <TextInput
-                  name="usuario"
-                  placeholder="  Usuario"
-                  style={styles.textInput}
-                  onChangeText={handleChange('usuario')}
-                  onBlur={handleBlur('usuario')}
-                  value={values.usuario}
-                  keyboardType= "default"
-                />
-                <TextInput
-                  name="password"
-                  placeholder=" Contraseña"
-                  style={styles.textInput}
-                  onChangeText={handleChange('password')}
-                  onBlur={handleBlur('password')}
-                  value={values.password}
-                  keyboardType= "ascii-capable"
-                  secureTextEntry
-                />
-                {(touched.password && errors.password ) &&
-                                  <Text style={styles.errorText}>{errors.password}</Text>
-                }   
-                <View style={{}}>
-                  <Button
-                    onPress={handleSubmit}
-                    color= {materialTheme.COLORS.BUTTON_COLOR}
-                    title="Ingresar"
-                    disabled={!isValid}
-                    style={styles.button}
-                  >
-                    <TouchableOpacity                  onPress={handleSubmit}
-                      color= {materialTheme.COLORS.BUTTON_COLOR}
-                      // title="Ingresar"
-                      disabled={!isValid}
-                      style={styles.button}>
-                        <Text>Ingresar </Text>
-                    </TouchableOpacity>
-                  </Button>
-                </View>
-              </>
-            )}
-          </Formik>
-        <View style={{top:"30%"}}>
-          <Text
-            style={{color: materialTheme.COLORS.BUTTON_COLOR, textDecorationLine: 'underline', top:"25%"}}
-            onPress={() => props.navigation.navigate("Registrar")}
-            //aca despues le pongo el onPress a la pag de registro
-          >
-          {"¿"}Olvidaste tu Contraseña{"?"} 
-          </Text>
-          <Text
-            style={{color: materialTheme.COLORS.BUTTON_COLOR, textDecorationLine: 'underline', top:"50%"}}
-            // onPress={}
+            </Block>
+            {/* <Text
+                style={{color: materialTheme.COLORS.BUTTON_COLOR, textDecorationLine: 'underline', top:"80%"}}
+                
+                //aca despues le pongo el onPress a la pag de registro
+            >
+              {"¿"}No te registraste todavia{"?"}
+            </Text> */}
+            <View style={styles.loginContainer}>
+              <Formik
+                enableReinitialize
+                validationSchema={loginValidationSchema}
+                initialValues={{ usuario: '', password: '' }}
+                onSubmit={values => console.log(values)}
+              >
+                {({
+                  handleChange,
+                  handleBlur,
+                  handleSubmit,
+                  values,
+                  errors,
+                  touched,
+                  isValid,
+                }) => (
+                  <>
+                    <TextInput
+                      name="usuario"
+                      placeholder="  Usuario"
+                      style={styles.textInput}
+                      onChangeText={handleChange('usuario')}
+                      onBlur={handleBlur('usuario')}
+                      value={values.usuario}
+                      // keyboardType= "default"
+                    />
+                    <TextInput
+                      name="password"
+                      placeholder=" Contraseña"
+                      style={styles.textInput}
+                      onChangeText={handleChange('password')}
+                      onBlur={handleBlur('password')}
+                      value={values.password}
+                      // keyboardType= "ascii-capable"
+                      secureTextEntry
+                    />
+                    {(touched.password && errors.password ) &&
+                                      <Text style={styles.errorText}>{errors.password}</Text>
+                    }   
+                    {/* <View style={{}}> */}
+                      {/* <Button
+                        onPress={handleSubmit}
+                        color= {materialTheme.COLORS.BUTTON_COLOR}
+                        title="Ingresar"
+                        disabled={!isValid}
+                        style={styles.button}
+                      > */}
+                        <TouchableOpacity                 
+                          onPress={handleSubmit}
+                          // color= {materialTheme.COLORS.BUTTON_COLOR}
+                          // title="Ingresar"
+                          disabled={!isValid}
+                          style={{...styles.button, justifyContent:"center"}}>
+                            <Text style={{alignSelf:"center", color:"white"}}>Ingresar </Text>
+                        </TouchableOpacity>
+                      {/* </Button> */}
+                    {/* </View> */}
+                  </>
+                )}
+              </Formik>
+              <View style={{top:"40%", alignItems:"center"}}>
+                <Text
+                  style={{...styles.opciones, top:"25%"}}
+                  onPress={() => props.navigation.navigate("Registrar")}
+                  //aca despues le pongo el onPress a la pag de registro
+                >
+                {"¿"}Olvidaste tu contraseña{"?"} 
+                </Text>
+                <Text
+                  style={{...styles.opciones, top:"50%"}}
+                  // onPress={}
 
-            //aca despues le pongo el onPress a la pag de registro
-          >
-          {"¿"}Primera vez que ingresas{"?"}
-          </Text>
-        </View>
-      </View>
-      </Block>
+                  //aca despues le pongo el onPress a la pag de registro
+                >
+                {"¿"}Primera vez que ingresas{"?"}
+                </Text>
+              </View>
+            </View>
+          </Block>
+        // </KeyboardAwareScrollView>
     );
   }
 }
 
 const styles = StyleSheet.create({
   button: {
-    
-    // width: width - theme.SIZES.BASE * 3,
-    // height: theme.SIZES.BASE * 3,
+    width: width - theme.SIZES.BASE * 15,
+    height: theme.SIZES.BASE * 2,
+    backgroundColor: materialTheme.COLORS.BUTTON_COLOR,
+    borderRadius:5,
     shadowRadius: 0,
     shadowOpacity: 0,
+    top:"5%",
   },
   loginContainer: {
     width: '80%',
@@ -144,7 +150,7 @@ const styles = StyleSheet.create({
     padding: 10,
     elevation: 10,
     backgroundColor: '#ffbd59',
-    top:"-20%",
+    top:"-28%",
     marginLeft:"10%"
   },
   textInput: {
@@ -160,4 +166,8 @@ const styles = StyleSheet.create({
     fontSize: 10,
     color: 'red',
   },
+  opciones:{
+    color: materialTheme.COLORS.BUTTON_COLOR, 
+    textDecorationLine: 'underline',
+  }
 });
