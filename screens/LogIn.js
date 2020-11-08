@@ -113,7 +113,7 @@ export default class LogIn extends React.Component {
             onPress={() => props.navigation.navigate("Registrar")}
             //aca despues le pongo el onPress a la pag de registro
           >
-          {"¿"}Olvidaste tu contraseña{"?"} 
+          {"¿"}Olvidaste tu Contraseña{"?"} 
           </Text>
           <Text
             style={{color: materialTheme.COLORS.BUTTON_COLOR, textDecorationLine: 'underline', top:"50%"}}
