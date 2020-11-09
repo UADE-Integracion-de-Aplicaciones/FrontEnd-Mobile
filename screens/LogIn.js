@@ -46,13 +46,7 @@ export default class LogIn extends React.Component {
                   </Block>
               </Block>
             </Block>
-            {/* <Text
-                style={{color: materialTheme.COLORS.BUTTON_COLOR, textDecorationLine: 'underline', top:"80%"}}
-                
-                //aca despues le pongo el onPress a la pag de registro
-            >
-              {"¿"}No te registraste todavia{"?"}
-            </Text> */}
+            
             <View style={styles.loginContainer}>
               <Formik
                 // enableReinitialize
