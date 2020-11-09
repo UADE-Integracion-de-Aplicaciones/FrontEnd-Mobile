@@ -12,9 +12,10 @@ import Logo from '../assets/images/LogoBankMe.png';
 import { TouchableOpacity } from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
-export default class LogIn extends React.Component {
-  render() {
-    const { navigation } = this.props;
+function LogIn (props) {
+    const { navigation } = props
+  // render() {
+  //   const { navigation } = this.props;
   // validaciones de login
     const loginValidationSchema = yup.object().shape({
       usuario: yup
@@ -46,7 +47,6 @@ export default class LogIn extends React.Component {
                   </Block>
               </Block>
             </Block>
-            
             <View style={styles.loginContainer}>
               <Formik
                 // enableReinitialize
@@ -87,7 +87,6 @@ export default class LogIn extends React.Component {
                    
                    <TouchableOpacity                 
                       onPress={() => navigation.navigate("Home")}
-
                       disabled={!isValid}
                       style={{...styles.button, justifyContent:"center"}}>
                         <Text style={{alignSelf:"center", color:"white"}}>Ingresar </Text>
@@ -98,7 +97,7 @@ export default class LogIn extends React.Component {
               <View style={{top:"40%", alignItems:"center"}}>
                 <Text
                   style={{...styles.opciones, top:"25%"}}
-                  onPress={() => props.navigation.navigate("Registrar")}
+                  onPress={() => navigation.navigate("Registro")}
                   //aca despues le pongo el onPress a la pag de registro
                 >
                 {"¿"}Olvidaste tu contraseña{"?"} 
@@ -106,7 +105,7 @@ export default class LogIn extends React.Component {
                 <Text
                   style={{...styles.opciones, top:"50%"}}
                   // onPress={}
-
+                  onPress={() => navigation.navigate('Registro')}
                   //aca despues le pongo el onPress a la pag de registro
                 >
                 {"¿"}Primera vez que ingresas{"?"}
@@ -120,7 +119,7 @@ export default class LogIn extends React.Component {
        
     );
   }
-}
+// }
 
 const styles = StyleSheet.create({
   button: {
@@ -147,7 +146,6 @@ const styles = StyleSheet.create({
     margin: 10,
     backgroundColor: 'white',
     borderColor: 'gray',
-    // borderWidth: StyleSheet.hairlineWidth,
     borderRadius: 10,
   },
   errorText: {
@@ -159,3 +157,5 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
   }
 });
+
+export default LogIn;

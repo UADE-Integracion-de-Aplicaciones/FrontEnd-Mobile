@@ -4,9 +4,8 @@ import { Platform, StatusBar, Image } from 'react-native';
 import { AppLoading } from 'expo';
 import { Asset } from 'expo-asset';
 import { Block, GalioProvider } from 'galio-framework';
-
 import { Images, products, materialTheme } from './constants/';
-
+import Registro from './screens/Registro';
 import { NavigationContainer } from '@react-navigation/native';
 import Screens from './navigation/Screens';
 import MainStackNavigator from './navigation/mainStackNavigator';
