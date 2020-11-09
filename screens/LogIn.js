@@ -92,7 +92,7 @@ export default class LogIn extends React.Component {
                     />
                    
                    <TouchableOpacity                 
-                      onPress={handleSubmit}
+                      onPress={() => navigation.navigate("Home")}
 
                       disabled={!isValid}
                       style={{...styles.button, justifyContent:"center"}}>

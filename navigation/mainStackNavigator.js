@@ -10,7 +10,7 @@ const Stack = createStackNavigator()
 function MainStackNavigator() {
   return (
     
-      <Stack.Navigator initialRouteName='Home'>
+      <Stack.Navigator initialRouteName='Login'>
         <Stack.Screen name='LogIn' component={LogIn} options={{ headerShown: false }}/>
         <Stack.Screen name='Registro' component={Registro} options={{ headerShown: false }} />
         <Stack.Screen name='Home' component={Home} options={{headerShown: false}} />
