@@ -4,8 +4,8 @@ import { Block, Button, Text, theme } from 'galio-framework';
 
 const { height, width } = Dimensions.get('screen');
 import * as yup from 'yup';
-import { Formik } from 'formik';
-
+import { Formik , Field } from 'formik';
+import CustomInput from '../screens/componenteRegistro/CustomInput';
 import materialTheme from '../constants/Theme';
 import Images from '../constants/Images';
 import Logo from '../assets/images/LogoBankMe.png';
@@ -17,14 +17,13 @@ export default class LogIn extends React.Component {
     const { navigation } = this.props;
   // validaciones de login
     const loginValidationSchema = yup.object().shape({
-      // email: yup
-      //   .string()
-      //   .email("Please enter valid email")
-      //   .required('Email Address is Required'),
+      usuario: yup
+      .string()
+      .required('Ingresá el usuario'),
       password: yup
         .string()
-        .min(8, ({ min }) => `La contraseña debe ser de al menos ${min} caracteres`),
-        // .required('Contraseña necesaria'),
+        .min(8, ({ min }) => `La contraseña debe ser de al menos ${min} caracteres`)
+        .required('Ingresá la contraseña'),
     })  
     return (
       // <TouchableWithoutFeedback  accessible={false}>
@@ -72,45 +71,33 @@ export default class LogIn extends React.Component {
                 }) => (
                   <>
                     <TextInput
-                      name="usuario"
-                      placeholder="  Usuario"
-                      style={styles.textInput}
-                      onChangeText={handleChange('usuario')}
-                      onBlur={handleBlur('usuario')}
-                      value={values.usuario}
-                      // keyboardType= "default"
+                      name=""
+                      placeholder=""
+                      style={{backgroundColor:materialTheme.COLORS.BACKGROUND, borderColor: materialTheme.COLORS.BACKGROUND}}
                     />
-                    <TextInput
-                      name="password"
-                      placeholder=" Contraseña"
-                      style={styles.textInput}
-                      onChangeText={handleChange('password')}
-                      onBlur={handleBlur('password')}
-                      value={values.password}
-                      // keyboardType= "ascii-capable"
-                      secureTextEntry
+                    <Field
+                        component={CustomInput}
+                        name="usuario"
+                        placeholder="  Usuario"
+                        keyboardType="default"
+                        value={values.usuario}
                     />
-                    {(touched.password && errors.password ) &&
-                                      <Text style={styles.errorText}>{errors.password}</Text>
-                    }   
-                    {/* <View style={{}}> */}
-                      {/* <Button
-                        onPress={handleSubmit}
-                        color= {materialTheme.COLORS.BUTTON_COLOR}
-                        title="Ingresar"
-                        disabled={!isValid}
-                        style={styles.button}
-                      > */}
-                        <TouchableOpacity                 
-                          onPress={handleSubmit}
-                          // color= {materialTheme.COLORS.BUTTON_COLOR}
-                          // title="Ingresar"
-                          disabled={!isValid}
-                          style={{...styles.button, justifyContent:"center"}}>
-                            <Text style={{alignSelf:"center", color:"white"}}>Ingresar </Text>
-                        </TouchableOpacity>
-                      {/* </Button> */}
-                    {/* </View> */}
+                    <Field
+                        component={CustomInput}
+                        name="password"
+                        placeholder=" Contraseña"
+                        keyboardType="default"
+                        value={values.password}
+                        secureTextEntry
+                    />
+                   
+                   <TouchableOpacity                 
+                      onPress={handleSubmit}
+
+                      disabled={!isValid}
+                      style={{...styles.button, justifyContent:"center"}}>
+                        <Text style={{alignSelf:"center", color:"white"}}>Ingresar </Text>
+                    </TouchableOpacity>
                   </>
                 )}
               </Formik>
