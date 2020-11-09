@@ -8,6 +8,8 @@ import {
   Button,
   Dimensions,
   ImageBackground,
+  Keyboard,
+  ScrollView,
 } from 'react-native';
 import { Formik, Field } from 'formik';
 import { Block, theme, Text } from 'galio-framework';
@@ -47,88 +49,88 @@ function Registro(props) {
 
       })
   return (
-    
-    <SafeAreaView style={styles.container}>
-        <Block flex style={{backgroundColor: materialTheme.COLORS.BACKGROUND, width:width, height:height}}>
-                {/* <StatusBar barStyle="light-content" /> */}
-            <Block flex center>
-                <ImageBackground
-                    source={Logo}
-                    style={{ height: "90%", width: "90%", marginLeft: '-85%', marginTop:"10%", zIndex: 1 }}
-                />
-            </Block>
-            <Block flex space="between" style={{top:"-20%"}}>
-                <Block flex space="around" style={{ zIndex: 2 }}>
-                    <Block>
-                        <Text color="white" size={40} style={{padding:"10%", top:"50%"}}>Hola, Bienvenid@!</Text>
+    <ScrollView onPress={Keyboard.dismiss}>
+            <SafeAreaView style={styles.container}>
+                <Block flex style={{backgroundColor: materialTheme.COLORS.BACKGROUND, width:width, height:height}}>
+                        {/* <StatusBar barStyle="light-content" /> */}
+                    <Block flex center>
+                        <ImageBackground
+                            source={Logo}
+                            style={{ height: "90%", width: "90%", marginLeft: '-85%', marginTop:"10%", zIndex: 1 }}
+                        />
                     </Block>
-                </Block>
-            </Block>
-            <View style={styles.signupContainer}>
-                <Formik
-                validationSchema={signUpValidationSchema}
-                initialValues={{
-                    dni: '',
-                    usuario: '',
-                    contraseña: '',
-                    confirmcontraseña: '',
-                    codigodeautenticacion: '',
-                }}
-                onSubmit={values => console.log(values)}
-                >
-                {({ handleSubmit, isValid, errors }) => (
-                    <>
-                    <Field
-                        component={CustomInput}
-                        name="dni"
-                        placeholder="  DNI"
-                        keyboardType="numeric"
-                    />
-                    <Field
-                        component={CustomInput}
-                        name="usuario"
-                        placeholder="  Usuario"
-                        keyboardType="default"
-                    />
-                    <Field
-                        component={CustomInput}
-                        name="contraseña"
-                        placeholder="  Contraseña"
-                        keyboardType="default"
-                        secureTextEntry
-                    />
-                    {errors.password &&
-                        <Text style={{ fontSize: 10, color: 'red' }}>{errors.password}</Text>
-                    }
-                    <Field
-                        component={CustomInput}
-                        name="confirmcontraseña"
-                        placeholder="  Confirmar Contraseña"
-                        secureTextEntry
-                    />
-                    {errors.password &&
-                        <Text style={{ fontSize: 10, color: 'red' }}>{errors.password}</Text>
-                    }
-                    <Field
-                        component={CustomInput}
-                        name="codigodeautenticacion"
-                        placeholder="  Código de Autenticación"
-                        secureTextEntry
-                    />
+                    <Block flex space="between" style={{top:"-20%"}}>
+                        <Block flex space="around" style={{ zIndex: 2 }}>
+                            <Block>
+                                <Text color="white" size={40} style={{padding:"10%", top:"50%"}}>Hola, Bienvenid@!</Text>
+                            </Block>
+                        </Block>
+                    </Block>
+                    <View style={styles.signupContainer}>
+                        <Formik
+                        validationSchema={signUpValidationSchema}
+                        initialValues={{
+                            dni: '',
+                            usuario: '',
+                            contraseña: '',
+                            confirmcontraseña: '',
+                            codigodeautenticacion: '',
+                        }}
+                        onSubmit={values => console.log(values)}
+                        >
+                        {({ handleSubmit, isValid, errors }) => (
+                            <>
+                            <Field
+                                component={CustomInput}
+                                name="dni"
+                                placeholder="  DNI"
+                                keyboardType="numeric"
+                            />
+                            <Field
+                                component={CustomInput}
+                                name="usuario"
+                                placeholder="  Usuario"
+                                keyboardType="default"
+                            />
+                            <Field
+                                component={CustomInput}
+                                name="contraseña"
+                                placeholder="  Contraseña"
+                                keyboardType="default"
+                                secureTextEntry
+                            />
+                            {errors.password &&
+                                <Text style={{ fontSize: 10, color: 'red' }}>{errors.password}</Text>
+                            }
+                            <Field
+                                component={CustomInput}
+                                name="confirmcontraseña"
+                                placeholder="  Confirmar Contraseña"
+                                secureTextEntry
+                            />
+                            {errors.password &&
+                                <Text style={{ fontSize: 10, color: 'red' }}>{errors.password}</Text>
+                            }
+                            <Field
+                                component={CustomInput}
+                                name="codigodeautenticacion"
+                                placeholder="  Código de Autenticación"
+                                secureTextEntry
+                            />
 
-                    <Button
-                        onPress={handleSubmit}
-                        title="Registrarse"
-                        disabled={!isValid}
-                        color={materialTheme.COLORS.BUTTON_COLOR}
-                    />
-                    </>
-                )}
-                </Formik>
-            </View>
-        </Block>
-    </SafeAreaView>
-    
+                            <Button
+                                onPress={handleSubmit}
+                                title="Registrarse"
+                                disabled={!isValid}
+                                color={materialTheme.COLORS.BUTTON_COLOR}
+                            />
+                            </>
+                        )}
+                        </Formik>
+                    </View>
+                </Block>
+            </SafeAreaView>
+    </ScrollView>
   )
 }
 
