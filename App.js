@@ -20,6 +20,7 @@ import LogIn from './screens/LogIn';
 // Before rendering any navigation stack
 import { enableScreens } from "react-native-screens";
 import Registro from './screens/Registro';
+import PagoServicios from './screens/PagoServicios';
 import MainStackNavigator from './navigation/mainStackNavigator';
 
 // enableScreens();
@@ -78,7 +79,8 @@ import MainStackNavigator from './navigation/mainStackNavigator';
 
 
 export default function App(props) {
-  return <Registro></Registro>
+  // return <MainStackNavigator></MainStackNavigator>
+  return <MainStackNavigator></MainStackNavigator>
 }
 
   // useEffect(() => {
