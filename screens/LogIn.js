@@ -12,15 +12,12 @@ import Logo from '../assets/images/LogoBankMe.png';
 import { TouchableOpacity } from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
-export default class LogIn extends React.Component {
-  render() {
-    const { navigation } = this.props;
+function LogIn (props) {
+    const { navigation } = props
+  // render() {
+  //   const { navigation } = this.props;
   // validaciones de login
     const loginValidationSchema = yup.object().shape({
-      // email: yup
-      //   .string()
-      //   .email("Please enter valid email")
-      //   .required('Email Address is Required'),
       password: yup
         .string()
         .min(8, ({ min }) => `La contraseña debe ser de al menos ${min} caracteres`)
@@ -43,13 +40,7 @@ export default class LogIn extends React.Component {
                   </Block>
               </Block>
             </Block>
-            {/* <Text
-                style={{color: materialTheme.COLORS.BUTTON_COLOR, textDecorationLine: 'underline', top:"80%"}}
-                
-                //aca despues le pongo el onPress a la pag de registro
-            >
-              {"¿"}No te registraste todavia{"?"}
-            </Text> */}
+          
             <View style={styles.loginContainer}>
               <Formik
                 enableReinitialize
@@ -89,31 +80,21 @@ export default class LogIn extends React.Component {
                     {(touched.password && errors.password ) &&
                                       <Text style={styles.errorText}>{errors.password}</Text>
                     }   
-                    {/* <View style={{}}> */}
-                      {/* <Button
-                        onPress={handleSubmit}
-                        color= {materialTheme.COLORS.BUTTON_COLOR}
-                        title="Ingresar"
-                        disabled={!isValid}
-                        style={styles.button}
-                      > */}
-                        <TouchableOpacity                 
-                          onPress={handleSubmit}
-                          // color= {materialTheme.COLORS.BUTTON_COLOR}
-                          // title="Ingresar"
-                          disabled={!isValid}
-                          style={{...styles.button, justifyContent:"center"}}>
-                            <Text style={{alignSelf:"center", color:"white"}}>Ingresar </Text>
-                        </TouchableOpacity>
-                      {/* </Button> */}
-                    {/* </View> */}
+                   
+                    <TouchableOpacity                 
+                      onPress={handleSubmit}
+                      disabled={!isValid}
+                      style={{...styles.button, justifyContent:"center"}}>
+                        <Text style={{alignSelf:"center", color:"white"}}>Ingresar </Text>
+                    </TouchableOpacity>
+                      
                   </>
                 )}
               </Formik>
               <View style={{top:"40%", alignItems:"center"}}>
                 <Text
                   style={{...styles.opciones, top:"25%"}}
-                  onPress={() => props.navigation.navigate("Registrar")}
+                  onPress={() => navigation.navigate("Registro")}
                   //aca despues le pongo el onPress a la pag de registro
                 >
                 {"¿"}Olvidaste tu contraseña{"?"} 
@@ -121,7 +102,7 @@ export default class LogIn extends React.Component {
                 <Text
                   style={{...styles.opciones, top:"50%"}}
                   // onPress={}
-
+                  onPress={() => navigation.navigate('Registro')}
                   //aca despues le pongo el onPress a la pag de registro
                 >
                 {"¿"}Primera vez que ingresas{"?"}
@@ -132,7 +113,7 @@ export default class LogIn extends React.Component {
         // </KeyboardAwareScrollView>
     );
   }
-}
+// }
 
 const styles = StyleSheet.create({
   button: {
@@ -159,7 +140,6 @@ const styles = StyleSheet.create({
     margin: 10,
     backgroundColor: 'white',
     borderColor: 'gray',
-    // borderWidth: StyleSheet.hairlineWidth,
     borderRadius: 10,
   },
   errorText: {
@@ -171,3 +151,5 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
   }
 });
+
+export default LogIn;

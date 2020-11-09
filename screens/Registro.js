@@ -3,96 +3,187 @@ import {
   SafeAreaView,
   StyleSheet,
   View,
-  Text,
   StatusBar,
   TextInput,
   Button,
+  Dimensions,
+  ImageBackground,
 } from 'react-native';
 import { Formik, Field } from 'formik';
+import { Block, theme, Text } from 'galio-framework';
+import materialTheme from '../constants/Theme';
+const { height, width } = Dimensions.get('screen');
+import Logo from '../assets/images/LogoBankMe.png';
+
 import * as yup from 'yup';
 import CustomInput from '../screens/componenteRegistro/CustomInput';
 
-const Registro = () => {
+function Registro(props) {
+    const { navigation } = props
+    const signUpValidationSchema = yup.object().shape({
+        dni: yup
+          .number()
+        //   .matches(/\d/, 'Solo numeros')
+          .typeError('Solo se permiten números')
+          .required('El DNI es obligatorio'),
+        usuario: yup
+            .string()
+            .required('El usuario es obligatorio'),
+        contraseña: yup
+          .string()
+          .matches(/\w*[a-z]\w*/,  "La contraseña debe tener al menos 1 minúscula")
+          .matches(/\w*[A-Z]\w*/,  "La contraseña debe tener al menos 1 mayúscula")
+          .matches(/\d/, "La contraseña debe tener al menos 1 número")
+          .matches(/[#$%*_=+]/, "La contraseña debe tener al menos 1 símbolo (# $ % * _ = +)")
+          .min(8, ({ min }) => `La contraseña debe ser de al menos ${min} caracteres`)
+          .required('La contraseña es obligatoria'),
+        confirmcontraseña: yup
+          .string()
+          .oneOf([yup.ref('contraseña')], 'Las contraseñas no coinciden')
+          .required('La confirmación de contraseña es obligatoria'),
+        codigodeautenticacion: yup
+            .string()
+            .required('El código de autenticación es obligatorio'),
+
+      })
   return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView style={styles.container}>
-        <View style={styles.signupContainer}>
-        <Text>Sign Up Screen</Text>
+    
+    <SafeAreaView style={styles.container}>
+        <Block flex style={{backgroundColor: materialTheme.COLORS.BACKGROUND, width:width, height:height}}>
+                {/* <StatusBar barStyle="light-content" /> */}
+            <Block flex center>
+                <ImageBackground
+                    source={Logo}
+                    style={{ height: "90%", width: "90%", marginLeft: '-85%', marginTop:"10%", zIndex: 1 }}
+                />
+            </Block>
+            <Block flex space="between" style={{top:"-20%"}}>
+                <Block flex space="around" style={{ zIndex: 2 }}>
+                    <Block>
+                        <Text color="white" size={40} style={{padding:"10%", top:"50%"}}>Hola, Bienvenid@!</Text>
+                    </Block>
+                </Block>
+            </Block>
+            <View style={styles.signupContainer}>
+                <Formik
+                validationSchema={signUpValidationSchema}
+                initialValues={{
+                    dni: '',
+                    usuario: '',
+                    contraseña: '',
+                    confirmcontraseña: '',
+                    codigodeautenticacion: '',
+                }}
+                onSubmit={values => console.log(values)}
+                >
+                {({ handleSubmit, isValid, errors }) => (
+                    <>
+                    <Field
+                        component={CustomInput}
+                        name="dni"
+                        placeholder="  DNI"
+                        keyboardType="numeric"
+                    />
+                    <Field
+                        component={CustomInput}
+                        name="usuario"
+                        placeholder="  Usuario"
+                        keyboardType="default"
+                    />
+                    <Field
+                        component={CustomInput}
+                        name="contraseña"
+                        placeholder="  Contraseña"
+                        keyboardType="default"
+                        secureTextEntry
+                    />
+                    {errors.password &&
+                        <Text style={{ fontSize: 10, color: 'red' }}>{errors.password}</Text>
+                    }
+                    <Field
+                        component={CustomInput}
+                        name="confirmcontraseña"
+                        placeholder="  Confirmar Contraseña"
+                        secureTextEntry
+                    />
+                    {errors.password &&
+                        <Text style={{ fontSize: 10, color: 'red' }}>{errors.password}</Text>
+                    }
+                    <Field
+                        component={CustomInput}
+                        name="codigodeautenticacion"
+                        placeholder="  Código de Autenticación"
+                        secureTextEntry
+                    />
 
-        <Formik
-        initialValues={{
-            dni: '',
-            usuario: '',
-            contraseña: '',
-            confirmcontraseña: '',
-            codigodeautenticacion: '',
-        }}
-        onSubmit={values => console.log(values)}
-        >
-        {({ handleSubmit, isValid }) => (
-            <>
-            <Field
-                component={CustomInput}
-                name="dni"
-                placeholder="DNI"
-                keyboardType="numeric"
-            />
-            <Field
-                component={CustomInput}
-                name="usuario"
-                placeholder="Usuario"
-                keyboardType="default"
-            />
-            <Field
-                component={CustomInput}
-                name="contraseña"
-                placeholder="Contraseña"
-                keyboardType="default"
-                secureTextEntry
-            />
-            <Field
-                component={CustomInput}
-                name="confirmContraseña"
-                placeholder="Confirmar Contraseña"
-                secureTextEntry
-            />
-            <Field
-                component={CustomInput}
-                name="codigodeautenticacion"
-                placeholder="Código de Autenticación"
-                secureTextEntry
-            />
-
-            <Button
-                onPress={handleSubmit}
-                title="Registrarse"
-                disabled={!isValid}
-            />
-            </>
-        )}
-        </Formik>
-
-
-        </View>
-      </SafeAreaView>
-    </>
+                    <Button
+                        onPress={handleSubmit}
+                        title="Registrarse"
+                        disabled={!isValid}
+                        color={materialTheme.COLORS.BUTTON_COLOR}
+                    />
+                    </>
+                )}
+                </Formik>
+            </View>
+        </Block>
+    </SafeAreaView>
+    
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  signupContainer: {
-    width: '80%',
-    alignItems: 'center',
-    backgroundColor: 'white',
-    padding: 10,
-    elevation: 10,
-    backgroundColor: '#e6e6e6'
-  },
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    signupContainer: {
+        width: '80%',
+        alignItems: 'center',
+        backgroundColor: 'white',
+        padding: 10,
+        elevation: 10,
+        backgroundColor: '#e6e6e6',
+        top:"-10%",
+        alignSelf:"center",
+        backgroundColor: materialTheme.COLORS.BACKGROUND,
+
+    },
+    button: {
+        width: width - theme.SIZES.BASE * 15,
+        height: theme.SIZES.BASE * 2,
+        backgroundColor: materialTheme.COLORS.BUTTON_COLOR,
+        borderRadius:5,
+        shadowRadius: 0,
+        shadowOpacity: 0,
+        top:"5%",
+    },
+    loginContainer: {
+        width: '80%',
+        alignItems: 'center',
+        padding: 10,
+        elevation: 10,
+        backgroundColor: '#ffbd59',
+        top:"-28%",
+        marginLeft:"10%"
+    },
+    textInput: {
+        height: 40,
+        width: '100%',
+        margin: 10,
+        backgroundColor: 'white',
+        borderColor: 'gray',
+        borderRadius: 10,
+    },
+    errorText: {
+        fontSize: 10,
+        color: 'red',
+    },
+    opciones:{
+        color: materialTheme.COLORS.BUTTON_COLOR, 
+        textDecorationLine: 'underline',
+    }
 })
+
 export default Registro

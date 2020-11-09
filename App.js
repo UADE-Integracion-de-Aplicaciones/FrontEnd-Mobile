@@ -19,7 +19,7 @@ import { Formik } from 'formik';
 import LogIn from './screens/LogIn';
 // Before rendering any navigation stack
 import { enableScreens } from "react-native-screens";
-
+import Registro from './screens/Registro';
 import MainStackNavigator from './navigation/mainStackNavigator';
 
 // enableScreens();
@@ -78,7 +78,7 @@ import MainStackNavigator from './navigation/mainStackNavigator';
 
 
 export default function App(props) {
-  return <MainStackNavigator />
+  return <Registro></Registro>
 }
 
   // useEffect(() => {
