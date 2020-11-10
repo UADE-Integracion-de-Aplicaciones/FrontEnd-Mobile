@@ -91,21 +91,10 @@ function LogIn (props) {
                       style={{...styles.button, justifyContent:"center"}}>
                         <Text style={{alignSelf:"center", color:"white"}}>Ingresar </Text>
                     </TouchableOpacity>
-                    {/* <TouchableOpacity                 
-                      onPress={() => navigation.navigate("Registro")}
-                      disabled={!isValid}
-                      style={{...styles.button, justifyContent:"center"}}>
-                        <Text style={{alignSelf:"center", color:"white"}}>Olvide </Text>
-                    </TouchableOpacity> */}
-                    {/* <TouchableOpacity                 
-                      onPress={() => navigation.navigate("Home")}
-                      // disabled={!isValid}
-                      style={{...styles.button, justifyContent:"center"}}>
-                        <Text style={{alignSelf:"center", color:"white"}}>{"¿"}Primera vez que ingresas{"?"} </Text>
-                    </TouchableOpacity> */}
+                  
                     <Text
                       style={{...styles.opciones, top:"15%"}}
-                      onPress={() => navigation.navigate("ResumenDeCuenta")}
+                      onPress={() => navigation.navigate("Perfil")}
                       //aca despues le pongo el onPress a la pag de registro
                     >
                       {"¿"}Olvidaste tu contraseña{"?"} 

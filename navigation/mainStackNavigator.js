@@ -6,6 +6,7 @@ import LogIn from '../screens/LogIn';
 import Registro from '../screens/Registro';
 import Home from '../screens/Home';
 import ResumenDeCuenta from '../screens/ResumenDeCuenta';
+import Perfil from '../screens/Perfil';
 const Stack = createStackNavigator();
 
 function MainStackNavigator() {
@@ -24,7 +25,16 @@ function MainStackNavigator() {
           //   fontWeight: 'bold',
           // },
         }} />
-
+        <Stack.Screen name='Perfil' component={Perfil} options={{
+          title: 'Perfil',
+          headerStyle: {
+            backgroundColor: materialTheme.COLORS.BACKGROUND,
+          },
+          headerTintColor: 'white',
+          // headerTitleStyle: {
+          //   fontWeight: 'bold',
+          // },
+        }} />
       </Stack.Navigator>
     
   )
