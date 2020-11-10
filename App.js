@@ -7,7 +7,6 @@ import { Block, GalioProvider } from 'galio-framework';
 import { Images, products, materialTheme } from './constants/';
 import Registro from './screens/Registro';
 import { NavigationContainer } from '@react-navigation/native';
-import Screens from './navigation/Screens';
 import MainStackNavigator from './navigation/mainStackNavigator';
 // Before rendering any navigation stack
 import { enableScreens } from 'react-native-screens';

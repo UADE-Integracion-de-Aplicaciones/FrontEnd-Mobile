@@ -20,8 +20,8 @@ import Logo from '../assets/images/LogoBankMe.png';
 import * as yup from 'yup';
 import CustomInput from '../screens/componenteRegistro/CustomInput';
 
-function Registro(props) {
-    const { navigation } = props
+export default function Registro(props) {
+    // const { navigation } = props
     const signUpValidationSchema = yup.object().shape({
         dni: yup
           .number()
@@ -187,5 +187,3 @@ const styles = StyleSheet.create({
         textDecorationLine: 'underline',
     }
 })
-
-export default Registro

@@ -40,7 +40,7 @@ function LogIn (props) {
                 style={{ height: "90%", width: "90%", marginLeft: '-85%', marginTop:"10%", zIndex: 1 }}
               />
             </Block>
-            <Block flex space="between" style={{top:"-20%"}}>
+            <Block flex space="between" style={{top:"-10%"}}>
               <Block flex space="around" style={{ zIndex: 2 }}>
                   <Block>
                     <Text color="white" size={40} style={{padding:"10%"}}>Hola, Bienvenid@!</Text>
@@ -85,32 +85,43 @@ function LogIn (props) {
                         secureTextEntry
                     />
                    
-                   <TouchableOpacity                 
+                    <TouchableOpacity                 
                       onPress={() => navigation.navigate("Home")}
                       disabled={!isValid}
                       style={{...styles.button, justifyContent:"center"}}>
                         <Text style={{alignSelf:"center", color:"white"}}>Ingresar </Text>
                     </TouchableOpacity>
+                    {/* <TouchableOpacity                 
+                      onPress={() => navigation.navigate("Registro")}
+                      disabled={!isValid}
+                      style={{...styles.button, justifyContent:"center"}}>
+                        <Text style={{alignSelf:"center", color:"white"}}>Olvide </Text>
+                    </TouchableOpacity> */}
+                    {/* <TouchableOpacity                 
+                      onPress={() => navigation.navigate("Home")}
+                      // disabled={!isValid}
+                      style={{...styles.button, justifyContent:"center"}}>
+                        <Text style={{alignSelf:"center", color:"white"}}>{"¿"}Primera vez que ingresas{"?"} </Text>
+                    </TouchableOpacity> */}
+                    <Text
+                      style={{...styles.opciones, top:"15%"}}
+                      onPress={() => navigation.navigate("Home")}
+                      //aca despues le pongo el onPress a la pag de registro
+                    >
+                      {"¿"}Olvidaste tu contraseña{"?"} 
+                    </Text>
+                    <Text
+                      style={{...styles.opciones, top:"20%"}}
+                      // onPress={}
+                      onPress={() => navigation.navigate('Registro')}
+                      //aca despues le pongo el onPress a la pag de registro
+                    >
+                    {"¿"}Primera vez que ingresas{"?"}
+                    </Text>
                   </>
                 )}
               </Formik>
-              <View style={{top:"40%", alignItems:"center"}}>
-                <Text
-                  style={{...styles.opciones, top:"25%"}}
-                  onPress={() => navigation.navigate("Registro")}
-                  //aca despues le pongo el onPress a la pag de registro
-                >
-                {"¿"}Olvidaste tu contraseña{"?"} 
-                </Text>
-                <Text
-                  style={{...styles.opciones, top:"50%"}}
-                  // onPress={}
-                  onPress={() => navigation.navigate('Registro')}
-                  //aca despues le pongo el onPress a la pag de registro
-                >
-                {"¿"}Primera vez que ingresas{"?"}
-                </Text>
-              </View>
+
             </View>
           </Block>
           </View>
@@ -133,11 +144,12 @@ const styles = StyleSheet.create({
   },
   loginContainer: {
     width: '80%',
+    height:"45%",
     alignItems: 'center',
     padding: 10,
     elevation: 10,
     backgroundColor: '#ffbd59',
-    top:"-28%",
+    top:"-15%",
     marginLeft:"10%"
   },
   textInput: {
