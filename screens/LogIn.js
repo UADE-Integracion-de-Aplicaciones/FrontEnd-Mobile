@@ -43,7 +43,7 @@ function LogIn (props) {
             <Block flex space="between" style={{top:"-10%"}}>
               <Block flex space="around" style={{ zIndex: 2 }}>
                   <Block>
-                    <Text color="white" size={40} style={{padding:"10%"}}>Hola, bienvenid@!</Text>
+                    <Text color="white" size={40} style={{padding:"10%"}}>Hola, Bienvenid@!</Text>
                   </Block>
               </Block>
             </Block>

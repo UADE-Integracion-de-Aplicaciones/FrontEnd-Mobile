@@ -24,6 +24,6 @@
         "UIBackgroundModes": ["location", "fetch"]
       }
     },
-    "githubUrl": "https://github.com/hartepedro/MyBudget-Front"
+    "githubUrl": "https://github.com/UADE-Integracion-de-Aplicaciones/FrontEnd-Mobile"
   }
 }
