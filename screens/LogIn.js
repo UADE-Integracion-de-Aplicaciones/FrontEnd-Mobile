@@ -105,7 +105,7 @@ function LogIn (props) {
                     </TouchableOpacity> */}
                     <Text
                       style={{...styles.opciones, top:"15%"}}
-                      onPress={() => navigation.navigate("Home")}
+                      onPress={() => navigation.navigate("ResumenDeCuenta")}
                       //aca despues le pongo el onPress a la pag de registro
                     >
                       {"¿"}Olvidaste tu contraseña{"?"} 

@@ -7,6 +7,8 @@ const { height, width } = Dimensions.get('screen');
 import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-cards';
 import { TouchableOpacity } from "react-native";
 function Home(props) {
+  const { navigation } = props
+
   return (
     <View style={styles.container}>
       <ScrollView style={{backgroundColor: materialTheme.COLORS.BACKGROUND, width:width, height:height}}>
@@ -14,52 +16,52 @@ function Home(props) {
       <MaterialHeader1 style={styles.materialHeader1}></MaterialHeader1>
       </View>
       <TouchableOpacity>
-      <View style={{paddingTop:"10%"}}>
-        
-        <Card style={styles.card}>
-        {/* < CardImage 
-            source={{uri: 'http://bit.ly/2GfzooV'}} 
-            title="Top 10 South African beaches"
-        /> */}
-        <CardTitle
-            title="Resumen de Cuenta"
-        />
-        <CardContent text="Vea los egresos de su cuenta" />
-        <CardAction 
-            separator={true} 
-            inColumn={false}>
-            <CardButton
-            onPress={() => {}}
-            title="Acceder >"
-            color="#FEB557"
+        <View style={{paddingTop:"10%"}}>
+          
+          <Card style={styles.card}>
+          {/* < CardImage 
+              source={{uri: 'http://bit.ly/2GfzooV'}} 
+              title="Top 10 South African beaches"
+          /> */}
+            <CardTitle
+                title="Resumen de Cuenta"
             />
-        </CardAction>
-        </Card>
+            <CardContent text="Vea los egresos de su cuenta" />
+            <CardAction 
+                separator={true} 
+                inColumn={false}>
+                <CardButton
+                onPress={() => navigation.navigate("Home")}
+                title="Acceder >"
+                color="#FEB557"
+                />
+            </CardAction>
+          </Card>
         </View>
-        </TouchableOpacity>
-        <TouchableOpacity>
+      </TouchableOpacity>
+      <TouchableOpacity>
         <View style={{paddingTop:"5%"}}>
-        <Card style={styles.card} >
-        {/* <CardImage 
-            source={{uri: 'http://bit.ly/2GfzooV'}} 
-            title="Top 10 South African beaches"
-        /> */}
-        <CardTitle
-            title="Pagar Servicios/Impuestos"
-        />
-        <CardContent text="Pague sus servicios o impuestos" />
-        <CardAction 
-            separator={true} 
-            inColumn={false}>
-            <CardButton
-            onPress={() => {}}
-            title="Acceder >"
-            color="#FEB557"
+          <Card style={styles.card} >
+          {/* <CardImage 
+              source={{uri: 'http://bit.ly/2GfzooV'}} 
+              title="Top 10 South African beaches"
+          /> */}
+            <CardTitle
+                title="Pagar Servicios/Impuestos"
             />
-        </CardAction>
-        </Card>
+            <CardContent text="Pague sus servicios o impuestos" />
+            <CardAction 
+                separator={true} 
+                inColumn={false}>
+                <CardButton
+                onPress={() => {}}
+                title="Acceder >"
+                color="#FEB557"
+                />
+            </CardAction>
+          </Card>
         </View>
-        </TouchableOpacity>
+      </TouchableOpacity>
         
     </ScrollView>
     </View>
