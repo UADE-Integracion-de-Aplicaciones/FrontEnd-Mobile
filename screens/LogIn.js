@@ -10,7 +10,7 @@ import materialTheme from '../constants/Theme';
 import Images from '../constants/Images';
 import Logo from '../assets/images/LogoBankMe.png';
 import { TouchableOpacity } from 'react-native';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+
 
 function LogIn (props) {
     const { navigation } = props
