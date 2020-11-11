@@ -8,9 +8,9 @@
     "platforms": ["ios", "android"],
     "version": "1.6.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/LogoBankMe.png",
     "splash": {
-      
+      "image": "./assets/images/Cargando.png",
       "resizeMode": "cover",
       "backgroundColor": "#ffbd59"
     },
@@ -24,6 +24,6 @@
         "UIBackgroundModes": ["location", "fetch"]
       }
     },
-    "githubUrl": "https://github.com/hartepedro/MyBudget-Front"
+    "githubUrl": "https://github.com/UADE-Integracion-de-Aplicaciones/FrontEnd-Mobile"
   }
 }
