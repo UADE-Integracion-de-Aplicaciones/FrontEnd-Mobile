@@ -1,4 +1,4 @@
-import React from 'react';
+import React , {useState, useEffect} from 'react';
 import { ImageBackground, StyleSheet, StatusBar, Dimensions, Platform , View, TextInput, Keyboard, TouchableWithoutFeedback, ScrollView} from 'react-native';
 import { Block, Button, Text, theme } from 'galio-framework';
 
@@ -10,13 +10,42 @@ import materialTheme from '../constants/Theme';
 import Images from '../constants/Images';
 import Logo from '../assets/images/LogoBankMe.png';
 import { TouchableOpacity } from 'react-native';
+import {Icon} from 'react-native-elements';
 
 
 function LogIn (props) {
     const { navigation } = props
-  // render() {
-  //   const { navigation } = this.props;
-  // validaciones de login
+    const [usuario, setUsuario] = useState("mica"); //este valor lo mando a la bd para chequear usuario
+    const [password, setPassword] = useState("Micaela Esquerdo"); //este valor lo mando a la bd para chequear password
+    const [showPassword, setShowPassword] = useState(false);
+
+    // const onSubmit = () => {
+    //     db.transaction((tx) => {
+    //       tx.executeSql("select * from usuarios", [], (tx, results) => {
+    //         var temp = [];
+  
+    //         for (let i = 0; i < results.rows.length; ++i) {
+    //           // temp.push(results.rows.item(i));
+    //           console.log(results.rows.item(i).email);
+    //           console.log(results.rows.item(i).password);
+    //           if (
+    //             results.rows.item(i).email == formData.email &&
+    //             results.rows.item(i).password == formData.password
+    //           ) {
+    //             flag = true;
+    //           }
+    //         }
+    //         if (!flag) {
+    //           Alert.alert("Error!", "El email o la password son incorrectos");
+         
+            
+    //           navigation.navigate("home");
+    //         }
+    //       });
+    //     });
+    //   }
+    // };
+
     const loginValidationSchema = yup.object().shape({
       usuario: yup
       .string()
@@ -27,13 +56,10 @@ function LogIn (props) {
         .required('Ingresá la contraseña'),
     })  
     return (
-      // <TouchableWithoutFeedback  accessible={false}>
 
       <ScrollView onPress={Keyboard.dismiss}>
         <View>
-        {/* // <KeyboardAwareScrollView style={{flex:1}}> */}
           <Block flex style={{backgroundColor: materialTheme.COLORS.BACKGROUND, width:width, height:height}} >
-            {/* <StatusBar barStyle="light-content" /> */}
             <Block flex center>
               <ImageBackground
                 source={Logo}
@@ -49,7 +75,6 @@ function LogIn (props) {
             </Block>
             <View style={styles.loginContainer}>
               <Formik
-                // enableReinitialize
                 validationSchema={loginValidationSchema}
                 initialValues={{ usuario: '', password: '' }}
                 onSubmit={values => console.log(values)}
@@ -74,36 +99,31 @@ function LogIn (props) {
                         name="usuario"
                         placeholder="  Usuario"
                         keyboardType="default"
-                        value={values.usuario}
+                        value={values.setUsuario}
                     />
                     <Field
                         component={CustomInput}
                         name="password"
                         placeholder=" Contraseña"
                         keyboardType="default"
-                        value={values.password}
+                        value={values.setPassword}
                         secureTextEntry
                     />
-                   
                     <TouchableOpacity                 
                       onPress={() => navigation.navigate("Home")}
                       disabled={!isValid}
                       style={{...styles.button, justifyContent:"center"}}>
                         <Text style={{alignSelf:"center", color:"white"}}>Ingresar </Text>
                     </TouchableOpacity>
-                  
                     <Text
                       style={{...styles.opciones, top:"15%"}}
-                      onPress={() => navigation.navigate("Perfil")}
-                      //aca despues le pongo el onPress a la pag de registro
+                      onPress={() => navigation.navigate("OlvideContrasena")}
                     >
                       {"¿"}Olvidaste tu contraseña{"?"} 
                     </Text>
                     <Text
                       style={{...styles.opciones, top:"20%"}}
-                      // onPress={}
                       onPress={() => navigation.navigate('Registro')}
-                      //aca despues le pongo el onPress a la pag de registro
                     >
                     {"¿"}Primera vez que ingresas{"?"}
                     </Text>
@@ -114,12 +134,9 @@ function LogIn (props) {
             </View>
           </Block>
           </View>
-          </ScrollView>
-          // </TouchableWithoutFeedback>
-       
+          </ScrollView>       
     );
   }
-// }
 
 const styles = StyleSheet.create({
   button: {
