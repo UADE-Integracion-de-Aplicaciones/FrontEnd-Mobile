@@ -1,22 +1,34 @@
 import React, { Component } from "react";
-import { StyleSheet, View, ScrollView,Dimensions } from "react-native";
-import MaterialHeader1 from "../components/MaterialHeader1";
-import MaterialCardWithImageAndTitle from "../components/MaterialCardWithImageAndTitle";
+import { StyleSheet, View, ScrollView,Dimensions, Image } from "react-native";
 import materialTheme from '../constants/Theme';
 const { height, width } = Dimensions.get('screen');
 import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-cards';
 import { TouchableOpacity } from "react-native";
+
+import Logo from "../assets/images/homeLogo.png";
+import User from "../assets/images/user.png";
 function Home(props) {
   const { navigation } = props
 
   return (
     <View style={styles.container}>
-      <ScrollView style={{backgroundColor: materialTheme.COLORS.BACKGROUND, width:width, height:height}}>
-        <View>
-      <MaterialHeader1 style={styles.materialHeader1}></MaterialHeader1>
-      </View>
-      <TouchableOpacity>
-        <View style={{paddingTop:"10%"}}>
+      <View style={{backgroundColor: materialTheme.COLORS.BACKGROUND, width:"100%", height:"100%"}}>
+      <View style={styles.container2}>
+      <Image
+           source={Logo}
+          style={{ height: "50%", width: "50%", left:"85%", top: "2%"}}
+       />
+      <TouchableOpacity style={{ height: "100%", width: "25%", left: "40%", top:"7%"}} onPress={() => navigation.navigate("Perfil") }>
+      <Image
+           source={User}
+          style={{top:"10%", height: "40%", width: "41%" }}
+       />
+      </TouchableOpacity>
+    </View>
+    {/* <ScrollView> */}
+    <View >
+      <TouchableOpacity onPress={() => navigation.navigate("ResumenDeCuenta")} >
+        <View style={{paddingTop:"5%", height: "70%"}}>
           
           <Card style={styles.card}>
           {/* < CardImage 
@@ -31,7 +43,7 @@ function Home(props) {
                 separator={true} 
                 inColumn={false}>
                 <CardButton
-                onPress={() => navigation.navigate("Home")}
+                onPress={() => navigation.navigate("ResumenDeCuenta")}
                 title="Acceder >"
                 color="#FEB557"
                 />
@@ -39,8 +51,10 @@ function Home(props) {
           </Card>
         </View>
       </TouchableOpacity>
-      <TouchableOpacity>
-        <View style={{paddingTop:"5%"}}>
+      </View>
+      <View>
+      <TouchableOpacity onPress={() => navigation.navigate("PagoServicios")} style={{top:"-47%"}} >
+        <View style={{height:"70%"}}>
           <Card style={styles.card} >
           {/* <CardImage 
               source={{uri: 'http://bit.ly/2GfzooV'}} 
@@ -54,7 +68,7 @@ function Home(props) {
                 separator={true} 
                 inColumn={false}>
                 <CardButton
-                onPress={() => {}}
+                onPress={() => navigation.navigate("PagoServicios")}
                 title="Acceder >"
                 color="#FEB557"
                 />
@@ -62,9 +76,12 @@ function Home(props) {
           </Card>
         </View>
       </TouchableOpacity>
-        
-    </ScrollView>
+      </View>
+      {/* </ScrollView> */}
     </View>
+    
+    </View>
+    
   );
 }
 
@@ -77,20 +94,6 @@ const styles = StyleSheet.create({
     height: 740,
     width: 360
   },
-  materialHeader1: {
-    height: 76,
-    // position: "absolute",
-    left: 0,
-    top: 23,
-    right: 0
-  },
-  materialCardWithImageAndTitle: {
-    height: 166,
-    width: 339,
-    position: "absolute",
-    left: 11,
-    top: 110
-  },
   card: {
     shadowColor: "#111",
     shadowOffset: {
@@ -101,7 +104,49 @@ const styles = StyleSheet.create({
     shadowRadius: 1.2,
     elevation: 5,
     borderRadius: 20
+  },
+  container2: {
+    backgroundColor: "rgba(255,189,89,1)",
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 4,
+    justifyContent: "space-between",
+    shadowColor: "#111",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    // top: "4%",
+    shadowOpacity: 0.2,
+    shadowRadius: 1.2,
+    elevation: 3,
+    alignContent: "center",
+    width: "100%",
+    height: "14%", //tratar de no modificar
+  },
+  title: {
+    fontSize: 18,
+    color: "#FFFFFF",
+    backgroundColor: "transparent",
+    lineHeight: 18
+  },
+  textWrapperFiller: {
+    flex: 1,
+    flexDirection: "row"
+  },
+  rightIconButton: {
+    
+    alignItems: "center",
+    
+  },
+  rightIcon: {
+    backgroundColor: "transparent",
+    color: "#FFFFFF",
+    fontSize: 41,
+    margin: 0,
+    padding: 0
   }
+
 });
 
 export default Home;
