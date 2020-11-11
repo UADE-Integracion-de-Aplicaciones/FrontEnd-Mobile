@@ -12,42 +12,14 @@ import MainStackNavigator from './navigation/mainStackNavigator';
 import { enableScreens } from 'react-native-screens';
 enableScreens();
 
-// cache app images
-const assetImages = [
-  Images.Pro,
-  Images.Profile,
-  Images.Avatar,
-  Images.Onboarding,
-];
 
-// cache product images
-products.map(product => assetImages.push(product.image));
 
-function cacheImages(images) {
-  return images.map(image => {
-    if (typeof image === 'string') {
-      return Image.prefetch(image);
-    } else {
-      return Asset.fromModule(image).downloadAsync();
-    }
-  });
-}
 
 export default class App extends React.Component {
-  state = {
-    isLoadingComplete: false,
-  };
+ 
 
   render() {
-    if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
-      return (
-        <AppLoading
-          startAsync={this._loadResourcesAsync}
-          onError={this._handleLoadingError}
-          onFinish={this._handleFinishLoading}
-        />
-      );
-    } else {
+    
       return (
         <NavigationContainer>
           <GalioProvider theme={materialTheme}>
@@ -58,7 +30,7 @@ export default class App extends React.Component {
           </GalioProvider>
         </NavigationContainer>
       );
-    }
+    
   }
 
   _loadResourcesAsync = async () => {
@@ -77,3 +49,4 @@ export default class App extends React.Component {
     this.setState({ isLoadingComplete: true });
   };
 }
+

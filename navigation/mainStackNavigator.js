@@ -7,6 +7,7 @@ import Registro from '../screens/Registro';
 import Home from '../screens/Home';
 import ResumenDeCuenta from '../screens/ResumenDeCuenta';
 import Perfil from '../screens/Perfil';
+import PagoServicios from '../screens/PagoServicios';
 const Stack = createStackNavigator();
 
 function MainStackNavigator() {
@@ -27,6 +28,16 @@ function MainStackNavigator() {
         }} />
         <Stack.Screen name='Perfil' component={Perfil} options={{
           title: 'Perfil',
+          headerStyle: {
+            backgroundColor: materialTheme.COLORS.BACKGROUND,
+          },
+          headerTintColor: 'white',
+          // headerTitleStyle: {
+          //   fontWeight: 'bold',
+          // },
+        }} />
+        <Stack.Screen name='PagoServicios' component={PagoServicios} options={{
+          title: 'Pago de Servicios',
           headerStyle: {
             backgroundColor: materialTheme.COLORS.BACKGROUND,
           },

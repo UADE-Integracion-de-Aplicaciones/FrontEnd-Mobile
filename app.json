@@ -8,9 +8,9 @@
     "platforms": ["ios", "android"],
     "version": "1.6.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/LogoBankMe.png",
     "splash": {
-      
+      "image": "./assets/images/Cargando.png",
       "resizeMode": "cover",
       "backgroundColor": "#ffbd59"
     },
