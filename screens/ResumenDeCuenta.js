@@ -17,13 +17,13 @@ import SelectPicker from 'react-native-form-select-picker';
 import TablaResumen from './componenteResumen/tablaResumen';
 import { Table, Row, Rows } from 'react-native-table-component';
 
-const options = ["2398473829", "532332294", "887624840"]; //cambiar para obtener los valores de la bd
-
 
 function ResumenDeCuenta(props){
-        const [cuenta, setCuenta] = useState("");
-        const [cbucuenta, setCBUPicker] = useState([]);
-        const [selected, setSelected] = useState();
+        // const [cuenta, setCuenta] = useState("");
+        const [cuentasPicker, setCuentasPicker] = useState(["2398473829", "532332294", "887624840"]); //setear las cuentas del usuario mediante consulta de bd con el id del usuario como parametro
+
+        const [selected, setSelected] = useState(); //este sirve para hacer consulta de saldo y pasarlo al TablaResumen pa mostrar el resumen se esa cuenta seleccionada
+        const [saldoCuentaSeleccionada, setSaldo]=useState(1000); //setear el saldo haciendo la consulta en la bd con la cuenta que se eligio del selectedpicker
         
           return(
                   <View style={styles.resumenContainer}>
@@ -38,14 +38,14 @@ function ResumenDeCuenta(props){
                           doneButtonText="Listo"
                           >
                           
-                          {Object.values(options).map((val, index2) => (
+                          {Object.values(cuentasPicker).map((val, index2) => (
                               <SelectPicker.Item label={val} value={val} key={index2} />
                           ))}
               
                       </SelectPicker>
                       <Text style={{ textAlign: "center", fontSize: 20 }}>
-                        Saldo: $300
-                        {/* {nombreBanco}  aca tengo que obtener el saldo de la cuenta de la bd*/}
+                        Saldo: $
+                        {saldoCuentaSeleccionada}
                       </Text>
                       <Row data={['Fecha', 'Concepto', 'Monto']} style={styles.head} textStyle={styles.text}/>
 
