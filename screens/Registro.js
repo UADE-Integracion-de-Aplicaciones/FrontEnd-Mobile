@@ -26,7 +26,6 @@ export default function Registro(props) {
     const signUpValidationSchema = yup.object().shape({
         dni: yup
           .number()
-        //   .matches(/\d/, 'Solo numeros')
           .typeError('Solo se permiten números')
           .required('El DNI es obligatorio'),
         usuario: yup
@@ -53,7 +52,6 @@ export default function Registro(props) {
     <ScrollView onPress={Keyboard.dismiss}>
             <SafeAreaView style={styles.container}>
                 <Block flex style={{backgroundColor: materialTheme.COLORS.BACKGROUND, width:width, height:height}}>
-                        {/* <StatusBar barStyle="light-content" /> */}
                     <Block flex center>
                         <ImageBackground
                             source={Logo}
@@ -126,13 +124,6 @@ export default function Registro(props) {
                                     <Text style={{alignSelf:"center", color:"white"}}>Registrarse</Text>
                             </TouchableOpacity>
 
-                            <Text
-                            style={{...styles.opciones, top:"10%", fontSize:20}}
-                            onPress={() => navigation.navigate("LogIn")}
-                            //aca despues le pongo el onPress a la pag de registro
-                            >
-                            Ingresar 
-                            </Text>
                             </>
                         )}
                         </Formik>
@@ -151,12 +142,10 @@ const styles = StyleSheet.create({
     },
     signupContainer: {
         width: '80%',
-        height:"65%",
+        height:"55%",
         alignItems: 'center',
-        backgroundColor: 'white',
         padding: 10,
         elevation: 10,
-        backgroundColor: '#e6e6e6',
         top:"-5%",
         alignSelf:"center",
         backgroundColor: materialTheme.COLORS.BACKGROUND,
