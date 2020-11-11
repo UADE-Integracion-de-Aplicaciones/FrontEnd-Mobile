@@ -1,11 +1,11 @@
 import React from 'react';
-import { ImageBackground, StyleSheet, StatusBar, Dimensions, Platform , View, TextInput} from 'react-native';
+import { ImageBackground, StyleSheet, StatusBar, Dimensions, Platform , View, TextInput, Keyboard, TouchableWithoutFeedback, ScrollView} from 'react-native';
 import { Block, Button, Text, theme } from 'galio-framework';
 
 const { height, width } = Dimensions.get('screen');
 import * as yup from 'yup';
-import { Formik } from 'formik';
-
+import { Formik , Field } from 'formik';
+import CustomInput from '../screens/componenteRegistro/CustomInput';
 import materialTheme from '../constants/Theme';
 import Images from '../constants/Images';
 import Logo from '../assets/images/LogoBankMe.png';
@@ -18,14 +18,21 @@ function LogIn (props) {
   //   const { navigation } = this.props;
   // validaciones de login
     const loginValidationSchema = yup.object().shape({
+      usuario: yup
+      .string()
+      .required('Ingresá el usuario'),
       password: yup
         .string()
         .min(8, ({ min }) => `La contraseña debe ser de al menos ${min} caracteres`)
-        .required('Contraseña necesaria'),
+        .required('Ingresá la contraseña'),
     })  
     return (
-        // <KeyboardAwareScrollView style={{flex:1}}>
-          <Block flex style={{backgroundColor: materialTheme.COLORS.BACKGROUND, width:width, height:height}}>
+      // <TouchableWithoutFeedback  accessible={false}>
+
+      <ScrollView onPress={Keyboard.dismiss}>
+        <View>
+        {/* // <KeyboardAwareScrollView style={{flex:1}}> */}
+          <Block flex style={{backgroundColor: materialTheme.COLORS.BACKGROUND, width:width, height:height}} >
             {/* <StatusBar barStyle="light-content" /> */}
             <Block flex center>
               <ImageBackground
@@ -40,10 +47,9 @@ function LogIn (props) {
                   </Block>
               </Block>
             </Block>
-          
             <View style={styles.loginContainer}>
               <Formik
-                enableReinitialize
+                // enableReinitialize
                 validationSchema={loginValidationSchema}
                 initialValues={{ usuario: '', password: '' }}
                 onSubmit={values => console.log(values)}
@@ -59,35 +65,32 @@ function LogIn (props) {
                 }) => (
                   <>
                     <TextInput
-                      name="usuario"
-                      placeholder="  Usuario"
-                      style={styles.textInput}
-                      onChangeText={handleChange('usuario')}
-                      onBlur={handleBlur('usuario')}
-                      value={values.usuario}
-                      // keyboardType= "default"
+                      name=""
+                      placeholder=""
+                      style={{backgroundColor:materialTheme.COLORS.BACKGROUND, borderColor: materialTheme.COLORS.BACKGROUND}}
                     />
-                    <TextInput
-                      name="password"
-                      placeholder=" Contraseña"
-                      style={styles.textInput}
-                      onChangeText={handleChange('password')}
-                      onBlur={handleBlur('password')}
-                      value={values.password}
-                      // keyboardType= "ascii-capable"
-                      secureTextEntry
+                    <Field
+                        component={CustomInput}
+                        name="usuario"
+                        placeholder="  Usuario"
+                        keyboardType="default"
+                        value={values.usuario}
                     />
-                    {(touched.password && errors.password ) &&
-                                      <Text style={styles.errorText}>{errors.password}</Text>
-                    }   
+                    <Field
+                        component={CustomInput}
+                        name="password"
+                        placeholder=" Contraseña"
+                        keyboardType="default"
+                        value={values.password}
+                        secureTextEntry
+                    />
                    
-                    <TouchableOpacity                 
-                      onPress={handleSubmit}
+                   <TouchableOpacity                 
+                      onPress={() => navigation.navigate("Home")}
                       disabled={!isValid}
                       style={{...styles.button, justifyContent:"center"}}>
                         <Text style={{alignSelf:"center", color:"white"}}>Ingresar </Text>
                     </TouchableOpacity>
-                      
                   </>
                 )}
               </Formik>
@@ -110,7 +113,10 @@ function LogIn (props) {
               </View>
             </View>
           </Block>
-        // </KeyboardAwareScrollView>
+          </View>
+          </ScrollView>
+          // </TouchableWithoutFeedback>
+       
     );
   }
 // }
