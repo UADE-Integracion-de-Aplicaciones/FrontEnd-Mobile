@@ -43,16 +43,18 @@ function ResumenDeCuenta(props){
                           ))}
               
                       </SelectPicker>
-                      <Text style={{ textAlign: "center", fontSize: 20 }}>
+                      <Text style={{ textAlign: "center", fontSize: 20, top:"4%" }}>
                         Saldo: $
                         {saldoCuentaSeleccionada}
                       </Text>
+                      <Text></Text><Text></Text>
                       <Row data={['Fecha', 'Concepto', 'Monto']} style={styles.head} textStyle={styles.text}/>
 
-                      <ScrollView style={{width:"100%", left:"5%", top:"2%",height:"80%",marginBottom:"5%", alignContent:"center" }}>
+                      <ScrollView style={{width:"100%", left:"5%", top:"2%",height:"80%",marginBottom:"15%", alignContent:"center" }}>
                             {/* Los datos estan harcodeados, hay que pasar como parametro el numero de cuenta  a la tabla*/}
-                             <TablaResumen></TablaResumen>
+                            <TablaResumen></TablaResumen>
                       </ScrollView>
+                      
                   </View>
           )
 }
@@ -73,6 +75,8 @@ const styles = StyleSheet.create({
     margin:10,
     alignItems:"center",
     borderRadius:10,
+    top:"3%",
+
   },
   head: { height: "5%", width:"90%", backgroundColor: '#ffbd59', borderRadius:7, top:"4%" },
   text: { margin: 6, borderRadius:7 , alignSelf:"center",}
