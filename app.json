@@ -12,7 +12,7 @@
     "splash": {
       "image": "./assets/images/Cargando.png",
       "resizeMode": "cover",
-      "backgroundColor": "#ffbd59"
+      // "backgroundColor": "#ffbd59"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
