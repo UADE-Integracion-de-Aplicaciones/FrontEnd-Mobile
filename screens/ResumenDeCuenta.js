@@ -14,8 +14,9 @@ import {
 import { Block, theme, Text } from 'galio-framework';
 const { height, width } = Dimensions.get('screen');
 import SelectPicker from 'react-native-form-select-picker';
-import TablaResumen from './componenteResumen/tablaResumen';
+import TablaResumen from './componenteResumen/TablaResumen';
 import { Table, Row, Rows } from 'react-native-table-component';
+import materialTheme from '../constants/Theme';
 
 
 function ResumenDeCuenta(props){
@@ -63,6 +64,7 @@ const styles = StyleSheet.create({
     height:"100%",
     // top:"5%",
     // alignItems:"center",
+    backgroundColor: materialTheme.COLORS.BACKGROUND,
     alignSelf:"center",
     alignItems:"center"
   },
@@ -73,8 +75,13 @@ const styles = StyleSheet.create({
     margin:10,
     alignItems:"center",
     borderRadius:10,
+    borderColor: materialTheme.COLORS.BUTTON_COLOR,
+    borderWidth:2,
+    elevation: 10
+        // borderColor: materialTheme.COLORS.BUTTON_COLOR,
+
   },
-  head: { height: "5%", width:"90%", backgroundColor: '#ffbd59', borderRadius:7, top:"4%" },
+  head: { height: "5%", width:"90%", backgroundColor: materialTheme.COLORS.BUTTON_COLOR, borderRadius:7, top:"4%" },
   text: { margin: 6, borderRadius:7 , alignSelf:"center",}
 })
 

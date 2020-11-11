@@ -245,7 +245,9 @@ function PagoServicios(props){
                   renderItem={item => renderItem(item)} 
                   keyExtractor={item => item.id.toString()}
                   extraData={facturas}
-                  style={{width: width, borderColor: "black"}}
+                  style={{width: width, borderColor: materialTheme.COLORS.BUTTON_COLOR,
+                    // elevation: 10,
+                    borderWidth: 2}}
                 />
                 </ScrollView> 
                 </View>
@@ -320,7 +322,11 @@ const styles = StyleSheet.create({
     width:"100%",
     margin:10,
     alignItems:"center",
-    borderRadius:10
+    borderRadius:10,
+    borderColor: materialTheme.COLORS.BUTTON_COLOR,
+    borderRadius: 10,
+    elevation: 10,
+    borderWidth: 2,
 
   },
   loader: {
@@ -366,8 +372,10 @@ const styles = StyleSheet.create({
     width: '100%',
     margin: 10,
     backgroundColor: 'white',
-    borderColor: 'gray',
+    borderColor: materialTheme.COLORS.BUTTON_COLOR,
     borderRadius: 10,
+    elevation: 10,
+    borderWidth: 2
   },
 })
 
