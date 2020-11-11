@@ -14,7 +14,7 @@ import {
 import { Block, theme, Text } from 'galio-framework';
 const { height, width } = Dimensions.get('screen');
 import SelectPicker from 'react-native-form-select-picker';
-import TablaResumen from './componenteResumen/TablaResumen';
+import TablaResumen from './componenteResumen/tablaResumen';
 import { Table, Row, Rows } from 'react-native-table-component';
 
 const options = ["2398473829", "532332294", "887624840"]; //cambiar para obtener los valores de la bd

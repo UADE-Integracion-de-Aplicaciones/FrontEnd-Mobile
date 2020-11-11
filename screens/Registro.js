@@ -10,6 +10,7 @@ import {
   ImageBackground,
   Keyboard,
   ScrollView,
+  TouchableOpacity,
 } from 'react-native';
 import { Formik, Field } from 'formik';
 import { Block, theme, Text } from 'galio-framework';
@@ -21,7 +22,7 @@ import * as yup from 'yup';
 import CustomInput from '../screens/componenteRegistro/CustomInput';
 
 export default function Registro(props) {
-    // const { navigation } = props
+    const { navigation } = props;
     const signUpValidationSchema = yup.object().shape({
         dni: yup
           .number()
@@ -56,13 +57,13 @@ export default function Registro(props) {
                     <Block flex center>
                         <ImageBackground
                             source={Logo}
-                            style={{ height: "90%", width: "90%", marginLeft: '-85%', marginTop:"10%", zIndex: 1 }}
+                            style={{ height: "90%", width: "90%", marginLeft: '-85%', marginTop:"15%", zIndex: 1 }}
                         />
                     </Block>
                     <Block flex space="between" style={{top:"-20%"}}>
                         <Block flex space="around" style={{ zIndex: 2 }}>
                             <Block>
-                                <Text color="white" size={40} style={{padding:"10%", top:"50%"}}>Hola, Bienvenid@!</Text>
+                                <Text color="white" size={40} style={{padding:"10%", top:"75%"}}>Hola, Bienvenid@!</Text>
                             </Block>
                         </Block>
                     </Block>
@@ -78,7 +79,7 @@ export default function Registro(props) {
                         }}
                         onSubmit={values => console.log(values)}
                         >
-                        {({ handleSubmit, isValid, errors }) => (
+                        {({ handleSubmit, isValid, errors, touched }) => (
                             <>
                             <Field
                                 component={CustomInput}
@@ -118,12 +119,20 @@ export default function Registro(props) {
                                 secureTextEntry
                             />
 
-                            <Button
+                            <TouchableOpacity                 
                                 onPress={handleSubmit}
-                                title="Registrarse"
                                 disabled={!isValid}
-                                color={materialTheme.COLORS.BUTTON_COLOR}
-                            />
+                                style={{...styles.button, justifyContent:"center"}}>
+                                    <Text style={{alignSelf:"center", color:"white"}}>Registrarse</Text>
+                            </TouchableOpacity>
+
+                            <Text
+                            style={{...styles.opciones, top:"10%", fontSize:20}}
+                            onPress={() => navigation.navigate("LogIn")}
+                            //aca despues le pongo el onPress a la pag de registro
+                            >
+                            Ingresar 
+                            </Text>
                             </>
                         )}
                         </Formik>
@@ -142,12 +151,13 @@ const styles = StyleSheet.create({
     },
     signupContainer: {
         width: '80%',
+        height:"65%",
         alignItems: 'center',
         backgroundColor: 'white',
         padding: 10,
         elevation: 10,
         backgroundColor: '#e6e6e6',
-        top:"-10%",
+        top:"-5%",
         alignSelf:"center",
         backgroundColor: materialTheme.COLORS.BACKGROUND,
 

@@ -40,44 +40,62 @@ import CustomMultiPicker from "react-native-multiple-select-list";
 import { findLastKey } from 'lodash';
 // import Switch from "./Switch";
 const options = ["2398473829", "532332294", "887624840"]; //cambiar para obtener los valores de la bd
-const userList = [{
+const facturaList = [{
   "id": 1,
-  "name":"Tom"
+  "name":"Tom",
+  "fecha":"22/06/20",
+  "monto":3000 
 },
 {
   "id": 2,
-  "name":"Michael"
+  "name":"Michael",
+  "fecha":"22/06/20",
+  "monto":3000 
   
 },
 {
   "id": 3,
-  "name":"Christin"
+  "name":"Christin",
+  "fecha":"22/06/20",
+  "monto":3000 
 },
 {
   "id": 4,
-  "name":"Tom"
+  "name":"Tom",
+  "fecha":"22/06/20",
+  "monto":3000 
 },
 {
   "id": 5,
-  "name":"Michael"
+  "name":"Michael",
+  "fecha":"22/06/20",
+  "monto":3000 
   
 },
 {
   "id": 6,
-  "name":"Tom"
+  "name":"Tom",
+  "fecha":"22/06/20",
+  "monto":3000 
 },
 {
   "id": 7,
-  "name":"Michael"
+  "name":"Michael",
+  "fecha":"22/06/20",
+  "monto":3000 
   
 },
 {
   "id": 8,
-  "name":"Tom"
+  "name":"Tom",
+  "fecha":"22/06/20",
+  "monto":3000 
 },
 {
   "id": 9,
-  "name":"Michael"
+  "name":"Michael",
+  "fecha":"22/06/20",
+  "monto":3000 
   
 },];
 
@@ -107,7 +125,7 @@ function PagoServicios(props){
       return item;
     });
     setLoading(false);
-    setFacturas(userList);
+    setFacturas(facturaList);
     }).catch(error => {setLoading(false);
     });
     };
@@ -145,6 +163,8 @@ function PagoServicios(props){
     /> */}
     {/* <Text style={styles.lightText}>  {data.item.title.charAt(0).toUpperCase() + data.item.title.slice(1)}  </Text> */}
     <Text style={styles.lightText}> {data.item.name.charAt(0).toUpperCase() + data.item.name.slice(1)}</Text>
+    <Text style={styles.lightText}> {data.item.fecha.charAt(0).toUpperCase() + data.item.fecha.slice(1)}</Text>
+    <Text style={styles.lightText}> ${data.item.monto}</Text>
     </TouchableOpacity>
 
     // render() {
@@ -218,6 +238,7 @@ function PagoServicios(props){
                 {/* <View style={{top: "3%", height: "30%"}}>
                 </View> */}
                 <View style={{width: width, elevation: 10, backgroundColor: "white", top: "5%", alignItems: 'center',alignSelf:"center", height: "30%"}}>
+                <ScrollView horizontal={true} >
                 <FlatList 
                   data={facturas}
                   ItemSeparatorComponent={FlatListItemSeparator}
@@ -226,6 +247,7 @@ function PagoServicios(props){
                   extraData={facturas}
                   style={{width: width, borderColor: "black"}}
                 />
+                </ScrollView> 
                 </View>
                 {/* aca va el flatlist facturas */}
 
@@ -311,10 +333,10 @@ const styles = StyleSheet.create({
   list: {
     paddingVertical: 5,
     margin: 3,
-    flexDirection: "row",
+    flexDirection: "column",
     // backgroundColor: "#192338",
     justifyContent: "flex-start",
-    alignItems: "center",
+    alignItems: "flex-start",
     zIndex: -1
   },
   selected: {backgroundColor: "#FA7B5F"},
