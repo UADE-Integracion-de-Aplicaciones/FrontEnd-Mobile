@@ -2,7 +2,7 @@ import React, { Component, useState, useEffect } from 'react';
 import { StyleSheet, View, Dimensions, ScrollView } from 'react-native';
 import { Table, Row, Rows } from 'react-native-table-component';
 const { height, width } = Dimensions.get('screen');
-
+import materialTheme from '../../constants/Theme';
 
 
 
@@ -35,7 +35,7 @@ function TablaResumen(props){
     
       return(
         <View style={styles.container}>
-            <Table borderStyle={{borderWidth:2,borderColor:"#ffbd59"}} style={{ width:"100%", height:"100%"}}>
+            <Table borderStyle={{borderWidth:2, borderColor: materialTheme.COLORS.BUTTON_COLOR,}} style={{ width:"100%", height:"100%"}}>
                 <Rows data={arrayFCM} textStyle={styles.text}/>
             </Table>
         </View>
