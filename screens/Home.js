@@ -7,9 +7,10 @@ import { TouchableOpacity } from "react-native";
 
 import Logo from "../assets/images/homeLogo.png";
 import User from "../assets/images/user.png";
-function Home(props) {
-  const { navigation } = props
-
+function Home({route, navigation}) {
+  // const { navigation } = props
+  const {idUsuario}=route.params;
+  console.log("entro al home");
   return (
     <View style={styles.container}>
       <View style={{backgroundColor: materialTheme.COLORS.BACKGROUND, width:"100%", height:"100%"}}>
@@ -18,7 +19,7 @@ function Home(props) {
            source={Logo}
           style={{ height: "50%", width: "50%", left:"85%", top: "2%"}}
        />
-      <TouchableOpacity style={{ height: "100%", width: "25%", left: "40%", top:"7%"}} onPress={() => navigation.navigate("Perfil") }>
+      <TouchableOpacity style={{ height: "100%", width: "25%", left: "40%", top:"7%"}} onPress={() => navigation.navigate("Perfil", {idUsuario: idUsuario}) }>
       <Image
            source={User}
           style={{top:"10%", height: "40%", width: "41%" }}
