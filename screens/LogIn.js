@@ -10,7 +10,7 @@ import materialTheme from '../constants/Theme';
 import Images from '../constants/Images';
 import Logo from '../assets/images/LogoBankMe.png';
 import { TouchableOpacity } from 'react-native';
-
+import axios from 'axios';
 
 function LogIn ({navigation}) {
     // const { navigation } = props
@@ -19,6 +19,80 @@ function LogIn ({navigation}) {
     // const [showPassword, setShowPassword] = useState(false);
     const [id, setIdUsuario]=useState("123") //la idea es pasar este valor a la pantalla de Home asi se carga el Home con los datos del usuario que ingreso
 
+    const getDataUsingSimpleGetCall = () => {
+      axios
+        .get('https://jsonplaceholder.typicode.com/posts/1')
+        .then(function (response) {
+          // handle success
+          alert(JSON.stringify(response.data));
+        })
+        .catch(function (error) {
+          // handle error
+          alert(error.message);
+        })
+        .finally(function () {
+          // always executed
+          alert('Finally called');
+        });
+    };
+  
+    const getDataUsingAsyncAwaitGetCall = async () => {
+      try {
+        const response = await axios.get(
+          'https://jsonplaceholder.typicode.com/posts/1',
+        );
+        alert(JSON.stringify(response.data));
+      } catch (error) {
+        // handle error
+        alert(error.message);
+      }
+    };
+  
+    const postDataUsingSimplePostCall = () => {
+      var body = [{
+        "nombre_usuario": usuario,
+        "clave" : password
+      }]
+
+      axios
+        .post('http://localhost:8080/login', {
+          body: body,
+        })
+        .then(function (response) {
+          // handle success
+          navigation.navigate("Home");
+          alert(JSON.stringify(response.data));
+        })
+        .catch(function (error) {
+          // handle error
+          alert(error.message);
+        });
+    };
+  
+    const multipleRequestsInSingleCall = () => {
+      axios
+        .all([
+          axios
+            .get('https://jsonplaceholder.typicode.com/posts/1')
+            .then(function (response) {
+              // handle success
+              alert('Post 1 : ' + JSON.stringify(response.data));
+            }),
+          axios
+            .get('https://jsonplaceholder.typicode.com/posts/2')
+            .then(function (response) {
+              // handle success
+              alert('Post 2 : ' + JSON.stringify(response.data));
+            }),
+        ])
+        .then(
+          axios.spread(function (acct, perms) {
+            // Both requests are now complete
+            alert('Both requests are now complete');
+          }),
+        );
+    };
+  
 
     const loginValidationSchema = yup.object().shape({
       usuario: yup
@@ -26,7 +100,7 @@ function LogIn ({navigation}) {
       .required('Ingresá el usuario'),
       password: yup
         .string()
-        .min(8, ({ min }) => `La contraseña debe ser de al menos ${min} caracteres`)
+        .min(3, ({ min }) => `La contraseña debe ser de al menos ${min} caracteres`)
         .required('Ingresá la contraseña'),
     })  
     return (
@@ -85,7 +159,8 @@ function LogIn ({navigation}) {
                         secureTextEntry
                     />
                     <TouchableOpacity                 
-                      onPress={() => navigation.navigate('Home', {idUsuario: id})}
+                      // onPress={() => navigation.navigate('Home', {idUsuario: id})}
+                      onPress={postDataUsingSimplePostCall}
                       disabled={!isValid}
                       style={{...styles.button, justifyContent:"center"}}>
                         <Text style={{alignSelf:"center", color:"white"}}>Ingresar </Text>
