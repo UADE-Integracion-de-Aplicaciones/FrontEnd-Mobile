@@ -21,10 +21,11 @@ import Logo from '../assets/images/LogoBankMe.png';
 import { Avatar } from "react-native-elements";
 import Usuario from '../assets/icons/usuario.png';
 
-function Perfil(props){
-    const {navigation}=props;
+function Perfil({route,navigation}){
+    // const {navigation}=props;
     const [nombreUsuario, setNombreUsuario] = useState("Micaela Esquerdo"); //para definir el nombre del usuario desde la bd
-    
+    const {idUsuario}=route.params;
+    console.log(idUsuario);
     return (
         <View>
             <Image source={Usuario} style={{ width: 120, height: 120, alignSelf:"center", top:"15%" }} />

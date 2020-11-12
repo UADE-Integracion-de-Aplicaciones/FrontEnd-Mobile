@@ -10,41 +10,15 @@ import materialTheme from '../constants/Theme';
 import Images from '../constants/Images';
 import Logo from '../assets/images/LogoBankMe.png';
 import { TouchableOpacity } from 'react-native';
-import {Icon} from 'react-native-elements';
 
 
-function LogIn (props) {
-    const { navigation } = props
+function LogIn ({navigation}) {
+    // const { navigation } = props
     const [usuario, setUsuario] = useState("mica"); //este valor lo mando a la bd para chequear usuario
     const [password, setPassword] = useState("Micaela Esquerdo"); //este valor lo mando a la bd para chequear password
-    const [showPassword, setShowPassword] = useState(false);
+    // const [showPassword, setShowPassword] = useState(false);
+    const [id, setIdUsuario]=useState("123") //la idea es pasar este valor a la pantalla de Home asi se carga el Home con los datos del usuario que ingreso
 
-    // const onSubmit = () => {
-    //     db.transaction((tx) => {
-    //       tx.executeSql("select * from usuarios", [], (tx, results) => {
-    //         var temp = [];
-  
-    //         for (let i = 0; i < results.rows.length; ++i) {
-    //           // temp.push(results.rows.item(i));
-    //           console.log(results.rows.item(i).email);
-    //           console.log(results.rows.item(i).password);
-    //           if (
-    //             results.rows.item(i).email == formData.email &&
-    //             results.rows.item(i).password == formData.password
-    //           ) {
-    //             flag = true;
-    //           }
-    //         }
-    //         if (!flag) {
-    //           Alert.alert("Error!", "El email o la password son incorrectos");
-         
-            
-    //           navigation.navigate("home");
-    //         }
-    //       });
-    //     });
-    //   }
-    // };
 
     const loginValidationSchema = yup.object().shape({
       usuario: yup
@@ -69,7 +43,7 @@ function LogIn (props) {
             <Block flex space="between" style={{top:"-10%"}}>
               <Block flex space="around" style={{ zIndex: 2 }}>
                   <Block>
-                    <Text color="white" size={40} style={{padding:"10%"}}>Hola, bienvenid@!</Text>
+                    <Text color="white" size={40} style={{padding:"10%"}}>Hola, Bienvenid@!</Text>
                   </Block>
               </Block>
             </Block>
@@ -107,10 +81,11 @@ function LogIn (props) {
                         placeholder=" Contraseña"
                         keyboardType="default"
                         value={values.setPassword}
+                        type={values.showPassword ? text : 'password'} 
                         secureTextEntry
                     />
                     <TouchableOpacity                 
-                      onPress={() => navigation.navigate("Home")}
+                      onPress={() => navigation.navigate('Home', {idUsuario: id})}
                       disabled={!isValid}
                       style={{...styles.button, justifyContent:"center"}}>
                         <Text style={{alignSelf:"center", color:"white"}}>Ingresar </Text>

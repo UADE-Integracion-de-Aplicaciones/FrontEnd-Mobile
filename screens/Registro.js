@@ -55,7 +55,7 @@ export default function Registro(props) {
                     <Block flex center>
                         <ImageBackground
                             source={Logo}
-                            style={{ height: "90%", width: "90%", marginLeft: '-85%', marginTop:"15%", zIndex: 1 }}
+                            style={{ height: "90%", width: "90%", marginLeft: '-85%', marginTop:"12%", zIndex: 1 }}
                         />
                     </Block>
                     <Block flex space="between" style={{top:"-20%"}}>
