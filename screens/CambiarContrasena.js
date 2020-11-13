@@ -22,8 +22,13 @@ const { height, width } = Dimensions.get('screen');
 import * as yup from 'yup';
 
 
-function CambiarContrasena(props){
+export default function CambiarContrasena(props){
     const {navigation}=props;
+    const [preg1,setpreg1]=useState("Nombre de primer mascota");
+    const [preg2,setpreg2]=useState("Donde nacio");
+    const [preg3,setpreg3]=useState("Pelicula favorita");
+
+
     const contrasenaNuevaValidationSchema = yup.object().shape({
         contrasenanueva: yup
           .string()
@@ -33,102 +38,167 @@ function CambiarContrasena(props){
           .matches(/[#$%*_=+]/, "La contraseña debe tener al menos 1 símbolo (# $ % * _ = +)")
           .min(8, ({ min }) => `La contraseña debe ser de al menos ${min} caracteres`)
           .required('La contraseña es obligatoria'),
-          confirmacionCN: yup
+          confirmcontrasenanueva: yup
           .string()
           .oneOf([yup.ref('contrasenanueva')], 'Las contraseñas no coinciden')
           .required('La confirmación de contraseña es obligatoria'),
       }) 
     return (
-        <View onPress={Keyboard.dismiss}>
-            <Text
-            style={{left:"5%", top:"15%"}}
-            onPress={() => navigation.navigate("OlvideContrasena")}
-            >
-            Ingrese la contraseña nueva:
-            </Text>
-            <View style={styles.olvidarContainer}>
-                <Formik
-                    validationSchema={contrasenaNuevaValidationSchema}
-                    initialValues={{ contrasenanueva: '', confirmacionCN:''}}
-                    onSubmit={values => console.log(values)}
-                >
-                    {({
-                    handleChange,
-                    handleBlur,
-                    handleSubmit,
-                    values,
-                    errors,
-                    touched,
-                    isValid,
-                    }) => (
-                    <>
-                        <Field
-                            component={CustomInput}
-                            name="contrasenanueva"
-                            placeholder="  Contraseña nueva"
-                            keyboardType="default"
-                            value={values.contrasenanueva}
-                            secureTextEntry
-                        />
-                        <Field
-                            component={CustomInput}
-                            name="confirmacionCN"
-                            placeholder="  Confirmar contraseña"
-                            keyboardType="default"
-                            value={values.confirmacionCN}
-                            secureTextEntry
-                        />
-                        <TouchableOpacity                 
-                        onPress={() => navigation.navigate("ContrasenaNuevaConfirmada")}
-                        disabled={!isValid}
-                        style={{...styles.button}}>
-                            <Text style={{alignSelf:"center", color:"white"}}>Confirmar </Text>
-                        </TouchableOpacity>
-                        {/* con la confirmacion de la contrasena se la guarda en la base de datos con el id del usuario */}
-                    </>
-                    )}
-                </Formik>
-            </View>
-        </View>
-    )
+        <ScrollView onPress={Keyboard.dismiss}>
+            <SafeAreaView style={styles.container}>
+                <Block flex style={{ width:width, height:height, top:"10%"}}>
+
+                    <View style={styles.signupContainer}>
+                        <Formik
+                        validationSchema={contrasenaNuevaValidationSchema}
+                        initialValues={{
+                           resp1:'',
+                           resp2:'',
+                           resp3:'',
+                           contrasenanueva:'',
+                           confirmcontrasenanueva:'',
+
+
+                        }}
+                        onSubmit={() => navigation.navigate("LogIn")}
+                        >
+                        {({ handleSubmit, isValid, errors, values, touched }) => (
+                            <>
+                            <Text
+                            style={{marginLeft:'-40%'}}
+                            size={17}
+                            // onPress={() => navigation.navigate("OlvideContrasena")}
+                            >
+                            Preguntas de seguridad:                
+                            </Text>
+                            {/* <View style={{top:"5%"}}> */}
+                            <Text></Text>
+                            <Text
+                            style={{left:'-15%'}}
+                            // size={17}
+                            // onPress={() => navigation.navigate("OlvideContrasena")}
+                            >
+                            1. {preg1}               
+                            </Text>
+                            <Field
+                                component={CustomInput}
+                                name="resp1"
+                                placeholder="  Respuesta"
+                                value={values.resp1}
+
+                            />
+                            {/* </View> */}
+                            <Text
+                            style={{marginLeft:"-65%"}}
+                            // size={17}
+                            // onPress={() => navigation.navigate("OlvideContrasena")}
+                            >
+                            2. {preg2}               
+                            </Text>
+                            <Field
+                                component={CustomInput}
+                                name="resp2"
+                                placeholder="  Respuesta"
+                                value={values.resp2}
+
+                                keyboardType="default"
+                            />
+                            <Text
+                            style={{left:'-28%'}}
+                            // size={17}
+                            // onPress={() => navigation.navigate("OlvideContrasena")}
+                            >
+                            3. {preg3}               
+                            </Text>
+                            <Field
+                                component={CustomInput}
+                                name="resp3"
+                                placeholder="  Respuesta"
+                                value={values.resp3}
+
+                                keyboardType="default"
+                            />
+                            
+                            <Text
+                            style={{left:'-15%'}}
+                            size={17}
+                            // onPress={() => navigation.navigate("OlvideContrasena")}
+                            >
+                            Ingrese la contraseña nueva:               
+                            </Text>
+                            <View style={{width:"90%", alignContent:"center", alignItems:"center"}}>    
+                                <Field
+                                    component={CustomInput}
+                                    name="contrasenanueva"
+                                    placeholder="  Contraseña nueva"
+                                    value={values.contrasenanueva}
+
+                                    secureTextEntry
+                                />
+                                <Field
+                                    component={CustomInput}
+                                    name="confirmcontrasenanueva"
+                                    placeholder="  Confirmar Contraseña"
+                                    value={values.confirmcontrasenanueva}
+
+                                    secureTextEntry
+                                />
+
+                                <TouchableOpacity                 
+                                    onPress={handleSubmit}
+                                    disabled={!isValid}
+                                    style={{...styles.button, justifyContent:"center"}}>
+                                        <Text style={{alignSelf:"center", color:"white"}}>Registrarse</Text>
+                                </TouchableOpacity>
+                            </View>
+                            </>
+                        )}
+                        </Formik>
+                    </View>
+                </Block>
+            </SafeAreaView>
+    </ScrollView>
+  )
 }
 
 const styles = StyleSheet.create({
-    button: {
-        width: "90%",
-        height: "12%",
-        backgroundColor: materialTheme.COLORS.BUTTON_COLOR,
-        borderRadius:10,
-        shadowRadius: 0,
-        shadowOpacity: 0,
-        top:"10%",
-        justifyContent:"center",
-        
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
-    errorText: {
-        fontSize: 10,
-        color: 'red',
-        marginLeft:"7%",
-    },
-    olvidarContainer: {
-        width: '80%',
+    signupContainer: {
+        width: '90%',
         height:"70%",
         alignItems: 'center',
-        backgroundColor: 'white',
         padding: 10,
         elevation: 10,
-        top:"20%",
+        top:"-5%",
         alignSelf:"center",
+        backgroundColor: 'white',
+
     },
-  
+    button: {
+        width: width - theme.SIZES.BASE * 15,
+        height: theme.SIZES.BASE * 2,
+        backgroundColor: materialTheme.COLORS.BUTTON_COLOR,
+        borderRadius:5,
+        shadowRadius: 0,
+        shadowOpacity: 0,
+        top:"15%",
+        alignSelf:"center"
+    },
+    loginContainer: {
+        width: '80%',
+        alignItems: 'center',
+        padding: 10,
+        elevation: 10,
+        backgroundColor: '#ffbd59',
+        top:"-28%",
+        marginLeft:"10%"
+    },
+    opciones:{
+        color: materialTheme.COLORS.BUTTON_COLOR, 
+        textDecorationLine: 'underline',
+    }
 })
-
-export default CambiarContrasena
-
-
-// sevicio
-// genera el codigo y se lo manda al usuario por mail
-// ingresar codigo
-// valido el codigo
-// ingreso contrasena y confirmacion de contrasena
-// boton confirmar

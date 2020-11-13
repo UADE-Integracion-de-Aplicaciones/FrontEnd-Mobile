@@ -14,74 +14,91 @@ function Home({route, navigation}) {
   return (
     <View style={styles.container}>
       <View style={{backgroundColor: materialTheme.COLORS.BACKGROUND, width:"100%", height:"100%"}}>
-      <View style={styles.container2}>
-      <Image
-           source={Logo}
-          style={{ height: "50%", width: "50%", left:"85%", top: "2%"}}
-       />
-      <TouchableOpacity style={{ height: "100%", width: "25%", left: "40%", top:"7%"}} onPress={() => navigation.navigate("Perfil", {idUsuario: idUsuario}) }>
-      <Image
-           source={User}
-          style={{top:"10%", height: "40%", width: "41%" }}
-       />
-      </TouchableOpacity>
-    </View>
-    {/* <ScrollView> */}
-    <View >
-      <TouchableOpacity onPress={() => navigation.navigate("ResumenDeCuenta")} >
-        <View style={{paddingTop:"5%", height: "70%"}}>
-          
-          <Card style={styles.card}>
-          {/* < CardImage 
-              source={{uri: 'http://bit.ly/2GfzooV'}} 
-              title="Top 10 South African beaches"
-          /> */}
-            <CardTitle
-                title="Resumen de Cuenta"
-            />
-            <CardContent text="Vea los egresos de su cuenta" />
-            <CardAction 
-                separator={true} 
-                inColumn={false}>
-                <CardButton
-                onPress={() => navigation.navigate("ResumenDeCuenta")}
-                title="Acceder >"
-                color="#FEB557"
-                />
-            </CardAction>
-          </Card>
+        <View style={styles.container2}>
+          <Image
+              source={Logo}
+              style={{ height: "50%", width: "50%", left:"85%", top: "2%"}}
+          />
+          <TouchableOpacity style={{ height: "100%", width: "25%", left: "40%", top:"7%"}} onPress={() => navigation.navigate("Perfil", {idUsuario: idUsuario}) }>
+          <Image
+              source={User}
+              style={{top:"10%", height: "40%", width: "41%" }}
+          />
+          </TouchableOpacity>
         </View>
-      </TouchableOpacity>
+        <View style={{top:'2%'}}>
+          {/* <View > */}
+            <TouchableOpacity onPress={() => navigation.navigate("ResumenDeCuenta")} >
+              <View style={{ height: "45%"}}>
+                
+                  <Card style={styles.card}>
+                  {/* < CardImage 
+                      source={{uri: 'http://bit.ly/2GfzooV'}} 
+                      title="Top 10 South African beaches"
+                  /> */}
+                    <CardTitle
+                        title="Resumen de Cuenta"
+                    />
+                    <CardContent text="Vea los egresos de su cuenta" />
+                    <CardAction 
+                        separator={true} 
+                        inColumn={false}>
+                        <CardButton
+                        onPress={() => navigation.navigate("ResumenDeCuenta")}
+                        title="Acceder >"
+                        color="#FEB557"
+                        />
+                    </CardAction>
+                </Card>
+              </View>
+            </TouchableOpacity>
+            {/* </View> */}
+            {/* <View> */}
+            <TouchableOpacity onPress={() => navigation.navigate("PagoServicios")} style={{top:"-25%"}} >
+                <View style={{height:"45%"}}>
+                  <Card style={styles.card} >
+                    <CardTitle
+                        title="Pagar Servicios/Impuestos"
+                    />
+                    <CardContent text="Pague sus servicios o impuestos" />
+                    <CardAction 
+                        separator={true} 
+                        inColumn={false}>
+                        <CardButton
+                        onPress={() => navigation.navigate("PagoServicios")}
+                        title="Acceder >"
+                        color="#FEB557"
+                        />
+                    </CardAction>
+                  </Card>
+                </View>
+            </TouchableOpacity>
+            {/* </View> */}
+            {/* <View> */}
+            <TouchableOpacity onPress={() => navigation.navigate("Transferencias")} style={{top:"-50%"}}  >
+                <View style={{height:"45%"}}>
+                  <Card style={styles.card} >
+                    <CardTitle
+                        title="Transferencias/Depositos"
+                    />
+                    <CardContent text="Transfiera y deposite dinero a otras cuentas" />
+                    <CardAction 
+                        separator={true} 
+                        inColumn={false}>
+                        <CardButton
+                        onPress={() => navigation.navigate("Transferencias")}
+                        title="Acceder >"
+                        color="#FEB557"
+                        />
+                    </CardAction>
+                  </Card>
+                </View>
+            </TouchableOpacity>
+            {/* </View> */}
+          </View>
       </View>
-      <View>
-      <TouchableOpacity onPress={() => navigation.navigate("PagoServicios")} style={{top:"-47%"}} >
-        <View style={{height:"70%"}}>
-          <Card style={styles.card} >
-          {/* <CardImage 
-              source={{uri: 'http://bit.ly/2GfzooV'}} 
-              title="Top 10 South African beaches"
-          /> */}
-            <CardTitle
-                title="Pagar Servicios/Impuestos"
-            />
-            <CardContent text="Pague sus servicios o impuestos" />
-            <CardAction 
-                separator={true} 
-                inColumn={false}>
-                <CardButton
-                onPress={() => navigation.navigate("PagoServicios")}
-                title="Acceder >"
-                color="#FEB557"
-                />
-            </CardAction>
-          </Card>
-        </View>
-      </TouchableOpacity>
-      </View>
-      {/* </ScrollView> */}
     </View>
-    
-    </View>
+   
     
   );
 }

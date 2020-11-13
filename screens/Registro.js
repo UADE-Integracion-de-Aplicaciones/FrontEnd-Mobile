@@ -77,24 +77,27 @@ export default function Registro(props) {
                         }}
                         onSubmit={values => console.log(values)}
                         >
-                        {({ handleSubmit, isValid, errors, touched }) => (
+                        {({ handleSubmit, isValid, errors, values,touched }) => (
                             <>
                             <Field
                                 component={CustomInput}
                                 name="dni"
                                 placeholder="  DNI"
+                                value={values.dni}
                                 keyboardType="numeric"
                             />
                             <Field
                                 component={CustomInput}
                                 name="usuario"
                                 placeholder="  Usuario"
+                                value={values.usuario}
                                 keyboardType="default"
                             />
                             <Field
                                 component={CustomInput}
                                 name="contraseña"
                                 placeholder="  Contraseña"
+                                value={values.contraseña}
                                 keyboardType="default"
                                 secureTextEntry
                             />
@@ -105,6 +108,7 @@ export default function Registro(props) {
                                 component={CustomInput}
                                 name="confirmcontraseña"
                                 placeholder="  Confirmar Contraseña"
+                                value={values.confirmcontraseña}
                                 secureTextEntry
                             />
                             {errors.password &&
@@ -114,6 +118,7 @@ export default function Registro(props) {
                                 component={CustomInput}
                                 name="codigodeautenticacion"
                                 placeholder="  Código de Autenticación"
+                                value={values.codigodeautenticacion}
                                 secureTextEntry
                             />
 

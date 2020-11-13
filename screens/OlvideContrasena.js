@@ -35,78 +35,158 @@ function OlvideContrasena(props){
         .required('El DNI es obligatorio'),
       }) 
     return (
-        <View onPress={Keyboard.dismiss}>
-            <Text
-            style={{left:"5%", top:"15%"}}
-            onPress={() => navigation.navigate("OlvideContrasena")}
-            >
-            Ingrese el DNI asociado a su cuenta:
-            </Text>
-            <View style={styles.olvidarContainer}>
-                <Formik
-                    validationSchema={olvidarValidationSchema}
-                    initialValues={{ dni: ''}}
-                    onSubmit={values => console.log(values)}
-                    
-                >
-                    {({
-                    handleChange,
-                    handleBlur,
-                    handleSubmit,
-                    values,
-                    errors,
-                    touched,
-                    isValid,
-                    }) => (
-                    <>
-                        <Field
-                            component={CustomInput}
-                            name="dni"
-                            placeholder="  DNI"
-                            keyboardType="default"
-                            value={values.dni}
-                        />
-                        <TouchableOpacity                 
-                        onPress={() => navigation.navigate("CodigoCambioContrasena")}
-                        disabled={!isValid}
-                        style={{...styles.button}}>
-                            <Text style={{alignSelf:"center", color:"white"}}>Continuar </Text>
-                        </TouchableOpacity>
-                        {/* con este dni se tiene que conectar a la bd, chequear que existe*/}                 
-                        {/* si todo ok, bd genera el codigo y se lo manda al usuario por mail, se abre la otra pantalla */}
-                    </>
-                    )}
-                </Formik>
-            </View>
-        </View>
+        <ScrollView onPress={Keyboard.dismiss}>
+            <SafeAreaView style={styles.container}>
+                <Block flex style={{ width:width, height:height, top:"10%"}}>
+
+                    <View style={styles.signupContainer}>
+                        <Formik
+                            validationSchema={olvidarValidationSchema}
+                            initialValues={{ dni: ''}}
+                            // onSubmit={values => console.log(values)}
+                            onSubmit={()=>navigation.navigate("CodigoCambioContrasena")}
+                        >
+                            {({
+                            handleChange,
+                            handleBlur,
+                            handleSubmit,
+                            values,
+                            errors,
+                            touched,
+                            isValid,
+                            }) => (
+                            <>
+                                <Text
+                                style={{marginLeft:'-15%', top:"5%"}}
+                                // onPress={() => navigation.navigate("OlvideContrasena")}
+                                >
+                                Ingrese el DNI asociado a su cuenta:
+                                </Text>
+                                <View style={{width:"80%", alignItems:"center", top:"10%"}}>
+                                    <Field
+                                        component={CustomInput}
+                                        name="dni"
+                                        placeholder="  DNI"
+                                        keyboardType="default"
+                                        value={values.dni}
+                                    />
+                                    <TouchableOpacity                 
+                                    // onPress={() => navigation.navigate("CodigoCambioContrasena")}
+                                    onPress={handleSubmit}
+                                    disabled={!isValid}
+                                    style={{...styles.button}}>
+                                        <Text style={{alignSelf:"center", color:"white"}}>Continuar </Text>
+                                    </TouchableOpacity>
+                                    {/* con este dni se tiene que conectar a la bd, chequear que existe*/}                 
+                                    {/* si todo ok, bd genera el codigo y se lo manda al usuario por mail, se abre la otra pantalla */}
+                                </View>
+                            </>
+                            )}
+                        </Formik>
+                    </View>
+                </Block>
+            </SafeAreaView>
+        </ScrollView>
+        // <View onPress={Keyboard.dismiss}>
+        //     <Text
+        //     style={{left:"5%", top:"15%"}}
+        //     // onPress={() => navigation.navigate("OlvideContrasena")}
+        //     >
+        //     Ingrese el DNI asociado a su cuenta:
+        //     </Text>
+        //     <View style={styles.olvidarContainer}>
+        //         <Formik
+        //             validationSchema={olvidarValidationSchema}
+        //             initialValues={{ dni: ''}}
+        //             // onSubmit={values => console.log(values)}
+        //             onSubmit={()=>navigation.navigate("CodigoCambioContrasena")}
+        //         >
+        //             {({
+        //             handleChange,
+        //             handleBlur,
+        //             handleSubmit,
+        //             values,
+        //             errors,
+        //             touched,
+        //             isValid,
+        //             }) => (
+        //             <>
+        //                 <Field
+        //                     component={CustomInput}
+        //                     name="dni"
+        //                     placeholder="  DNI"
+        //                     keyboardType="default"
+        //                     value={values.dni}
+        //                 />
+        //                 <TouchableOpacity                 
+        //                 // onPress={() => navigation.navigate("CodigoCambioContrasena")}
+        //                 onPress={handleSubmit}
+        //                 disabled={!isValid}
+        //                 style={{...styles.button}}>
+        //                     <Text style={{alignSelf:"center", color:"white"}}>Continuar </Text>
+        //                 </TouchableOpacity>
+        //                 {/* con este dni se tiene que conectar a la bd, chequear que existe*/}                 
+        //                 {/* si todo ok, bd genera el codigo y se lo manda al usuario por mail, se abre la otra pantalla */}
+        //             </>
+        //             )}
+        //         </Formik>
+        //     </View>
+        // </View>
     )
 }
 
 const styles = StyleSheet.create({
-    button: {
-        width: "90%",
-        height: "17%",
-        backgroundColor: materialTheme.COLORS.BUTTON_COLOR,
-        borderRadius:10,
-        shadowRadius: 0,
-        shadowOpacity: 0,
-        top:"10%",
-        justifyContent:"center",
-    },
-    errorText: {
-        fontSize: 10,
-        color: 'red',
-        marginLeft:"7%",
-    },
-    olvidarContainer: {
-        width: '80%',
-        height:"60%",
+    // button: {
+    //     width: "90%",
+    //     height: "17%",
+    //     backgroundColor: materialTheme.COLORS.BUTTON_COLOR,
+    //     borderRadius:10,
+    //     shadowRadius: 0,
+    //     shadowOpacity: 0,
+    //     top:"10%",
+    //     justifyContent:"center",
+    // },
+    // errorText: {
+    //     fontSize: 10,
+    //     color: 'red',
+    //     marginLeft:"7%",
+    // },
+    // olvidarContainer: {
+    //     width: '80%',
+    //     height:"60%",
+    //     alignItems: 'center',
+    //     backgroundColor: 'white',
+    //     padding: 10,
+    //     elevation: 10,
+    //     top:"20%",
+    //     alignSelf:"center",
+    // },
+    container: {
+        flex: 1,
+        justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'white',
+    },
+    signupContainer: {
+        width: '80%',
+        height:"30%",
+        alignItems: 'center',
         padding: 10,
         elevation: 10,
-        top:"20%",
+        // top:"0%",
         alignSelf:"center",
+        backgroundColor: 'white',
+
+    },
+    button: {
+        width: width - theme.SIZES.BASE * 15,
+        height: theme.SIZES.BASE * 2,
+        backgroundColor: materialTheme.COLORS.BUTTON_COLOR,
+        borderRadius:5,
+        shadowRadius: 0,
+        shadowOpacity: 0,
+        top:"15%",
+        alignSelf:"center",
+        justifyContent:"center"
     },
   
 })

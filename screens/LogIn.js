@@ -159,8 +159,8 @@ function LogIn ({navigation}) {
                         secureTextEntry
                     />
                     <TouchableOpacity                 
-                      // onPress={() => navigation.navigate('Home', {idUsuario: id})}
-                      onPress={postDataUsingSimplePostCall}
+                      onPress={() => navigation.navigate('Home', {idUsuario: id})}
+                      // onPress={postDataUsingSimplePostCall}
                       disabled={!isValid}
                       style={{...styles.button, justifyContent:"center"}}>
                         <Text style={{alignSelf:"center", color:"white"}}>Ingresar </Text>
