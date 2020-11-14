@@ -14,10 +14,10 @@ import axios from 'axios';
 
 function LogIn ({navigation}) {
     // const { navigation } = props
-    const [usuario, setUsuario] = useState("mica"); //este valor lo mando a la bd para chequear usuario
-    const [password, setPassword] = useState("Micaela Esquerdo"); //este valor lo mando a la bd para chequear password
+    const [usuarioVA, setUsuario] = useState(""); //este valor lo mando a la bd para chequear usuario
+    const [passwordVA, setPassword] = useState(""); //este valor lo mando a la bd para chequear password
     // const [showPassword, setShowPassword] = useState(false);
-    const [id, setIdUsuario]=useState("123") //la idea es pasar este valor a la pantalla de Home asi se carga el Home con los datos del usuario que ingreso
+    // const [id, setIdUsuario]=useState("123") //la idea es pasar este valor a la pantalla de Home asi se carga el Home con los datos del usuario que ingreso
 
     const getDataUsingSimpleGetCall = () => {
       axios
@@ -48,25 +48,34 @@ function LogIn ({navigation}) {
       }
     };
   
-    const postDataUsingSimplePostCall = () => {
-      var body = [{
+    const postDataUsingSimplePostCall = (usuario, password) => {
+      var body = {
         "nombre_usuario": usuario,
-        "clave" : password
-      }]
+        "clave" : password,
+      }
+      console.log(body);
 
       axios
         .post('http://localhost:8080/login', {
-          body: body,
+          body,
         })
         .then(function (response) {
-          // handle success
-          navigation.navigate("Home");
-          alert(JSON.stringify(response.data));
+          console.log(response);
         })
         .catch(function (error) {
-          // handle error
-          alert(error.message);
+          console.log(error);
         });
+        // .then(function (response) {
+        //   // handle success
+        //   // console.log(response);
+        //   navigation.navigate("Home");
+        //   alert(JSON.stringify(response.data));
+        // })
+        // .catch(function (error) {
+        //   // handle error
+        //   // console.log(response);
+        //   alert(error.message);
+        // });
     };
   
     const multipleRequestsInSingleCall = () => {
@@ -103,6 +112,7 @@ function LogIn ({navigation}) {
         .min(3, ({ min }) => `La contraseña debe ser de al menos ${min} caracteres`)
         .required('Ingresá la contraseña'),
     })  
+    // console.log(usuario,password)
     return (
 
       <ScrollView onPress={Keyboard.dismiss}>
@@ -125,7 +135,8 @@ function LogIn ({navigation}) {
               <Formik
                 validationSchema={loginValidationSchema}
                 initialValues={{ usuario: '', password: '' }}
-                onSubmit={values => console.log(values)}
+                // onSubmit={values => console.log(values)}
+                onSubmit={values =>postDataUsingSimplePostCall(values.usuario,values.password)}
               >
                 {({
                   handleChange,
@@ -147,20 +158,30 @@ function LogIn ({navigation}) {
                         name="usuario"
                         placeholder="  Usuario"
                         keyboardType="default"
-                        value={values.setUsuario}
+                        value={values.usuario}
+                        // onValueChange={(value) => setUsuario(value)}
+                        // onChange={(e) => setUsuario(e.nativeEvent.text)}
+                        // onChange={(value) => setUsuario(value)}
+                        // usuario={value}
+                        
+                        
                     />
                     <Field
                         component={CustomInput}
                         name="password"
                         placeholder=" Contraseña"
                         keyboardType="default"
-                        value={values.setPassword}
-                        type={values.showPassword ? text : 'password'} 
+                        value={values.password}
+                        // type={values.showPassword ? text : 'password'} 
+                        // onChange={(value) => setPassword(value)}
+
                         secureTextEntry
                     />
+                    {/* console.log(usuario,password); */}
                     <TouchableOpacity                 
-                      onPress={() => navigation.navigate('Home', {idUsuario: id})}
-                      // onPress={postDataUsingSimplePostCall}
+                      // onPress={() => navigation.navigate('Home', {idUsuario: id})}
+                      // onPress={postDataUsingSimplePostCall(usuarioVA,passwordVA)}
+                      onPress={handleSubmit}
                       disabled={!isValid}
                       style={{...styles.button, justifyContent:"center"}}>
                         <Text style={{alignSelf:"center", color:"white"}}>Ingresar </Text>
