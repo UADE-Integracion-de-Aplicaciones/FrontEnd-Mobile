@@ -31,17 +31,17 @@ export default function CambiarContrasena(props){
 
     const contrasenaNuevaValidationSchema = yup.object().shape({
         contrasenanueva: yup
-          .string()
-          .matches(/\w*[a-z]\w*/,  "La contraseña debe tener al menos 1 minúscula")
-          .matches(/\w*[A-Z]\w*/,  "La contraseña debe tener al menos 1 mayúscula")
-          .matches(/\d/, "La contraseña debe tener al menos 1 número")
-          .matches(/[#$%*_=+]/, "La contraseña debe tener al menos 1 símbolo (# $ % * _ = +)")
-          .min(8, ({ min }) => `La contraseña debe ser de al menos ${min} caracteres`)
-          .required('La contraseña es obligatoria'),
-          confirmcontrasenanueva: yup
-          .string()
-          .oneOf([yup.ref('contrasenanueva')], 'Las contraseñas no coinciden')
-          .required('La confirmación de contraseña es obligatoria'),
+        .string()
+        .matches(/\w*[a-z]\w*/,  "La contraseña debe tener al menos 1 minúscula")
+        .matches(/\w*[A-Z]\w*/,  "La contraseña debe tener al menos 1 mayúscula")
+        .matches(/\d/, "La contraseña debe tener al menos 1 número")
+        .matches(/[#$%*_=+]/, "La contraseña debe tener al menos 1 símbolo (# $ % * _ = +)")
+        .min(8, ({ min }) => `La contraseña debe ser de al menos ${min} caracteres`)
+        .required('La contraseña es obligatoria'),
+        confirmcontrasenanueva: yup
+        .string()
+        .oneOf([yup.ref('contrasenanueva')], 'Las contraseñas no coinciden')
+        .required('La confirmación de contraseña es obligatoria'),
       }) 
     return (
         <ScrollView onPress={Keyboard.dismiss}>
@@ -126,7 +126,10 @@ export default function CambiarContrasena(props){
                             >
                             Ingrese la contraseña nueva:               
                             </Text>
+                            <Text size={10} style={{ width:"90%", color:materialTheme.COLORS.BUTTON_COLOR, top:"0%"}}>Nota: la contraseña debe contener 8 caracteres mínimo. Al menos 1 minúscula, 1 mayúscula, 1 número y 1 símbolo {"("}# $ % * _ = +{")"}  </Text>
+
                             <View style={{width:"90%", alignContent:"center", alignItems:"center"}}>    
+
                                 <Field
                                     component={CustomInput}
                                     name="contrasenanueva"
@@ -169,7 +172,7 @@ const styles = StyleSheet.create({
     },
     signupContainer: {
         width: '90%',
-        height:"70%",
+        height:"80%",
         alignItems: 'center',
         padding: 10,
         elevation: 10,

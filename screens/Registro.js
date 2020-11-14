@@ -93,6 +93,8 @@ export default function Registro(props) {
                                 value={values.usuario}
                                 keyboardType="default"
                             />
+                            <Text size={10} style={{ width:"97%", color:materialTheme.COLORS.BUTTON_COLOR}}>Nota: la contraseña debe contener 8 caracteres mínimo. Al menos 1 minúscula, 1 mayúscula, 1 número y 1 símbolo {"("}# $ % * _ = +{")"}  </Text>
+
                             <Field
                                 component={CustomInput}
                                 name="contraseña"
