@@ -77,24 +77,29 @@ export default function Registro(props) {
                         }}
                         onSubmit={values => console.log(values)}
                         >
-                        {({ handleSubmit, isValid, errors, touched }) => (
+                        {({ handleSubmit, isValid, errors, values,touched }) => (
                             <>
                             <Field
                                 component={CustomInput}
                                 name="dni"
                                 placeholder="  DNI"
+                                value={values.dni}
                                 keyboardType="numeric"
                             />
                             <Field
                                 component={CustomInput}
                                 name="usuario"
                                 placeholder="  Usuario"
+                                value={values.usuario}
                                 keyboardType="default"
                             />
+                            <Text size={10} style={{ width:"97%", color:materialTheme.COLORS.BUTTON_COLOR}}>Nota: la contraseña debe contener 8 caracteres mínimo. Al menos 1 minúscula, 1 mayúscula, 1 número y 1 símbolo {"("}# $ % * _ = +{")"}  </Text>
+
                             <Field
                                 component={CustomInput}
                                 name="contraseña"
                                 placeholder="  Contraseña"
+                                value={values.contraseña}
                                 keyboardType="default"
                                 secureTextEntry
                             />
@@ -105,6 +110,7 @@ export default function Registro(props) {
                                 component={CustomInput}
                                 name="confirmcontraseña"
                                 placeholder="  Confirmar Contraseña"
+                                value={values.confirmcontraseña}
                                 secureTextEntry
                             />
                             {errors.password &&
@@ -114,6 +120,7 @@ export default function Registro(props) {
                                 component={CustomInput}
                                 name="codigodeautenticacion"
                                 placeholder="  Código de Autenticación"
+                                value={values.codigodeautenticacion}
                                 secureTextEntry
                             />
 

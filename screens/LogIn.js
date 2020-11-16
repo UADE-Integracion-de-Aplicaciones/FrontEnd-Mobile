@@ -18,7 +18,7 @@ function LogIn ({navigation}) {
     const [usuario, setUsuario] = useState(""); //este valor lo mando a la bd para chequear usuario
     const [password, setPassword] = useState(""); //este valor lo mando a la bd para chequear password
     // const [showPassword, setShowPassword] = useState(false);
-    const [id, setIdUsuario]=useState("123") //la idea es pasar este valor a la pantalla de Home asi se carga el Home con los datos del usuario que ingreso
+    // const [id, setIdUsuario]=useState("123") //la idea es pasar este valor a la pantalla de Home asi se carga el Home con los datos del usuario que ingreso
 
     const getDataUsingSimpleGetCall = () => {
       axios
@@ -65,9 +65,19 @@ function LogIn ({navigation}) {
           // alert(JSON.stringify(response.data));
         })
         .catch(function (error) {
-          // handle error
-          alert(error.message);
+          console.log(error);
         });
+        // .then(function (response) {
+        //   // handle success
+        //   // console.log(response);
+        //   navigation.navigate("Home");
+        //   alert(JSON.stringify(response.data));
+        // })
+        // .catch(function (error) {
+        //   // handle error
+        //   // console.log(response);
+        //   alert(error.message);
+        // });
     };
 
 
@@ -125,6 +135,7 @@ function LogIn ({navigation}) {
         .min(3, ({ min }) => `La contraseña debe ser de al menos ${min} caracteres`)
         .required('Ingresá la contraseña'),
     })  
+    // console.log(usuario,password)
     return (
 
       <ScrollView onPress={Keyboard.dismiss}>
@@ -170,7 +181,6 @@ function LogIn ({navigation}) {
                         placeholder="  Usuario"
                         keyboardType="default"
                         value={values.usuario}
-                        
                     />
                     <Field
                         component={CustomInput}
@@ -181,9 +191,9 @@ function LogIn ({navigation}) {
                         type={values.showPassword ? text : 'password'} 
                         secureTextEntry
                     />
+                    {/* console.log(usuario,password); */}
                     <TouchableOpacity                 
                       onPress={handleSubmit}
-                      // onPress={postDataUsingSimplePostCall}
                       disabled={!isValid}
                       style={{...styles.button, justifyContent:"center"}}>
                         <Text style={{alignSelf:"center", color:"white"}}>Ingresar </Text>

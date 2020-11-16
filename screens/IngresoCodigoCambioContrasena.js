@@ -34,78 +34,155 @@ function CodigoCambioContrasena(props){
         .required('El código es obligatorio'),
       }) 
     return (
-        <View onPress={Keyboard.dismiss}>
-            <Text
-            style={{left:"5%", top:"15%"}}
-            onPress={() => navigation.navigate("OlvideContrasena")}
-            >
-            Ingrese el código de validación que fue enviado a su e-mail:
-            </Text>
-            <View style={styles.olvidarContainer}>
-                <Formik
-                    validationSchema={codigoValidationSchema}
-                    initialValues={{ codigo: ''}}
-                    onSubmit={values => console.log(values)}
-                    
-                >
-                    {({
-                    handleChange,
-                    handleBlur,
-                    handleSubmit,
-                    values,
-                    errors,
-                    touched,
-                    isValid,
-                    }) => (
-                    <>
-                        <Field
-                            component={CustomInput}
-                            name="codigo"
-                            placeholder="  Código de validación"
-                            keyboardType="default"
-                            value={values.codigo}
-                        />
-                        <TouchableOpacity                 
-                        onPress={() => navigation.navigate("CambiarContrasena")}
-                        disabled={!isValid}
-                        style={{...styles.button}}>
-                            <Text style={{alignSelf:"center", color:"white"}}>Validar </Text>
-                        </TouchableOpacity>
-                        {/*  tomo el codigo y comparo con el codigo en la bd con el id del usuario */}
+        <ScrollView onPress={Keyboard.dismiss}>
+            <SafeAreaView style={styles.container}>
+                <Block flex style={{ width:width, height:height, top:"10%"}}>
 
-                    </>
-                    )}
-                </Formik>
-            </View>
-        </View>
+                    <View style={styles.signupContainer}>
+                        <Formik
+                            validationSchema={codigoValidationSchema}
+                            initialValues={{ codigo: ''}}
+                            onSubmit={() => navigation.navigate("CambiarContrasena")}
+                            
+                        >
+                            {({
+                            handleChange,
+                            handleBlur,
+                            handleSubmit,
+                            values,
+                            errors,
+                            touched,
+                            isValid,
+                            }) => (
+                            <>
+                                <Text
+                                style={{left:"2%", top:"5%"}}
+                                // onPress={() => navigation.navigate("OlvideContrasena")}
+                                >
+                                Ingrese el código de validación que fue enviado a su e-mail:
+                                </Text>
+                                <View style={{width:"90%", top:"10%",alignItems:"center"}}>
+                                    <Field
+                                        component={CustomInput}
+                                        name="codigo"
+                                        placeholder="  Código de validación"
+                                        keyboardType="default"
+                                        value={values.codigo}
+                                    />
+                                    <TouchableOpacity                 
+                                    onPress={handleSubmit}
+                                    disabled={!isValid}
+                                    style={{...styles.button}}>
+                                        <Text style={{alignSelf:"center", color:"white"}}>Validar </Text>
+                                    </TouchableOpacity>
+                                    {/* tomo el codigo y comparo con el codigo en la bd con el id del usuario */}
+                                </View>
+                                    </>
+                                )}
+                        </Formik>
+                    </View>
+                </Block>
+            </SafeAreaView>
+    </ScrollView>
+        // <View onPress={Keyboard.dismiss}>
+        //     <Text
+        //     style={{left:"5%", top:"15%"}}
+        //     // onPress={() => navigation.navigate("OlvideContrasena")}
+        //     >
+        //     Ingrese el código de validación que fue enviado a su e-mail:
+        //     </Text>
+        //     <View style={styles.olvidarContainer}>
+        //         <Formik
+        //             validationSchema={codigoValidationSchema}
+        //             initialValues={{ codigo: ''}}
+        //             onSubmit={() => navigation.navigate("CambiarContrasena")}
+                    
+        //         >
+        //             {({
+        //             handleChange,
+        //             handleBlur,
+        //             handleSubmit,
+        //             values,
+        //             errors,
+        //             touched,
+        //             isValid,
+        //             }) => (
+        //             <>
+        //                 <Field
+        //                     component={CustomInput}
+        //                     name="codigo"
+        //                     placeholder="  Código de validación"
+        //                     keyboardType="default"
+        //                     value={values.codigo}
+        //                 />
+        //                 <TouchableOpacity                 
+        //                 onPress={handleSubmit}
+        //                 disabled={!isValid}
+        //                 style={{...styles.button}}>
+        //                     <Text style={{alignSelf:"center", color:"white"}}>Validar </Text>
+        //                 </TouchableOpacity>
+        //                 {/*  tomo el codigo y comparo con el codigo en la bd con el id del usuario */}
+
+        //             </>
+        //             )}
+        //         </Formik>
+        //     </View>
+        // </View>
     )
 }
 
 const styles = StyleSheet.create({
-    button: {
-        width: "90%",
-        height: "17%",
-        backgroundColor: materialTheme.COLORS.BUTTON_COLOR,
-        borderRadius:10,
-        shadowRadius: 0,
-        shadowOpacity: 0,
-        top:"10%",
-        justifyContent:"center",
-    },
-    errorText: {
-        fontSize: 10,
-        color: 'red',
-        marginLeft:"7%",
-    },
-    olvidarContainer: {
-        width: '80%',
-        height:"60%",
+    // button: {
+    //     width: "90%",
+    //     height: "17%",
+    //     backgroundColor: materialTheme.COLORS.BUTTON_COLOR,
+    //     borderRadius:10,
+    //     shadowRadius: 0,
+    //     shadowOpacity: 0,
+    //     top:"10%",
+    //     justifyContent:"center",
+    // },
+    // errorText: {
+    //     fontSize: 10,
+    //     color: 'red',
+    //     marginLeft:"7%",
+    // },
+    // olvidarContainer: {
+    //     width: '80%',
+    //     height:"60%",
+    //     alignItems: 'center',
+    //     backgroundColor: 'white',
+    //     padding: 10,
+    //     elevation: 10,
+    //     top:"20%",
+    //     alignSelf:"center",
+    // },
+    container: {
+        flex: 1,
+        justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'white',
+    },
+    signupContainer: {
+        width: '80%',
+        height:"30%",
+        alignItems: 'center',
         padding: 10,
         elevation: 10,
-        top:"20%",
+        // top:"0%",
         alignSelf:"center",
+        backgroundColor: 'white',
+
+    },
+    button: {
+        width: width - theme.SIZES.BASE * 15,
+        height: theme.SIZES.BASE * 2,
+        backgroundColor: materialTheme.COLORS.BUTTON_COLOR,
+        borderRadius:5,
+        shadowRadius: 0,
+        shadowOpacity: 0,
+        top:"15%",
+        alignSelf:"center",
+        justifyContent:"center"
     },
   
 })

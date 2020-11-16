@@ -12,6 +12,8 @@ import OlvideContrasena from '../screens/OlvideContrasena';
 import CodigoCambioContrasena from '../screens/IngresoCodigoCambioContrasena';
 import CambiarContrasena from '../screens/CambiarContrasena';
 import ContrasenaNuevaConfirmada from '../screens/ContrasenaNuevaConfirmada';
+import Transferencias from '../screens/Transferencias';
+import TransferenciaExitosa from '../screens/TransfExitosa';
 const Stack = createStackNavigator();
 
 function MainStackNavigator() {
@@ -66,6 +68,20 @@ function MainStackNavigator() {
           headerTintColor: 'white',
         }} />
         <Stack.Screen name='ContrasenaNuevaConfirmada' component={ContrasenaNuevaConfirmada} options={{
+          title: 'Exito!',
+          headerStyle: {
+            backgroundColor: materialTheme.COLORS.BACKGROUND,
+          },
+          headerTintColor: 'white',
+        }} />
+        <Stack.Screen name='Transferencias' component={Transferencias} options={{
+          title: 'Transferencia/Deposito',
+          headerStyle: {
+            backgroundColor: materialTheme.COLORS.BACKGROUND,
+          },
+          headerTintColor: 'white',
+        }} />
+        <Stack.Screen name='TransferenciaExitosa' component={TransferenciaExitosa} options={{
           title: 'Exito!',
           headerStyle: {
             backgroundColor: materialTheme.COLORS.BACKGROUND,
