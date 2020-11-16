@@ -24,31 +24,30 @@ function ResumenDeCuenta(props){
         // const [cuenta, setCuenta] = useState("");
         const [cuentasPicker, setCuentasPicker] = useState([]); //setear las cuentas del usuario mediante consulta de bd con el id del usuario como parametro
         const [token, setToken] = useState("");
+        // const [numero, setNumero] = {numero_cuenta: ""};
         const [clientid, setClientId] = useState("");
         const [selected, setSelected] = useState(); //este sirve para hacer consulta de saldo y pasarlo al TablaResumen pa mostrar el resumen se esa cuenta seleccionada
         const [saldoCuentaSeleccionada, setSaldo]=useState(1000); //setear el saldo haciendo la consulta en la bd con la cuenta que se eligio del selectedpicker
-        const getDataUsingSimpleGetCall = async () => {
-          await AsyncStorage.getItem('token').then(value =>
-
-            setToken(value)
-        );
+        const getDataUsingSimpleGetCall = async (token) => {
+          
       //   await AsyncStorage.getItem('client_id').then(value =>
       //     setClientId(value)
       //  );
-            var id = {"client_id" : clientid}
+            // var id = {"client_id" : clientid}
         console.log(token);
           axios
-          .get('https://integracion-banco.herokuapp.com/cuentas', id,{
+          .get('https://integracion-banco.herokuapp.com/cuentas',{
             headers: {
               Authorization: 'Bearer ' + token
             }
           } )
           .then(res => {
-            console.log(res.cuentas);
+            // console.log(res);
             var temp = [];
-            for (let i = 0; i < res.cuentas.length; ++i) {
-              temp.push(res.cuentas.item(i).numero_cuenta);
-              console.log(res.cuentas.item(i).numero_cuenta);
+            for (let i = 0; i < res.data.cuentas.length; ++i) {
+              console.log(res.data.cuentas[i].numero_cuenta);
+              temp.push(res.data.cuentas[i].numero_cuenta);
+              
             }
             setCuentasPicker(temp);
           })
@@ -64,9 +63,44 @@ function ResumenDeCuenta(props){
 
              console.log(clientid);
 
-          getDataUsingSimpleGetCall();
+          loadData();
           // setNombreUsuario(nombreUsuario.replace('"',""));
         }, []);
+
+        const loadData = async () =>{
+          await AsyncStorage.getItem('token').then(value =>
+
+            getDataUsingSimpleGetCall(value)
+        );
+
+        }
+
+        useEffect(() => {
+          
+
+          // axios
+          // .get('https://integracion-banco.herokuapp.com/cuenta/getSaldo', numero, {
+          //   headers: {
+          //     Authorization: 'Bearer ' + token
+          //   }
+          // } )
+          // .then(res => {
+          //   // console.log(res);
+          //   var temp = [];
+          //   for (let i = 0; i < res.data.cuentas.length; ++i) {
+          //     console.log(res.data.cuentas[i].numero_cuenta);
+          //     temp.push(res.data.cuentas[i].numero_cuenta);
+              
+          //   }
+          //   setCuentasPicker(temp);
+          // })
+          // .catch(function (error) {
+          //   // handle error
+          //   alert(error.message);
+          // });
+          
+          // setNombreUsuario(nombreUsuario.replace('"',""));
+        }, [selected]);
         
 
 
@@ -75,6 +109,7 @@ function ResumenDeCuenta(props){
                       <SelectPicker
                           onValueChange={(value) => {
                               setSelected(value);
+                              // setNumero({numero_cuenta: value});/
                           }}
                           selected={selected}
                           placeholder="Seleccione una Cuenta"
