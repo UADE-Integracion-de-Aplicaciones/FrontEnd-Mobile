@@ -11,11 +11,12 @@ import Images from '../constants/Images';
 import Logo from '../assets/images/LogoBankMe.png';
 import { TouchableOpacity } from 'react-native';
 import axios from 'axios';
+import AsyncStorage from '@react-native-community/async-storage';
 
 function LogIn ({navigation}) {
     // const { navigation } = props
-    const [usuarioVA, setUsuario] = useState(""); //este valor lo mando a la bd para chequear usuario
-    const [passwordVA, setPassword] = useState(""); //este valor lo mando a la bd para chequear password
+    const [usuario, setUsuario] = useState(""); //este valor lo mando a la bd para chequear usuario
+    const [password, setPassword] = useState(""); //este valor lo mando a la bd para chequear password
     // const [showPassword, setShowPassword] = useState(false);
     // const [id, setIdUsuario]=useState("123") //la idea es pasar este valor a la pantalla de Home asi se carga el Home con los datos del usuario que ingreso
 
@@ -49,18 +50,19 @@ function LogIn ({navigation}) {
     };
   
     const postDataUsingSimplePostCall = (usuario, password) => {
-      var body = {
+      var data = {
         "nombre_usuario": usuario,
-        "clave" : password,
-      }
-      console.log(body);
-
+        "clave" : password
+      };
+      console.log(usuario, password);
       axios
-        .post('http://localhost:8080/login', {
-          body,
-        })
-        .then(function (response) {
-          console.log(response);
+        .post('https://integracion-banco.herokuapp.com/login',data )
+        .then(res => {
+          // handle success
+          handleUser(res);
+
+          
+          // alert(JSON.stringify(response.data));
         })
         .catch(function (error) {
           console.log(error);
@@ -77,6 +79,27 @@ function LogIn ({navigation}) {
         //   alert(error.message);
         // });
     };
+
+
+    const handleUser = (datos) => {
+      AsyncStorage.setItem('user', JSON.stringify(datos.data.user.nombre_usuario));
+      var name = JSON.stringify(datos.data.user.entidad.nombre + " " + datos.data.user.entidad.apellido);
+      name = name.replace('"','');
+      name = name.replace('"','');
+      AsyncStorage.setItem('fullName', name);
+      var clientid = JSON.stringify(datos.data.user.entidad.id);
+      clientid = clientid.replace('"','');
+      clientid = clientid.replace('"','');
+      AsyncStorage.setItem('clientid', clientid);
+      // AsyncStorage.setItem('apellido', JSON.stringify(datos.data.user.cliente.apellido));
+      AsyncStorage.setItem('rol', JSON.stringify(datos.data.user.rol));
+      var token = JSON.stringify(datos.data.user["x-access-token"]);
+      token = token.replace('"','');
+      token = token.replace('"','');
+      AsyncStorage.setItem('token', token);
+      console.log(token);
+      navigation.navigate("Home");
+    }
   
     const multipleRequestsInSingleCall = () => {
       axios
@@ -101,7 +124,7 @@ function LogIn ({navigation}) {
           }),
         );
     };
-  
+    //navigation.navigate('Home', {idUsuario: id})
 
     const loginValidationSchema = yup.object().shape({
       usuario: yup
@@ -135,8 +158,7 @@ function LogIn ({navigation}) {
               <Formik
                 validationSchema={loginValidationSchema}
                 initialValues={{ usuario: '', password: '' }}
-                // onSubmit={values => console.log(values)}
-                onSubmit={values =>postDataUsingSimplePostCall(values.usuario,values.password)}
+                onSubmit={values => postDataUsingSimplePostCall(values.usuario,values.password)}
               >
                 {({
                   handleChange,
@@ -159,12 +181,6 @@ function LogIn ({navigation}) {
                         placeholder="  Usuario"
                         keyboardType="default"
                         value={values.usuario}
-                        // onValueChange={(value) => setUsuario(value)}
-                        // onChange={(e) => setUsuario(e.nativeEvent.text)}
-                        // onChange={(value) => setUsuario(value)}
-                        // usuario={value}
-                        
-                        
                     />
                     <Field
                         component={CustomInput}
@@ -172,15 +188,11 @@ function LogIn ({navigation}) {
                         placeholder=" Contraseña"
                         keyboardType="default"
                         value={values.password}
-                        // type={values.showPassword ? text : 'password'} 
-                        // onChange={(value) => setPassword(value)}
-
+                        type={values.showPassword ? text : 'password'} 
                         secureTextEntry
                     />
                     {/* console.log(usuario,password); */}
                     <TouchableOpacity                 
-                      // onPress={() => navigation.navigate('Home', {idUsuario: id})}
-                      // onPress={postDataUsingSimplePostCall(usuarioVA,passwordVA)}
                       onPress={handleSubmit}
                       disabled={!isValid}
                       style={{...styles.button, justifyContent:"center"}}>

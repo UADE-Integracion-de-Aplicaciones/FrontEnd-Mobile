@@ -20,12 +20,34 @@ const { height, width } = Dimensions.get('screen');
 import Logo from '../assets/images/LogoBankMe.png';
 import { Avatar } from "react-native-elements";
 import Usuario from '../assets/icons/usuario.png';
+import AsyncStorage from '@react-native-community/async-storage';
+import { set } from 'lodash';
+
+
 
 function Perfil({route,navigation}){
     // const {navigation}=props;
-    const [nombreUsuario, setNombreUsuario] = useState("Micaela Esquerdo"); //para definir el nombre del usuario desde la bd
-    const {idUsuario}=route.params;
-    console.log(idUsuario);
+    const [nombreUsuario, setNombreUsuario] = useState(""); //para definir el nombre del usuario desde la bd
+    // const {idUsuario}=route.params;
+
+    useEffect(() => {
+        AsyncStorage.getItem('fullName').then(value =>
+            //AsyncStorage returns a promise so adding a callback to get the value
+            
+            setNombreUsuario(value)
+            // this.setState({ getValue: value })
+            //Setting the value in Text
+        );
+        // setNombreUsuario(nombreUsuario.replace('"',""));
+      }, []); // Only re-run the effect if count changes
+    
+    // AsyncStorage.getItem('apellido').then(value =>
+    //     //AsyncStorage returns a promise so adding a callback to get the value
+    //     // setNombreUsuario(nombreUsuario + value)
+    //     // this.setState({ getValue: value })
+    //     //Setting the value in Text
+    // );
+    // console.log(idUsuario);
     return (
         <View>
             <Image source={Usuario} style={{ width: 120, height: 120, alignSelf:"center", top:"15%" }} />

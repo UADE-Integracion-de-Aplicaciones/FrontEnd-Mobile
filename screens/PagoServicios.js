@@ -42,60 +42,60 @@ import { findLastKey } from 'lodash';
 const options = ["2398473829", "532332294", "887624840"]; //cambiar para obtener los valores de la bd
 const facturaList = [{
   "id": 1,
-  "name":"Tom",
-  "fecha":"22/06/20",
-  "monto":3000 
+  "name":"Metrogas",
+  "fecha":"22/11/20",
+  "monto":850 
 },
 {
   "id": 2,
-  "name":"Michael",
-  "fecha":"22/06/20",
+  "name":"Luz",
+  "fecha":"22/11/20",
   "monto":3000 
   
 },
 {
   "id": 3,
-  "name":"Christin",
-  "fecha":"22/06/20",
+  "name":"Colegio",
+  "fecha":"22/11/20",
   "monto":3000 
 },
 {
   "id": 4,
-  "name":"Tom",
-  "fecha":"22/06/20",
+  "name":"ABL",
+  "fecha":"22/11/20",
   "monto":3000 
 },
 {
   "id": 5,
-  "name":"Michael",
-  "fecha":"22/06/20",
+  "name":"Movistar",
+  "fecha":"22/11/20",
   "monto":3000 
   
 },
 {
   "id": 6,
-  "name":"Tom",
-  "fecha":"22/06/20",
+  "name":"Metrogas",
+  "fecha":"22/11/20",
   "monto":3000 
 },
 {
   "id": 7,
-  "name":"Michael",
-  "fecha":"22/06/20",
+  "name":"Edesur",
+  "fecha":"22/11/20",
   "monto":3000 
   
 },
 {
   "id": 8,
-  "name":"Tom",
-  "fecha":"22/06/20",
+  "name":"Movistar",
+  "fecha":"22/11/20",
   "monto":3000 
 },
 {
   "id": 9,
-  "name":"Michael",
-  "fecha":"22/06/20",
-  "monto":3000 
+  "name":"UADE",
+  "fecha":"22/11/20",
+  "monto":22000 
   
 },];
 
@@ -163,7 +163,7 @@ function PagoServicios(props){
     /> */}
     {/* <Text style={styles.lightText}>  {data.item.title.charAt(0).toUpperCase() + data.item.title.slice(1)}  </Text> */}
     <Text style={styles.lightText}> {data.item.name.charAt(0).toUpperCase() + data.item.name.slice(1)}</Text>
-    <Text style={styles.lightText}> {data.item.fecha.charAt(0).toUpperCase() + data.item.fecha.slice(1)}</Text>
+    <Text style={styles.lightText}> Vence: {data.item.fecha.charAt(0).toUpperCase() + data.item.fecha.slice(1)}</Text>
     <Text style={styles.lightText}> ${data.item.monto}</Text>
     </TouchableOpacity>
 
@@ -257,7 +257,7 @@ function PagoServicios(props){
 
                 <View style={{top:"5%", width:width, height:height, alignItems:"center"}}> 
                   <Text style={{ textAlign: "center", top: "3%", fontSize: 20 }}>
-                    Total NO vencido: $900
+                    Total NO vencido: $40850
                     {/* {nombreBanco}  aca tengo que obtener el total no vencido de facturas de la bd*/}
                   </Text>
                   <Formik

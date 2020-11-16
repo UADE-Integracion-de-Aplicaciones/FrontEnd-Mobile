@@ -131,6 +131,13 @@ export default function Registro(props) {
                                     <Text style={{alignSelf:"center", color:"white"}}>Registrarse</Text>
                             </TouchableOpacity>
 
+                            <Text
+                            style={{...styles.opciones, top: "10%"}}
+                            onPress={() => navigation.navigate('LogIn')}
+                            >
+                            {"¿"}Ya estas registrado{"?"}
+                            </Text>
+
                             </>
                         )}
                         </Formik>
@@ -149,7 +156,7 @@ const styles = StyleSheet.create({
     },
     signupContainer: {
         width: '80%',
-        height:"55%",
+        height:"65%",
         alignItems: 'center',
         padding: 10,
         elevation: 10,
