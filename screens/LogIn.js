@@ -10,15 +10,111 @@ import materialTheme from '../constants/Theme';
 import Images from '../constants/Images';
 import Logo from '../assets/images/LogoBankMe.png';
 import { TouchableOpacity } from 'react-native';
-
+import axios from 'axios';
+import AsyncStorage from '@react-native-community/async-storage';
 
 function LogIn ({navigation}) {
     // const { navigation } = props
-    const [usuario, setUsuario] = useState("mica"); //este valor lo mando a la bd para chequear usuario
-    const [password, setPassword] = useState("Micaela Esquerdo"); //este valor lo mando a la bd para chequear password
+    const [usuario, setUsuario] = useState(""); //este valor lo mando a la bd para chequear usuario
+    const [password, setPassword] = useState(""); //este valor lo mando a la bd para chequear password
     // const [showPassword, setShowPassword] = useState(false);
     const [id, setIdUsuario]=useState("123") //la idea es pasar este valor a la pantalla de Home asi se carga el Home con los datos del usuario que ingreso
 
+    const getDataUsingSimpleGetCall = () => {
+      axios
+        .get('https://jsonplaceholder.typicode.com/posts/1')
+        .then(function (response) {
+          // handle success
+          alert(JSON.stringify(response.data));
+        })
+        .catch(function (error) {
+          // handle error
+          alert(error.message);
+        })
+        .finally(function () {
+          // always executed
+          alert('Finally called');
+        });
+    };
+  
+    const getDataUsingAsyncAwaitGetCall = async () => {
+      try {
+        const response = await axios.get(
+          'https://jsonplaceholder.typicode.com/posts/1',
+        );
+        alert(JSON.stringify(response.data));
+      } catch (error) {
+        // handle error
+        alert(error.message);
+      }
+    };
+  
+    const postDataUsingSimplePostCall = (usuario, password) => {
+      var data = {
+        "nombre_usuario": usuario,
+        "clave" : password
+      };
+      console.log(usuario, password);
+      axios
+        .post('https://integracion-banco.herokuapp.com/login',data )
+        .then(res => {
+          // handle success
+          handleUser(res);
+
+          
+          // alert(JSON.stringify(response.data));
+        })
+        .catch(function (error) {
+          // handle error
+          alert(error.message);
+        });
+    };
+
+
+    const handleUser = (datos) => {
+      AsyncStorage.setItem('user', JSON.stringify(datos.data.user.nombre_usuario));
+      var name = JSON.stringify(datos.data.user.entidad.nombre + " " + datos.data.user.entidad.apellido);
+      name = name.replace('"','');
+      name = name.replace('"','');
+      AsyncStorage.setItem('fullName', name);
+      var clientid = JSON.stringify(datos.data.user.entidad.id);
+      clientid = clientid.replace('"','');
+      clientid = clientid.replace('"','');
+      AsyncStorage.setItem('clientid', clientid);
+      // AsyncStorage.setItem('apellido', JSON.stringify(datos.data.user.cliente.apellido));
+      AsyncStorage.setItem('rol', JSON.stringify(datos.data.user.rol));
+      var token = JSON.stringify(datos.data.user["x-access-token"]);
+      token = token.replace('"','');
+      token = token.replace('"','');
+      AsyncStorage.setItem('token', token);
+      console.log(token);
+      navigation.navigate("Home");
+    }
+  
+    const multipleRequestsInSingleCall = () => {
+      axios
+        .all([
+          axios
+            .get('https://jsonplaceholder.typicode.com/posts/1')
+            .then(function (response) {
+              // handle success
+              alert('Post 1 : ' + JSON.stringify(response.data));
+            }),
+          axios
+            .get('https://jsonplaceholder.typicode.com/posts/2')
+            .then(function (response) {
+              // handle success
+              alert('Post 2 : ' + JSON.stringify(response.data));
+            }),
+        ])
+        .then(
+          axios.spread(function (acct, perms) {
+            // Both requests are now complete
+            alert('Both requests are now complete');
+          }),
+        );
+    };
+    //navigation.navigate('Home', {idUsuario: id})
 
     const loginValidationSchema = yup.object().shape({
       usuario: yup
@@ -26,7 +122,7 @@ function LogIn ({navigation}) {
       .required('Ingresá el usuario'),
       password: yup
         .string()
-        .min(8, ({ min }) => `La contraseña debe ser de al menos ${min} caracteres`)
+        .min(3, ({ min }) => `La contraseña debe ser de al menos ${min} caracteres`)
         .required('Ingresá la contraseña'),
     })  
     return (
@@ -51,7 +147,7 @@ function LogIn ({navigation}) {
               <Formik
                 validationSchema={loginValidationSchema}
                 initialValues={{ usuario: '', password: '' }}
-                onSubmit={values => console.log(values)}
+                onSubmit={values => postDataUsingSimplePostCall(values.usuario,values.password)}
               >
                 {({
                   handleChange,
@@ -73,19 +169,21 @@ function LogIn ({navigation}) {
                         name="usuario"
                         placeholder="  Usuario"
                         keyboardType="default"
-                        value={values.setUsuario}
+                        value={values.usuario}
+                        
                     />
                     <Field
                         component={CustomInput}
                         name="password"
                         placeholder=" Contraseña"
                         keyboardType="default"
-                        value={values.setPassword}
+                        value={values.password}
                         type={values.showPassword ? text : 'password'} 
                         secureTextEntry
                     />
                     <TouchableOpacity                 
-                      onPress={() => navigation.navigate('Home', {idUsuario: id})}
+                      onPress={handleSubmit}
+                      // onPress={postDataUsingSimplePostCall}
                       disabled={!isValid}
                       style={{...styles.button, justifyContent:"center"}}>
                         <Text style={{alignSelf:"center", color:"white"}}>Ingresar </Text>
