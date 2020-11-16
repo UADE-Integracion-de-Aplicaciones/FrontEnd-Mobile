@@ -11,11 +11,12 @@ import Images from '../constants/Images';
 import Logo from '../assets/images/LogoBankMe.png';
 import { TouchableOpacity } from 'react-native';
 import axios from 'axios';
+import AsyncStorage from '@react-native-community/async-storage';
 
 function LogIn ({navigation}) {
     // const { navigation } = props
-    const [usuario, setUsuario] = useState("mica"); //este valor lo mando a la bd para chequear usuario
-    const [password, setPassword] = useState("Micaela Esquerdo"); //este valor lo mando a la bd para chequear password
+    const [usuario, setUsuario] = useState(""); //este valor lo mando a la bd para chequear usuario
+    const [password, setPassword] = useState(""); //este valor lo mando a la bd para chequear password
     // const [showPassword, setShowPassword] = useState(false);
     const [id, setIdUsuario]=useState("123") //la idea es pasar este valor a la pantalla de Home asi se carga el Home con los datos del usuario que ingreso
 
@@ -48,26 +49,44 @@ function LogIn ({navigation}) {
       }
     };
   
-    const postDataUsingSimplePostCall = () => {
-      var body = [{
+    const postDataUsingSimplePostCall = (usuario, password) => {
+      var data = {
         "nombre_usuario": usuario,
         "clave" : password
-      }]
-
+      };
+      console.log(usuario, password);
       axios
-        .post('http://localhost:8080/login', {
-          body: body,
-        })
-        .then(function (response) {
+        .post('https://integracion-banco.herokuapp.com/login',data )
+        .then(res => {
           // handle success
-          navigation.navigate("Home");
-          alert(JSON.stringify(response.data));
+          handleUser(res);
+
+          
+          // alert(JSON.stringify(response.data));
         })
         .catch(function (error) {
           // handle error
           alert(error.message);
         });
     };
+
+
+    const handleUser = (datos) => {
+      AsyncStorage.setItem('user', JSON.stringify(datos.data.user.nombre_usuario));
+      var name = JSON.stringify(datos.data.user.entidad.nombre + " " + datos.data.user.entidad.apellido);
+      name = name.replace('"','');
+      name = name.replace('"','');
+      AsyncStorage.setItem('fullName', name);
+      AsyncStorage.setItem('client_id', JSON.stringify(datos.data.user.entidad.id));
+      // AsyncStorage.setItem('apellido', JSON.stringify(datos.data.user.cliente.apellido));
+      AsyncStorage.setItem('rol', JSON.stringify(datos.data.user.rol));
+      var token = JSON.stringify(datos.data.user["x-access-token"]);
+      token = token.replace('"','');
+      token = token.replace('"','');
+      AsyncStorage.setItem('token', token);
+      console.log(token);
+      navigation.navigate("Home");
+    }
   
     const multipleRequestsInSingleCall = () => {
       axios
@@ -92,7 +111,7 @@ function LogIn ({navigation}) {
           }),
         );
     };
-  
+    //navigation.navigate('Home', {idUsuario: id})
 
     const loginValidationSchema = yup.object().shape({
       usuario: yup
@@ -125,7 +144,7 @@ function LogIn ({navigation}) {
               <Formik
                 validationSchema={loginValidationSchema}
                 initialValues={{ usuario: '', password: '' }}
-                onSubmit={values => console.log(values)}
+                onSubmit={values => postDataUsingSimplePostCall(values.usuario,values.password)}
               >
                 {({
                   handleChange,
@@ -147,20 +166,21 @@ function LogIn ({navigation}) {
                         name="usuario"
                         placeholder="  Usuario"
                         keyboardType="default"
-                        value={values.setUsuario}
+                        value={values.usuario}
+                        
                     />
                     <Field
                         component={CustomInput}
                         name="password"
                         placeholder=" Contraseña"
                         keyboardType="default"
-                        value={values.setPassword}
+                        value={values.password}
                         type={values.showPassword ? text : 'password'} 
                         secureTextEntry
                     />
                     <TouchableOpacity                 
-                      // onPress={() => navigation.navigate('Home', {idUsuario: id})}
-                      onPress={postDataUsingSimplePostCall}
+                      onPress={handleSubmit}
+                      // onPress={postDataUsingSimplePostCall}
                       disabled={!isValid}
                       style={{...styles.button, justifyContent:"center"}}>
                         <Text style={{alignSelf:"center", color:"white"}}>Ingresar </Text>

@@ -17,15 +17,54 @@ import SelectPicker from 'react-native-form-select-picker';
 import TablaResumen from './componenteResumen/tablaResumen';
 import { Table, Row, Rows } from 'react-native-table-component';
 import materialTheme from '../constants/Theme';
-
+import axios from 'axios';
+import AsyncStorage from '@react-native-community/async-storage';
 
 function ResumenDeCuenta(props){
         // const [cuenta, setCuenta] = useState("");
-        const [cuentasPicker, setCuentasPicker] = useState(["2398473829", "532332294", "887624840"]); //setear las cuentas del usuario mediante consulta de bd con el id del usuario como parametro
-
+        const [cuentasPicker, setCuentasPicker] = useState([]); //setear las cuentas del usuario mediante consulta de bd con el id del usuario como parametro
+        const [token, setToken] = useState("");
+        const [clientid, setClientId] = useState("");
         const [selected, setSelected] = useState(); //este sirve para hacer consulta de saldo y pasarlo al TablaResumen pa mostrar el resumen se esa cuenta seleccionada
         const [saldoCuentaSeleccionada, setSaldo]=useState(1000); //setear el saldo haciendo la consulta en la bd con la cuenta que se eligio del selectedpicker
+        const getDataUsingSimpleGetCall = async () => {
+          await AsyncStorage.getItem('token').then(value =>
+
+            setToken(value)
+        );
+      //   await AsyncStorage.getItem('client_id').then(value =>
+      //     setClientId(value)
+      //  );
+        console.log(token);
+          axios
+          .get('https://integracion-banco.herokuapp.com/cuentas',{
+            headers: {
+              Authorization: 'Bearer ' + token
+            }
+          } )
+          .then(res => {
+            console.log(res.cuentas);
+            var temp = [];
+            for (let i = 0; i < res.cuentas.length; ++i) {
+              temp.push(res.cuentas.item(i).numero_cuenta);
+              console.log(res.cuentas.item(i).numero_cuenta);
+            }
+            setCuentasPicker(temp);
+          })
+          .catch(function (error) {
+            // handle error
+            alert(error.message);
+          });
+        };
+        useEffect(() => {
+
+
+          getDataUsingSimpleGetCall();
+          // setNombreUsuario(nombreUsuario.replace('"',""));
+        }, []);
         
+
+
           return(
                   <View style={styles.resumenContainer}>
                       <SelectPicker
