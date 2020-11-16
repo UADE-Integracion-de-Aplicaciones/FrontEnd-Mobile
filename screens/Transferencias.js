@@ -27,7 +27,8 @@ import Usuario from '../assets/icons/usuario.png';
 import * as yup from 'yup';
 import SelectPicker from 'react-native-form-select-picker';
 import Check from '../assets/icons/checked.png';
-
+import axios from 'axios';
+import AsyncStorage from '@react-native-community/async-storage';
 
 
 function Transferencias(props){
@@ -35,6 +36,83 @@ function Transferencias(props){
     const [selected, setSelected] = useState();
     const options = ["2398473829", "532332294", "887624840"]; //cambiar para obtener los valores de la bd
     const [modalVisible, setModalVisible] = useState(false);
+    const [cuentasPicker, setCuentasPicker] = useState([]); //setear las cuentas del usuario mediante consulta de bd con el id del usuario como parametro
+    const [clientid, setClientId] = useState("");
+
+    const getDataUsingSimpleGetCall = async (token) => {
+          
+        //   await AsyncStorage.getItem('client_id').then(value =>
+        //     setClientId(value)
+        //  );
+              // var id = {"client_id" : clientid}
+          console.log(token);
+            axios
+            .get('https://integracion-banco.herokuapp.com/cuentas',{
+              headers: {
+                Authorization: 'Bearer ' + token
+              }
+            } )
+            .then(res => {
+              // console.log(res);
+              var temp = [];
+              for (let i = 0; i < res.data.cuentas.length; ++i) {
+                console.log(res.data.cuentas[i].numero_cuenta);
+                temp.push(res.data.cuentas[i].numero_cuenta);
+                
+              }
+              setCuentasPicker(temp);
+            })
+            .catch(function (error) {
+              // handle error
+              alert(error.message);
+            });
+          };
+          useEffect(() => {
+            AsyncStorage.getItem('clientid').then(value =>
+                  setClientId(value)
+               );
+  
+               console.log(clientid);
+  
+            loadData();
+            // setNombreUsuario(nombreUsuario.replace('"',""));
+          }, []);
+  
+          const loadData = async () =>{
+            await AsyncStorage.getItem('token').then(value =>
+  
+              getDataUsingSimpleGetCall(value)
+          );
+  
+          }
+  
+          useEffect(() => {
+            
+  
+            // axios
+            // .get('https://integracion-banco.herokuapp.com/cuenta/getSaldo', numero, {
+            //   headers: {
+            //     Authorization: 'Bearer ' + token
+            //   }
+            // } )
+            // .then(res => {
+            //   // console.log(res);
+            //   var temp = [];
+            //   for (let i = 0; i < res.data.cuentas.length; ++i) {
+            //     console.log(res.data.cuentas[i].numero_cuenta);
+            //     temp.push(res.data.cuentas[i].numero_cuenta);
+                
+            //   }
+            //   setCuentasPicker(temp);
+            // })
+            // .catch(function (error) {
+            //   // handle error
+            //   alert(error.message);
+            // });
+            
+            // setNombreUsuario(nombreUsuario.replace('"',""));
+          }, [selected]);
+          
 
     const codigoValidationSchema = yup.object().shape({
         montotransferencia: yup
@@ -130,7 +208,7 @@ function Transferencias(props){
                                     doneButtonText="Listo"
                                     
                                     >
-                                    {Object.values(options).map((val, index2) => (
+                                    {Object.values(cuentasPicker).map((val, index2) => (
                                         <SelectPicker.Item label={val} value={val} key={index2} />
                                     ))}
                         

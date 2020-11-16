@@ -38,6 +38,10 @@ import { compose } from "recompose";
 import SelectPicker from 'react-native-form-select-picker';
 import CustomMultiPicker from "react-native-multiple-select-list";
 import { findLastKey } from 'lodash';
+import AsyncStorage from '@react-native-community/async-storage';
+import axios from 'axios';
+import Lupa from '../assets/icons/lupa.png';
+
 // import Switch from "./Switch";
 const options = ["2398473829", "532332294", "887624840"]; //cambiar para obtener los valores de la bd
 const facturaList = [{
@@ -107,6 +111,9 @@ function PagoServicios(props){
   const [selected, setSelected] = useState();
   const [loading, setLoading] = useState(false);
   const [facturas, setFacturas] = useState([]);
+  const [cuentasPicker, setCuentasPicker] = useState([]); //setear las cuentas del usuario mediante consulta de bd con el id del usuario como parametro
+  const [clientid, setClientId] = useState("");
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -152,6 +159,81 @@ function PagoServicios(props){
         .required('El código es obligatorio para realizar pagos'),
     });
 
+    const getDataUsingSimpleGetCall = async (token) => {
+          
+      //   await AsyncStorage.getItem('client_id').then(value =>
+      //     setClientId(value)
+      //  );
+            // var id = {"client_id" : clientid}
+        console.log(token);
+          axios
+          .get('https://integracion-banco.herokuapp.com/cuentas',{
+            headers: {
+              Authorization: 'Bearer ' + token
+            }
+          } )
+          .then(res => {
+            // console.log(res);
+            var temp = [];
+            for (let i = 0; i < res.data.cuentas.length; ++i) {
+              console.log(res.data.cuentas[i].numero_cuenta);
+              temp.push(res.data.cuentas[i].numero_cuenta);
+              
+            }
+            setCuentasPicker(temp);
+          })
+          .catch(function (error) {
+            // handle error
+            alert(error.message);
+          });
+        };
+        useEffect(() => {
+          AsyncStorage.getItem('clientid').then(value =>
+                setClientId(value)
+             );
+
+             console.log(clientid);
+
+          loadData();
+          // setNombreUsuario(nombreUsuario.replace('"',""));
+        }, []);
+
+        const loadData = async () =>{
+          await AsyncStorage.getItem('token').then(value =>
+
+            getDataUsingSimpleGetCall(value)
+        );
+
+        }
+
+        useEffect(() => {
+          
+
+          // axios
+          // .get('https://integracion-banco.herokuapp.com/cuenta/getSaldo', numero, {
+          //   headers: {
+          //     Authorization: 'Bearer ' + token
+          //   }
+          // } )
+          // .then(res => {
+          //   // console.log(res);
+          //   var temp = [];
+          //   for (let i = 0; i < res.data.cuentas.length; ++i) {
+          //     console.log(res.data.cuentas[i].numero_cuenta);
+          //     temp.push(res.data.cuentas[i].numero_cuenta);
+              
+          //   }
+          //   setCuentasPicker(temp);
+          // })
+          // .catch(function (error) {
+          //   // handle error
+          //   alert(error.message);
+          // });
+          
+          // setNombreUsuario(nombreUsuario.replace('"',""));
+        }, [selected]);
+        
+
     const renderItem = data =>
     <TouchableOpacity
       style={[styles.list, data.item.selectedClass]}      
@@ -179,125 +261,132 @@ function PagoServicios(props){
     return(
                    
             <View style={styles.pagosContainer}>
-                <Formik
-                    enableReinitialize
-                    validationSchema={pagosValidationSchema}
-                    initialValues={{ usuario: '', password: '' }}
-                    onSubmit={values => console.log(values)}
-                  >
-                    {({
-                      handleChange,
-                      handleBlur,
-                      handleSubmit,
-                      values,
-                      errors,
-                      touched,
-                      isValid,
-                    }) => (
-                      <>
-                        <TextInput
-                          name="codigopagoelectronico"
-                          placeholder="  Código de pago electrónico"
-                          style={styles.textInput}
-                          onChangeText={handleChange('codigopagoelectronico')}
-                          onBlur={handleBlur('codigopagoelectronico')}
-                          value={values.codigopagoelectronico}
-                          // keyboardType= "default"
-                        />
-                      </>
-                    )}
-                </Formik>
-                <SelectPicker
-                    onValueChange={(value) => {
-                        // Do anything you want with the value. 
-                        // For example, save in state.
-                        setSelected(value);
-                    }}
-                    selected={selected}
-                    placeholder="Seleccione una Cuenta"
-                    placeholderStyle={{fontSize:15, color: "black"}}
-                    style={styles.containerSelect}
-                    doneButtonText="Listo"
-                    
-                    >
-                    
-                    {Object.values(options).map((val, index2) => (
-                        <SelectPicker.Item label={val} value={val} key={index2} />
-                    ))}
-        
-                </SelectPicker>
-                <Text style={{ textAlign: "center", top: "1%", fontSize: 20 }}>
-                  Saldo: $300
-                  {/* {nombreBanco}  aca tengo que obtener el saldo de la cuenta de la bd*/}
-                </Text>
-
-                <Text style={{ textAlign: "center", top: "3%", fontSize: 30 }}>
-                  Facturas
-                  {/* {nombreBanco}  aca tengo que obtener el saldo de la cuenta de la bd*/}
-                </Text>
-                {/* <View style={{top: "3%", height: "30%"}}>
-                </View> */}
-                <View style={{width: width, elevation: 10, backgroundColor: "white", top: "5%", alignItems: 'center',alignSelf:"center", height: "30%"}}>
-                <ScrollView horizontal={true} >
-                <FlatList 
-                  data={facturas}
-                  ItemSeparatorComponent={FlatListItemSeparator}
-                  renderItem={item => renderItem(item)} 
-                  keyExtractor={item => item.id.toString()}
-                  extraData={facturas}
-                  style={{width: width, borderColor: materialTheme.COLORS.BUTTON_COLOR,
-                    // elevation: 10,
-                    borderWidth: 2}}
-                />
-                </ScrollView> 
+                <View style={{flexDirection:'row', height:'25%', width:"60%", left:"10%"}}>
+                    <Formik
+                        enableReinitialize
+                        validationSchema={pagosValidationSchema}
+                        initialValues={{ usuario: '', password: '' }}
+                        onSubmit={values => console.log(values)}
+                      >
+                        {({
+                          handleChange,
+                          handleBlur,
+                          handleSubmit,
+                          values,
+                          errors,
+                          touched,
+                          isValid,
+                        }) => (
+                          <>
+                              <TextInput
+                                name="codigopagoelectronico"
+                                placeholder="  Código de pago electrónico"
+                                style={styles.textInput}
+                                onChangeText={handleChange('codigopagoelectronico')}
+                                onBlur={handleBlur('codigopagoelectronico')}
+                                value={values.codigopagoelectronico}
+                              />
+                            
+                          </>
+                        )}
+                    </Formik>
+                   
+                    <TouchableOpacity style={{ height: "25%", width: "70%",left:"0%", top:"7%"}} onPress={() => navigation.navigate("Home") }>
+                      <Image
+                          source={Lupa}
+                          style={{top:"10%", height: "50%", width: "15%" }}
+                      />
+                    </TouchableOpacity>
                 </View>
-                {/* aca va el flatlist facturas */}
-
-
-
-                <View style={{top:"5%", width:width, height:height, alignItems:"center"}}> 
-                  <Text style={{ textAlign: "center", top: "3%", fontSize: 20 }}>
-                    Total NO vencido: $40850
-                    {/* {nombreBanco}  aca tengo que obtener el total no vencido de facturas de la bd*/}
+                <View style={{top:"-15%"}}>
+                  <SelectPicker
+                      onValueChange={(value) => {
+                          setSelected(value);
+                      }}
+                      selected={selected}
+                      placeholder="Seleccione una Cuenta"
+                      placeholderStyle={{fontSize:15, color: "black"}}
+                      style={styles.containerSelect}
+                      doneButtonText="Listo"
+                      
+                      >
+                      
+                      {Object.values(cuentasPicker).map((val, index2) => (
+                          <SelectPicker.Item label={val} value={val} key={index2} />
+                      ))}
+          
+                  </SelectPicker>
+                  <Text style={{ textAlign: "center", top: "1%", fontSize: 20 }}>
+                    Saldo: $300
+                    {/* {nombreBanco}  aca tengo que obtener el saldo de la cuenta de la bd*/}
                   </Text>
-                  <Formik
-                      enableReinitialize
-                      validationSchema={pagosValidationSchema}
-                      initialValues={{ montoapagar: ''}}
-                      onSubmit={values => console.log(values)}
-                    >
-                      {({
-                        handleChange,
-                        handleBlur,
-                        handleSubmit,
-                        values,
-                        errors,
-                        touched,
-                        isValid,
-                      }) => (
-                        <>
-                          <TextInput
-                            name="montoapagar"
-                            placeholder="  Monto a pagar"
-                            style={{...styles.textInput,top:"3%", width:"70%" }}
-                            onChangeText={handleChange('montoapagar')}
-                            onBlur={handleBlur('montoapagar')}
-                            value={values.montoapagar}
-                            keyboardType= 'number-pad'
-                          />
-                        </>
-                      )}
-                  </Formik>
-                  <View style={{top: "3%"}}>
-                  <Button
-                        // onPress={handleSubmit}
-                        title="Pagar"
-                        // disabled={!isValid}
-                        
-                        color={materialTheme.COLORS.BUTTON_COLOR}
-                       
-                    />
+
+                  <Text style={{ textAlign: "center", top: "3%", fontSize: 30 }}>
+                    Facturas
+                    {/* {nombreBanco}  aca tengo que obtener el saldo de la cuenta de la bd*/}
+                  </Text>
+                  {/* <View style={{top: "3%", height: "30%"}}>
+                  </View> */}
+                  <View style={{width: width, elevation: 10, backgroundColor: "white", top: "5%", alignItems: 'center',alignSelf:"center", height: "20%"}}>
+                    <ScrollView horizontal={true} >
+                      <FlatList 
+                        data={facturas}
+                        ItemSeparatorComponent={FlatListItemSeparator}
+                        renderItem={item => renderItem(item)} 
+                        keyExtractor={item => item.id.toString()}
+                        extraData={facturas}
+                        style={{width: width, borderColor: materialTheme.COLORS.BUTTON_COLOR,
+                          // elevation: 10,
+                          borderWidth: 2}}
+                      />
+                    </ScrollView> 
+                  </View>
+                  {/* aca va el flatlist facturas */}
+
+                  <View style={{top:"5%", width:width, height:height, alignItems:"center"}}> 
+                    <Text style={{ textAlign: "center", top: "3%", fontSize: 20 }}>
+                      Total NO vencido: $40850
+                      {/* {nombreBanco}  aca tengo que obtener el total no vencido de facturas de la bd*/}
+                    </Text>
+                    <Formik
+                        enableReinitialize
+                        validationSchema={pagosValidationSchema}
+                        initialValues={{ montoapagar: ''}}
+                        onSubmit={values => console.log(values)}
+                      >
+                        {({
+                          handleChange,
+                          handleBlur,
+                          handleSubmit,
+                          values,
+                          errors,
+                          touched,
+                          isValid,
+                        }) => (
+                          <>
+                            <TextInput
+                              name="montoapagar"
+                              placeholder="  Monto a pagar"
+                              style={{...styles.textInput,top:"3%", width:"70%" }}
+                              onChangeText={handleChange('montoapagar')}
+                              onBlur={handleBlur('montoapagar')}
+                              value={values.montoapagar}
+                              keyboardType= 'number-pad'
+                            />
+                          </>
+                        )}
+                    </Formik>
+                    <View style={{top: "3%"}}>
+                      <Button
+                            // onPress={handleSubmit}
+                            title="Pagar"
+                            // disabled={!isValid}
+                            
+                            color={materialTheme.COLORS.BUTTON_COLOR}
+                          
+                        />
                     </View>
+                  </View>
                 </View>
             </View>
         
@@ -314,7 +403,7 @@ const styles = StyleSheet.create({
     backgroundColor: materialTheme.COLORS.BACKGROUND,
     // alignContent:"center",
     alignItems:"center",
-    alignSelf:"center"
+    alignSelf:"center",
   },
   containerSelect:{
     backgroundColor:"white",
