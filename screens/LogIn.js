@@ -77,7 +77,10 @@ function LogIn ({navigation}) {
       name = name.replace('"','');
       name = name.replace('"','');
       AsyncStorage.setItem('fullName', name);
-      AsyncStorage.setItem('client_id', JSON.stringify(datos.data.user.entidad.id));
+      var clientid = JSON.stringify(datos.data.user.entidad.id);
+      clientid = clientid.replace('"','');
+      clientid = clientid.replace('"','');
+      AsyncStorage.setItem('clientid', clientid);
       // AsyncStorage.setItem('apellido', JSON.stringify(datos.data.user.cliente.apellido));
       AsyncStorage.setItem('rol', JSON.stringify(datos.data.user.rol));
       var token = JSON.stringify(datos.data.user["x-access-token"]);

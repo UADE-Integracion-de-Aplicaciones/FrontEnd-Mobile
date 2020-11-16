@@ -35,9 +35,10 @@ function ResumenDeCuenta(props){
       //   await AsyncStorage.getItem('client_id').then(value =>
       //     setClientId(value)
       //  );
+            var id = {"client_id" : clientid}
         console.log(token);
           axios
-          .get('https://integracion-banco.herokuapp.com/cuentas',{
+          .get('https://integracion-banco.herokuapp.com/cuentas', id,{
             headers: {
               Authorization: 'Bearer ' + token
             }
@@ -57,7 +58,11 @@ function ResumenDeCuenta(props){
           });
         };
         useEffect(() => {
+          AsyncStorage.getItem('clientid').then(value =>
+                setClientId(value)
+             );
 
+             console.log(clientid);
 
           getDataUsingSimpleGetCall();
           // setNombreUsuario(nombreUsuario.replace('"',""));
