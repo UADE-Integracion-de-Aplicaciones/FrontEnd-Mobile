@@ -6,37 +6,38 @@ import materialTheme from '../../constants/Theme';
 
 
 
-function TablaResumen(props){
+function TablaResumen(arraicito){
       // este array contiene todos los datos de la factura Fecha, Concepto, Monto. Hacer un setArrayFCM con estos datos desde la base de datos
       // con el valor de la cuenta como parametro en la consulta.
-      const [arrayFCM, setArrayFCM]=useState([
-        ['12/09/2020', 'Alquiler', '$700'],
-        ['12/09/2020', 'Compras', '$700'],
-        ['12/09/2020', 'Compras', '$700'],
-        ['12/09/2020', 'Compras', '$700'],
-        ['12/09/2020', 'Compras', '$700'],
-        ['12/09/2020', 'Compras', '$700'],
-        ['12/09/2020', 'Compras', '$700'],
-        ['12/09/2020', 'Compras', '$700'],
-        ['12/09/2020', 'Compras', '$700'],
-        ['12/09/2020', 'Compras', '$700'],
-        ['12/09/2020', 'Compras', '$700'],
-        ['12/09/2020', 'Compras', '$700'],
-        ['12/09/2020', 'Compras', '$700'],
-        ['12/09/2020', 'Compras', '$700'],
-        ['12/09/2020', 'Compras', '$700'],
-        ['12/09/2020', 'Compras', '$700'],
-        ['12/09/2020', 'Compras', '$700'],
-        ['12/09/2020', 'Compras', '$700'],
-        ['12/09/2020', 'Compras', '$700'],
-        ['02/09/2020', 'Pagos', '$900'],]
-      );
+      // const [arrayFCM, setArrayFCM]=useState([
+      //   ['12/09/2020', 'Alquiler', '$700'],
+      //   ['12/09/2020', 'Compras', '$700'],
+      //   ['12/09/2020', 'Compras', '$700'],
+      //   ['12/09/2020', 'Compras', '$700'],
+      //   ['12/09/2020', 'Compras', '$700'],
+      //   ['12/09/2020', 'Compras', '$700'],
+      //   ['12/09/2020', 'Compras', '$700'],
+      //   ['12/09/2020', 'Compras', '$700'],
+      //   ['12/09/2020', 'Compras', '$700'],
+      //   ['12/09/2020', 'Compras', '$700'],
+      //   ['12/09/2020', 'Compras', '$700'],
+      //   ['12/09/2020', 'Compras', '$700'],
+      //   ['12/09/2020', 'Compras', '$700'],
+      //   ['12/09/2020', 'Compras', '$700'],
+      //   ['12/09/2020', 'Compras', '$700'],
+      //   ['12/09/2020', 'Compras', '$700'],
+      //   ['12/09/2020', 'Compras', '$700'],
+      //   ['12/09/2020', 'Compras', '$700'],
+      //   ['12/09/2020', 'Compras', '$700'],
+      //   ['02/09/2020', 'Pagos', '$900'],]
+      // );
+      const arrayFCM=arraicito;
 
     
       return(
-        <View style={styles.container}>
+        <View style={styles.containerTab}>
             <Table borderStyle={{borderWidth:2, borderColor: materialTheme.COLORS.BUTTON_COLOR,}} style={{ width:"100%", height:"100%"}}>
-                <Rows data={arrayFCM} textStyle={styles.text}/>
+                <Rows data={arrayFCM} textStyle={styles.textTab}/>
             </Table>
         </View>
       )
@@ -44,8 +45,8 @@ function TablaResumen(props){
 }
 
 const styles = StyleSheet.create({
-    container: { width:"90%", height:"100%",backgroundColor:"white"},
-    text: { margin: 6 , alignSelf:"center"}
+    containerTab: { width:"90%", height:"100%",backgroundColor:"white"},
+    textTab: { margin: 6 , alignSelf:"center"}
 });
 
 
