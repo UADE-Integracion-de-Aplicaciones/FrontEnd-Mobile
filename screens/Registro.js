@@ -17,12 +17,71 @@ import { Block, theme, Text } from 'galio-framework';
 import materialTheme from '../constants/Theme';
 const { height, width } = Dimensions.get('screen');
 import Logo from '../assets/images/LogoBankMe.png';
+import axios from 'axios';
 
 import * as yup from 'yup';
 import CustomInput from '../screens/componenteRegistro/CustomInput';
 
 export default function Registro(props) {
     const { navigation } = props;
+///// --------------- CONEXION REGISTRO ------------------
+const postDataUsingSimplePostCall = (dni, usuario, contraseña, codigodeautenticacion) => {
+    var data = {
+      "dni": dni,
+      "nombre_usuario": usuario,
+      "clave" : contraseña,
+      "codigo_autorizacion": codigodeautenticacion,
+    };
+    console.log(dni,usuario, contraseña,codigodeautenticacion);
+    axios
+      .post('https://integracion-banco.herokuapp.com/clientes/usuario/registrar',data )
+      .then(res => {
+        // handle success
+        // handleUser(res);
+        navigation.navigate("LogIn");
+        
+        // alert(JSON.stringify(response.data));
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+      // .then(function (response) {
+      //   // handle success
+      //   // console.log(response);
+      //   navigation.navigate("Home");
+      //   alert(JSON.stringify(response.data));
+      // })
+      // .catch(function (error) {
+      //   // handle error
+      //   // console.log(response);
+      //   alert(error.message);
+      // });
+  };
+
+//   const handleUser = (datos) => {
+//     AsyncStorage.setItem('dni', JSON.stringify(datos.data.user.dni));
+//     // var name = JSON.stringify(datos.data.user.entidad.nombre + " " + datos.data.user.entidad.apellido);
+//     // name = name.replace('"','');
+//     // name = name.replace('"','');
+//     AsyncStorage.setItem('nombreUsuario', name);
+//     var clientid = JSON.stringify(datos.data.user.entidad.id);
+//     clientid = clientid.replace('"','');
+//     clientid = clientid.replace('"','');
+//     AsyncStorage.setItem('clave', clientid);
+//     // AsyncStorage.setItem('apellido', JSON.stringify(datos.data.user.cliente.apellido));
+//     AsyncStorage.setItem('codigo', JSON.stringify(datos.data.user.codigo));
+//     // var token = JSON.stringify(datos.data.user["x-access-token"]);
+//     // token = token.replace('"','');
+//     // token = token.replace('"','');
+//     // AsyncStorage.setItem('token', token);
+//     // console.log(token);
+//     navigation.navigate("LogIn");
+//   }
+
+
+
+
+///// ------------- VALIDACIONES ------------------------
     const signUpValidationSchema = yup.object().shape({
         dni: yup
           .number()
@@ -75,7 +134,8 @@ export default function Registro(props) {
                             confirmcontraseña: '',
                             codigodeautenticacion: '',
                         }}
-                        onSubmit={values => console.log(values)}
+                        // onSubmit={values => console.log(values)}
+                        onSubmit={values => postDataUsingSimplePostCall(values.dni, values.usuario,values.contraseña, values.codigodeautenticacion)}
                         >
                         {({ handleSubmit, isValid, errors, values,touched }) => (
                             <>

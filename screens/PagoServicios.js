@@ -43,7 +43,7 @@ import axios from 'axios';
 import Lupa from '../assets/icons/lupa.png';
 
 // import Switch from "./Switch";
-const options = ["2398473829", "532332294", "887624840"]; //cambiar para obtener los valores de la bd
+// const options = ["2398473829", "532332294", "887624840"]; //cambiar para obtener los valores de la bd
 const facturaList = [{
   "id": 1,
   "name":"Metrogas",
@@ -150,7 +150,9 @@ function PagoServicios(props){
       newData[index] = data.item;
       setFacturas(newData);
       };
-  
+
+
+//// -----------------INICIA VALIDACION DEL CODIGO DE PAGO ELECTRONICO ----------------------  
   const pagosValidationSchema = yup.object().shape({
     codigopagoelectronico: yup
         .number()
@@ -158,7 +160,9 @@ function PagoServicios(props){
         .typeError('Solo se permiten números')
         .required('El código es obligatorio para realizar pagos'),
     });
+//// -----------------TERMINA VALIDACION DEL CODIGO DE PAGO ELECTRONICO ----------------------  
 
+//// ---------------------------------------------------------- INICIA PICKER CON CUENTAS CARGADAS DE BD ----------------------------------------------------
     const getDataUsingSimpleGetCall = async (token) => {
           
       //   await AsyncStorage.getItem('client_id').then(value =>
@@ -232,7 +236,9 @@ function PagoServicios(props){
           
           // setNombreUsuario(nombreUsuario.replace('"',""));
         }, [selected]);
+//// ---------------------------------------------------------- TERMINA PICKER CON CUENTAS CARGADAS DE BD ----------------------------------------------------
         
+//// ---------------------------------------------------------- INICIA ESTILO DE FACTURAS ----------------------------------------------------
 
     const renderItem = data =>
     <TouchableOpacity
@@ -258,9 +264,11 @@ function PagoServicios(props){
     // </View>
     // );
     // }
+//// ---------------------------------------------------------- TERMINA ESTILO DE FACTURAS ----------------------------------------------------
+
     return(
                    
-            <View style={styles.pagosContainer}>
+            <View style={styles.pagosContainer} onPress={Keyboard.dismiss}>
                 <View style={{flexDirection:'row', height:'25%', width:"60%", left:"10%"}}>
                     <Formik
                         enableReinitialize
