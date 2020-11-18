@@ -22,18 +22,37 @@ const { height, width } = Dimensions.get('screen');
 import Logo from '../assets/images/LogoBankMe.png';
 import { Avatar } from "react-native-elements";
 import Usuario from '../assets/icons/usuario.png';
-import * as yup from 'yup';
+import axios from 'axios';
 
+import * as yup from 'yup';
 
 function OlvideContrasena(props){
     const {navigation}=props;
-    const [nombreUsuario, setNombreUsuario] = useState("Micaela Esquerdo"); //para definir el nombre del usuario desde la bd
     const olvidarValidationSchema = yup.object().shape({
         dni: yup
         .number()
         .typeError('Solo se permiten números')
         .required('El DNI es obligatorio'),
+        nombreusuario:yup
+        .string()
+        .required('El nombre de usuario es obligatorio'),
       }) 
+
+      const postDataUsingSimplePostCall = (dni,nombreusuario) => {
+        var data = {
+          "dni": dni,
+        };
+        console.log(dni, nombreusuario);
+        axios
+          .post('https://integracion-banco.herokuapp.com/olvide_mi_clave',data )
+          .then(res => {
+            navigation.navigate("CodigoCambioContrasena",{dni,nombreusuario});
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+          
+      };
     return (
         <ScrollView onPress={Keyboard.dismiss}>
             <SafeAreaView style={styles.container}>
@@ -42,9 +61,9 @@ function OlvideContrasena(props){
                     <View style={styles.signupContainer}>
                         <Formik
                             validationSchema={olvidarValidationSchema}
-                            initialValues={{ dni: ''}}
-                            // onSubmit={values => console.log(values)}
-                            onSubmit={()=>navigation.navigate("CodigoCambioContrasena")}
+                            initialValues={{ dni: '', nombreusuario:''}}
+                            onSubmit={values => postDataUsingSimplePostCall(values.dni, values.nombreusuario)}
+
                         >
                             {({
                             handleChange,
@@ -57,10 +76,9 @@ function OlvideContrasena(props){
                             }) => (
                             <>
                                 <Text
-                                style={{marginLeft:'-15%', top:"5%"}}
-                                // onPress={() => navigation.navigate("OlvideContrasena")}
+                                style={{marginLeft:'5%', top:"5%"}}
                                 >
-                                Ingrese el DNI asociado a su cuenta:
+                                Ingrese el DNI y nombre de usuario asociado a su cuenta:
                                 </Text>
                                 <View style={{width:"80%", alignItems:"center", top:"10%"}}>
                                     <Field
@@ -70,15 +88,19 @@ function OlvideContrasena(props){
                                         keyboardType="default"
                                         value={values.dni}
                                     />
+                                    <Field
+                                        component={CustomInput}
+                                        name="nombreusuario"
+                                        placeholder="  Nombre de usuario"
+                                        keyboardType="default"
+                                        value={values.nombreusuario}
+                                    />
                                     <TouchableOpacity                 
-                                    // onPress={() => navigation.navigate("CodigoCambioContrasena")}
                                     onPress={handleSubmit}
                                     disabled={!isValid}
                                     style={{...styles.button}}>
                                         <Text style={{alignSelf:"center", color:"white"}}>Continuar </Text>
                                     </TouchableOpacity>
-                                    {/* con este dni se tiene que conectar a la bd, chequear que existe*/}                 
-                                    {/* si todo ok, bd genera el codigo y se lo manda al usuario por mail, se abre la otra pantalla */}
                                 </View>
                             </>
                             )}
@@ -87,80 +109,12 @@ function OlvideContrasena(props){
                 </Block>
             </SafeAreaView>
         </ScrollView>
-        // <View onPress={Keyboard.dismiss}>
-        //     <Text
-        //     style={{left:"5%", top:"15%"}}
-        //     // onPress={() => navigation.navigate("OlvideContrasena")}
-        //     >
-        //     Ingrese el DNI asociado a su cuenta:
-        //     </Text>
-        //     <View style={styles.olvidarContainer}>
-        //         <Formik
-        //             validationSchema={olvidarValidationSchema}
-        //             initialValues={{ dni: ''}}
-        //             // onSubmit={values => console.log(values)}
-        //             onSubmit={()=>navigation.navigate("CodigoCambioContrasena")}
-        //         >
-        //             {({
-        //             handleChange,
-        //             handleBlur,
-        //             handleSubmit,
-        //             values,
-        //             errors,
-        //             touched,
-        //             isValid,
-        //             }) => (
-        //             <>
-        //                 <Field
-        //                     component={CustomInput}
-        //                     name="dni"
-        //                     placeholder="  DNI"
-        //                     keyboardType="default"
-        //                     value={values.dni}
-        //                 />
-        //                 <TouchableOpacity                 
-        //                 // onPress={() => navigation.navigate("CodigoCambioContrasena")}
-        //                 onPress={handleSubmit}
-        //                 disabled={!isValid}
-        //                 style={{...styles.button}}>
-        //                     <Text style={{alignSelf:"center", color:"white"}}>Continuar </Text>
-        //                 </TouchableOpacity>
-        //                 {/* con este dni se tiene que conectar a la bd, chequear que existe*/}                 
-        //                 {/* si todo ok, bd genera el codigo y se lo manda al usuario por mail, se abre la otra pantalla */}
-        //             </>
-        //             )}
-        //         </Formik>
-        //     </View>
-        // </View>
+        
     )
 }
 
 const styles = StyleSheet.create({
-    // button: {
-    //     width: "90%",
-    //     height: "17%",
-    //     backgroundColor: materialTheme.COLORS.BUTTON_COLOR,
-    //     borderRadius:10,
-    //     shadowRadius: 0,
-    //     shadowOpacity: 0,
-    //     top:"10%",
-    //     justifyContent:"center",
-    // },
-    // errorText: {
-    //     fontSize: 10,
-    //     color: 'red',
-    //     marginLeft:"7%",
-    // },
-    // olvidarContainer: {
-    //     width: '80%',
-    //     height:"60%",
-    //     alignItems: 'center',
-    //     backgroundColor: 'white',
-    //     padding: 10,
-    //     elevation: 10,
-    //     top:"20%",
-    //     alignSelf:"center",
-    // },
+ 
     container: {
         flex: 1,
         justifyContent: 'center',
@@ -168,11 +122,10 @@ const styles = StyleSheet.create({
     },
     signupContainer: {
         width: '80%',
-        height:"30%",
+        height:"50%",
         alignItems: 'center',
         padding: 10,
         elevation: 10,
-        // top:"0%",
         alignSelf:"center",
         backgroundColor: 'white',
 
@@ -193,11 +146,4 @@ const styles = StyleSheet.create({
 
 export default OlvideContrasena
 
-
-// sevicio
-// genera el codigo y se lo manda al usuario por mail
-// ingresar codigo
-// valido el codigo
-// ingreso contrasena y confirmacion de contrasena
-// boton confirmar
 

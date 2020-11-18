@@ -17,17 +17,17 @@ import { Formik, Field } from 'formik';
 import { Block, theme, Text } from 'galio-framework';
 import materialTheme from '../constants/Theme';
 import CustomInput from '../screens/componenteRegistro/CustomInput';
+import axios from 'axios';
 
 const { height, width } = Dimensions.get('screen');
 import * as yup from 'yup';
 
 
-export default function CambiarContrasena(props){
-    const {navigation}=props;
-    const [preg1,setpreg1]=useState("Nombre de primer mascota");
-    const [preg2,setpreg2]=useState("Donde nacio");
-    const [preg3,setpreg3]=useState("Pelicula favorita");
-
+export default function CambiarContrasena({route,props, navigation}){
+    const {dniusuario,nusuario,codigo}=route.params;
+    const dni=dniusuario;
+    const nombreusuario=nusuario;
+    const cod=codigo;
 
     const contrasenaNuevaValidationSchema = yup.object().shape({
         contrasenanueva: yup
@@ -43,6 +43,26 @@ export default function CambiarContrasena(props){
         .oneOf([yup.ref('contrasenanueva')], 'Las contraseñas no coinciden')
         .required('La confirmación de contraseña es obligatoria'),
       }) 
+  
+      const postDataUsingSimplePostCall = (contra) => {
+        var data = {
+          "dni": dni,
+          "nombre_usuario":nombreusuario,
+          "clave":contra,
+          "codigo_autorizacion":cod
+        };
+        console.log(dniusuario,nusuario,contra,cod);
+        axios
+          .post('https://integracion-banco.herokuapp.com/recuperar',data )
+          .then(res => {
+            navigation.navigate("ContrasenaNuevaConfirmada");
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+          
+      };
+
     return (
         <ScrollView onPress={Keyboard.dismiss}>
             <SafeAreaView style={styles.container}>
@@ -52,83 +72,22 @@ export default function CambiarContrasena(props){
                         <Formik
                         validationSchema={contrasenaNuevaValidationSchema}
                         initialValues={{
-                           resp1:'',
-                           resp2:'',
-                           resp3:'',
                            contrasenanueva:'',
                            confirmcontrasenanueva:'',
-
-
                         }}
-                        onSubmit={() => navigation.navigate("LogIn")}
+                        onSubmit={values => postDataUsingSimplePostCall(values.contrasenanueva) }
                         >
                         {({ handleSubmit, isValid, errors, values, touched }) => (
                             <>
                             <Text
-                            style={{marginLeft:'-40%'}}
-                            size={17}
-                            // onPress={() => navigation.navigate("OlvideContrasena")}
-                            >
-                            Preguntas de seguridad:                
-                            </Text>
-                            {/* <View style={{top:"5%"}}> */}
-                            <Text></Text>
-                            <Text
-                            style={{left:'-15%'}}
-                            // size={17}
-                            // onPress={() => navigation.navigate("OlvideContrasena")}
-                            >
-                            1. {preg1}               
-                            </Text>
-                            <Field
-                                component={CustomInput}
-                                name="resp1"
-                                placeholder="  Respuesta"
-                                value={values.resp1}
-
-                            />
-                            {/* </View> */}
-                            <Text
-                            style={{marginLeft:"-65%"}}
-                            // size={17}
-                            // onPress={() => navigation.navigate("OlvideContrasena")}
-                            >
-                            2. {preg2}               
-                            </Text>
-                            <Field
-                                component={CustomInput}
-                                name="resp2"
-                                placeholder="  Respuesta"
-                                value={values.resp2}
-
-                                keyboardType="default"
-                            />
-                            <Text
-                            style={{left:'-28%'}}
-                            // size={17}
-                            // onPress={() => navigation.navigate("OlvideContrasena")}
-                            >
-                            3. {preg3}               
-                            </Text>
-                            <Field
-                                component={CustomInput}
-                                name="resp3"
-                                placeholder="  Respuesta"
-                                value={values.resp3}
-
-                                keyboardType="default"
-                            />
-                            
-                            <Text
                             style={{left:'-15%'}}
                             size={17}
-                            // onPress={() => navigation.navigate("OlvideContrasena")}
                             >
                             Ingrese la contraseña nueva:               
                             </Text>
-                            <Text size={10} style={{ width:"90%", color:materialTheme.COLORS.BUTTON_COLOR, top:"0%"}}>Nota: la contraseña debe contener 8 caracteres mínimo. Al menos 1 minúscula, 1 mayúscula, 1 número y 1 símbolo {"("}# $ % * _ = +{")"}  </Text>
+                            <Text size={10} style={{ width:"90%", color:materialTheme.COLORS.BUTTON_COLOR, top:"5%"}}>Nota: la contraseña debe contener 8 caracteres mínimo. Al menos 1 minúscula, 1 mayúscula, 1 número y 1 símbolo {"("}# $ % * _ = +{")"}  </Text>
 
-                            <View style={{width:"90%", alignContent:"center", alignItems:"center"}}>    
+                            <View style={{width:"90%", alignContent:"center", alignItems:"center", top:"7%"}}>    
 
                                 <Field
                                     component={CustomInput}
@@ -172,7 +131,7 @@ const styles = StyleSheet.create({
     },
     signupContainer: {
         width: '90%',
-        height:"80%",
+        height:"50%",
         alignItems: 'center',
         padding: 10,
         elevation: 10,
