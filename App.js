@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Platform, StatusBar, Image } from 'react-native';
+import { Platform, StatusBar, Image, YellowBox, LogBox } from 'react-native';
 import { AppLoading } from 'expo';
 import { Asset } from 'expo-asset';
 import { Block, GalioProvider } from 'galio-framework';
@@ -16,9 +16,11 @@ enableScreens();
 
 
 export default class App extends React.Component {
+  
  
 
   render() {
+      
     
       return (
         <NavigationContainer>
@@ -47,6 +49,7 @@ export default class App extends React.Component {
 
   _handleFinishLoading = () => {
     this.setState({ isLoadingComplete: true });
+    LogBox.ignoreAllLogs(true);
   };
 }
 

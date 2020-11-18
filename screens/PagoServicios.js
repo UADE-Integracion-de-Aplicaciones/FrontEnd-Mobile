@@ -13,15 +13,17 @@ import {
   FlatList, 
   TouchableOpacity,
   Image,
+  KeyboardAvoidingView,
 } from 'react-native';
 import { Formik, Field, Form } from 'formik';
 import { Block, theme, Text } from 'galio-framework';
 import materialTheme from '../constants/Theme';
 const { height, width } = Dimensions.get('screen');
+
 import Logo from '../assets/images/LogoBankMe.png';
 // import { Picker } from "@react-native-community/picker";
 // import {Picker} from '@react-native-picker/picker';
-
+import moment from 'moment';
 import * as yup from 'yup';
 import CustomInput from './componenteRegistro/CustomInput';
 // import Icon from "react-native-vector-icons/Feather";
@@ -42,66 +44,6 @@ import AsyncStorage from '@react-native-community/async-storage';
 import axios from 'axios';
 import Lupa from '../assets/icons/lupa.png';
 
-// import Switch from "./Switch";
-// const options = ["2398473829", "532332294", "887624840"]; //cambiar para obtener los valores de la bd
-const facturaList = [{
-  "id": 1,
-  "name":"Metrogas",
-  "fecha":"22/11/20",
-  "monto":850 
-},
-{
-  "id": 2,
-  "name":"Luz",
-  "fecha":"22/11/20",
-  "monto":3000 
-  
-},
-{
-  "id": 3,
-  "name":"Colegio",
-  "fecha":"22/11/20",
-  "monto":3000 
-},
-{
-  "id": 4,
-  "name":"ABL",
-  "fecha":"22/11/20",
-  "monto":3000 
-},
-{
-  "id": 5,
-  "name":"Movistar",
-  "fecha":"22/11/20",
-  "monto":3000 
-  
-},
-{
-  "id": 6,
-  "name":"Metrogas",
-  "fecha":"22/11/20",
-  "monto":3000 
-},
-{
-  "id": 7,
-  "name":"Edesur",
-  "fecha":"22/11/20",
-  "monto":3000 
-  
-},
-{
-  "id": 8,
-  "name":"Movistar",
-  "fecha":"22/11/20",
-  "monto":3000 
-},
-{
-  "id": 9,
-  "name":"UADE",
-  "fecha":"22/11/20",
-  "monto":22000 
-  
-},];
 
 
 function PagoServicios(props){
@@ -113,29 +55,85 @@ function PagoServicios(props){
   const [facturas, setFacturas] = useState([]);
   const [cuentasPicker, setCuentasPicker] = useState([]); //setear las cuentas del usuario mediante consulta de bd con el id del usuario como parametro
   const [clientid, setClientId] = useState("");
+  const [saldoCuentaSeleccionada, setSaldo]=useState(0);
+  const [token, setToken] = useState("");
+  const [total, setTotal] = useState(0);
+  const [codigoPago, setCodigoPago] = useState("");
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
 
   // useEffect(() => {
   //   fetchData();
   // }, [yourDependency]);
 
-  const fetchData = () => {setLoading(true);
-    fetch("https://jsonplaceholder.typicode.com/photos")
-    .then(response => response.json())
-    .then(responseJson => {
-      responseJson = responseJson.map(item => {
-        item.isSelect = false;
-        item.selectedClass = styles.list;
-      return item;
-    });
-    setLoading(false);
-    setFacturas(facturaList);
-    }).catch(error => {setLoading(false);
-    });
+  const getDataUsingSimpleGetCall3 = async (codigoPago) => {
+    console.log(codigoPago);
+    codigoPago = "2223145421332"
+    setLoading(true);
+      axios
+      .get('https://integracion-banco.herokuapp.com/facturas/'+codigoPago+'', {
+        headers: {
+          Authorization: 'Bearer ' + token
+        }
+      })
+      .then(res => {
+        // console.log(res);
+        var total = 0.0;
+        // console.log(res.data.facturas[1]);
+      var id = 1;
+      var temp = [];
+      for (let i = 0; i < res.data.facturas.length; ++i) {
+        
+          temp.push(res.data.facturas[i]);
+          
+      }
+
+      
+      temp = temp.map(item => {
+
+          item.id = 0;
+          item.isSelect = false;
+          item.selectedClass = styles.list;
+        return item;
+        });
+
+        for(let i = 0; i < temp.length; ++i){
+          temp[i].id = i + 1;
+          temp[i].importe = parseFloat(temp[i].importe);
+          temp[i].importe.toFixed(2);
+          temp[i].fecha_vencimiento = moment(temp[i].fecha_vencimiento).format("DD-MM-YYYY");
+          total = temp[i].importe + total;
+        }
+
+
+     
+      console.log(temp);
+
+        setTotal(total);
+        setLoading(false);
+        setFacturas(temp);
+       
+      })
+      .catch(function (error) {
+        // handle error
+        setLoading(false);
+        alert(error.message);
+      });
     };
+
+  // const fetchData = () => {
+  //   fetch("https://jsonplaceholder.typicode.com/photos")
+  //   .then(response => response.json())
+  //   .then(responseJson => {
+  //     // facturaList.
+      
+  //   setLoading(false);
+  //   setFacturas(facturaList);
+  //   }).catch(error => {setLoading(false);
+  //   });
+  //   };
 
     const FlatListItemSeparator = () => <View style={styles.line} />;
 
@@ -170,6 +168,7 @@ function PagoServicios(props){
       //  );
             // var id = {"client_id" : clientid}
         console.log(token);
+        setToken(token);
           axios
           .get('https://integracion-banco.herokuapp.com/cuentas',{
             headers: {
@@ -210,32 +209,31 @@ function PagoServicios(props){
 
         }
 
-        useEffect(() => {
-          
+      
 
-          // axios
-          // .get('https://integracion-banco.herokuapp.com/cuenta/getSaldo', numero, {
-          //   headers: {
-          //     Authorization: 'Bearer ' + token
-          //   }
-          // } )
-          // .then(res => {
-          //   // console.log(res);
-          //   var temp = [];
-          //   for (let i = 0; i < res.data.cuentas.length; ++i) {
-          //     console.log(res.data.cuentas[i].numero_cuenta);
-          //     temp.push(res.data.cuentas[i].numero_cuenta);
-              
-          //   }
-          //   setCuentasPicker(temp);
-          // })
-          // .catch(function (error) {
-          //   // handle error
-          //   alert(error.message);
-          // });
-          
-          // setNombreUsuario(nombreUsuario.replace('"',""));
-        }, [selected]);
+        const getDataUsingSimpleGetCall2 = async (nrocuenta) => {
+          console.log(nrocuenta);
+            axios
+            .get('https://integracion-banco.herokuapp.com/cuentas/'+nrocuenta+'/resumen', {
+              headers: {
+                Authorization: 'Bearer ' + token
+              }
+            })
+            .then(res => {
+              // console.log(res);
+              var tempsaldo = 0;
+              tempsaldo=res.data.cuenta.saldo;
+              tempsaldo = parseFloat(tempsaldo);
+              tempsaldo = tempsaldo.toFixed(2);
+              console.log(tempsaldo);
+              setSaldo(tempsaldo);
+             
+            })
+            .catch(function (error) {
+              // handle error
+              alert(error.message);
+            });
+          };
 //// ---------------------------------------------------------- TERMINA PICKER CON CUENTAS CARGADAS DE BD ----------------------------------------------------
         
 //// ---------------------------------------------------------- INICIA ESTILO DE FACTURAS ----------------------------------------------------
@@ -250,9 +248,10 @@ function PagoServicios(props){
       style={{ width: 40, height: 40, margin: 6 }}
     /> */}
     {/* <Text style={styles.lightText}>  {data.item.title.charAt(0).toUpperCase() + data.item.title.slice(1)}  </Text> */}
-    <Text style={styles.lightText}> {data.item.name.charAt(0).toUpperCase() + data.item.name.slice(1)}</Text>
-    <Text style={styles.lightText}> Vence: {data.item.fecha.charAt(0).toUpperCase() + data.item.fecha.slice(1)}</Text>
-    <Text style={styles.lightText}> ${data.item.monto}</Text>
+    <Text style={styles.lightText}> Numero cuenta: {data.item.numero_factura.charAt(0).toUpperCase() + data.item.numero_factura.slice(1)}</Text>
+    <Text style={styles.lightText}> Importe: ${data.item.importe}</Text>
+    <Text style={styles.lightText}> Vence: {data.item.fecha_vencimiento}</Text>
+    
     </TouchableOpacity>
 
     // render() {
@@ -268,13 +267,15 @@ function PagoServicios(props){
 
     return(
                    
-            <View style={styles.pagosContainer} onPress={Keyboard.dismiss}>
+            <ScrollView  onPress={Keyboard.dismiss} >
+              <View style={styles.pagosContainer}>
+              <Block flex style={{backgroundColor: materialTheme.COLORS.BACKGROUND, width:width, height:height}} >
                 <View style={{flexDirection:'row', height:'25%', width:"60%", left:"10%"}}>
                     <Formik
                         enableReinitialize
                         validationSchema={pagosValidationSchema}
-                        initialValues={{ usuario: '', password: '' }}
-                        onSubmit={values => console.log(values)}
+                        initialValues={{ codigopagoelectronico: ''}}
+                        onSubmit={values => setCodigoPago(values.codigopagoelectronico)}
                       >
                         {({
                           handleChange,
@@ -290,7 +291,7 @@ function PagoServicios(props){
                                 name="codigopagoelectronico"
                                 placeholder="  Código de pago electrónico"
                                 style={styles.textInput}
-                                onChangeText={handleChange('codigopagoelectronico')}
+                                onChangeText={handleChange}
                                 onBlur={handleBlur('codigopagoelectronico')}
                                 value={values.codigopagoelectronico}
                               />
@@ -299,7 +300,7 @@ function PagoServicios(props){
                         )}
                     </Formik>
                    
-                    <TouchableOpacity style={{ height: "25%", width: "70%",left:"0%", top:"7%"}} onPress={() => navigation.navigate("Home") }>
+                    <TouchableOpacity style={{ height: "25%", width: "70%",left:"0%", top:"7%"}} onPress={() => getDataUsingSimpleGetCall3(codigoPago)}>
                       <Image
                           source={Lupa}
                           style={{top:"10%", height: "50%", width: "15%" }}
@@ -310,6 +311,7 @@ function PagoServicios(props){
                   <SelectPicker
                       onValueChange={(value) => {
                           setSelected(value);
+                          getDataUsingSimpleGetCall2(value)
                       }}
                       selected={selected}
                       placeholder="Seleccione una Cuenta"
@@ -325,7 +327,8 @@ function PagoServicios(props){
           
                   </SelectPicker>
                   <Text style={{ textAlign: "center", top: "1%", fontSize: 20 }}>
-                    Saldo: $300
+                    Saldo: $
+                    {saldoCuentaSeleccionada}
                     {/* {nombreBanco}  aca tengo que obtener el saldo de la cuenta de la bd*/}
                   </Text>
 
@@ -353,7 +356,8 @@ function PagoServicios(props){
 
                   <View style={{top:"5%", width:width, height:height, alignItems:"center"}}> 
                     <Text style={{ textAlign: "center", top: "3%", fontSize: 20 }}>
-                      Total NO vencido: $40850
+                      Total NO vencido: $
+                      {total}
                       {/* {nombreBanco}  aca tengo que obtener el total no vencido de facturas de la bd*/}
                     </Text>
                     <Formik
@@ -396,7 +400,9 @@ function PagoServicios(props){
                     </View>
                   </View>
                 </View>
-            </View>
+                </Block>
+                </View>
+            </ScrollView>
         
     )
 
