@@ -66,10 +66,3 @@ const styles = StyleSheet.create({
 
 export default ContrasenaNuevaConfirmada
 
-
-// sevicio
-// genera el codigo y se lo manda al usuario por mail
-// ingresar codigo
-// valido el codigo
-// ingreso contrasena y confirmacion de contrasena
-// boton confirmar
