@@ -15,39 +15,39 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 function LogIn ({navigation}) {
     // const { navigation } = props
-    const [usuario, setUsuario] = useState(""); //este valor lo mando a la bd para chequear usuario
-    const [password, setPassword] = useState(""); //este valor lo mando a la bd para chequear password
+    // const [usuario, setUsuario] = useState(""); //este valor lo mando a la bd para chequear usuario
+    // const [password, setPassword] = useState(""); //este valor lo mando a la bd para chequear password
     // const [showPassword, setShowPassword] = useState(false);
     // const [id, setIdUsuario]=useState("123") //la idea es pasar este valor a la pantalla de Home asi se carga el Home con los datos del usuario que ingreso
 
-    const getDataUsingSimpleGetCall = () => {
-      axios
-        .get('https://jsonplaceholder.typicode.com/posts/1')
-        .then(function (response) {
-          // handle success
-          alert(JSON.stringify(response.data));
-        })
-        .catch(function (error) {
-          // handle error
-          alert(error.message);
-        })
-        .finally(function () {
-          // always executed
-          alert('Finally called');
-        });
-    };
+    // const getDataUsingSimpleGetCall = () => {
+    //   axios
+    //     .get('https://jsonplaceholder.typicode.com/posts/1')
+    //     .then(function (response) {
+    //       // handle success
+    //       alert(JSON.stringify(response.data));
+    //     })
+    //     .catch(function (error) {
+    //       // handle error
+    //       alert(error.message);
+    //     })
+    //     .finally(function () {
+    //       // always executed
+    //       alert('Finally called');
+    //     });
+    // };
   
-    const getDataUsingAsyncAwaitGetCall = async () => {
-      try {
-        const response = await axios.get(
-          'https://jsonplaceholder.typicode.com/posts/1',
-        );
-        alert(JSON.stringify(response.data));
-      } catch (error) {
-        // handle error
-        alert(error.message);
-      }
-    };
+    // const getDataUsingAsyncAwaitGetCall = async () => {
+    //   try {
+    //     const response = await axios.get(
+    //       'https://jsonplaceholder.typicode.com/posts/1',
+    //     );
+    //     alert(JSON.stringify(response.data));
+    //   } catch (error) {
+    //     // handle error
+    //     alert(error.message);
+    //   }
+    // };
   
     const postDataUsingSimplePostCall = (usuario, password) => {
       var data = {
@@ -101,29 +101,29 @@ function LogIn ({navigation}) {
       navigation.navigate("Home");
     }
   
-    const multipleRequestsInSingleCall = () => {
-      axios
-        .all([
-          axios
-            .get('https://jsonplaceholder.typicode.com/posts/1')
-            .then(function (response) {
-              // handle success
-              alert('Post 1 : ' + JSON.stringify(response.data));
-            }),
-          axios
-            .get('https://jsonplaceholder.typicode.com/posts/2')
-            .then(function (response) {
-              // handle success
-              alert('Post 2 : ' + JSON.stringify(response.data));
-            }),
-        ])
-        .then(
-          axios.spread(function (acct, perms) {
-            // Both requests are now complete
-            alert('Both requests are now complete');
-          }),
-        );
-    };
+    // const multipleRequestsInSingleCall = () => {
+    //   axios
+    //     .all([
+    //       axios
+    //         .get('https://jsonplaceholder.typicode.com/posts/1')
+    //         .then(function (response) {
+    //           // handle success
+    //           alert('Post 1 : ' + JSON.stringify(response.data));
+    //         }),
+    //       axios
+    //         .get('https://jsonplaceholder.typicode.com/posts/2')
+    //         .then(function (response) {
+    //           // handle success
+    //           alert('Post 2 : ' + JSON.stringify(response.data));
+    //         }),
+    //     ])
+    //     .then(
+    //       axios.spread(function (acct, perms) {
+    //         // Both requests are now complete
+    //         alert('Both requests are now complete');
+    //       }),
+    //     );
+    // };
     //navigation.navigate('Home', {idUsuario: id})
 
     const loginValidationSchema = yup.object().shape({
@@ -137,7 +137,6 @@ function LogIn ({navigation}) {
     })  
     // console.log(usuario,password)
     return (
-
       <ScrollView onPress={Keyboard.dismiss}>
         <View>
           <Block flex style={{backgroundColor: materialTheme.COLORS.BACKGROUND, width:width, height:height}} >
