@@ -69,11 +69,14 @@ function PagoServicios(props){
   // }, [yourDependency]);
 
   const getDataUsingSimpleGetCall3 = async (codigoPago) => {
-    console.log(codigoPago);
-    codigoPago = "2223145421332"
+    
+    var codigo = "";
+    codigo = codigoPago.codigopagoelectronico;
+    console.log(codigo);
+    // codigoPago = "2223145421332"
     setLoading(true);
       axios
-      .get('https://integracion-banco.herokuapp.com/facturas/'+codigoPago+'', {
+      .get('https://integracion-banco.herokuapp.com/facturas/'+codigo+'', {
         headers: {
           Authorization: 'Bearer ' + token
         }
@@ -275,7 +278,7 @@ function PagoServicios(props){
                         enableReinitialize
                         validationSchema={pagosValidationSchema}
                         initialValues={{ codigopagoelectronico: ''}}
-                        onSubmit={values => setCodigoPago(values.codigopagoelectronico)}
+                        onSubmit={values => getDataUsingSimpleGetCall3(values)}
                       >
                         {({
                           handleChange,
@@ -291,21 +294,23 @@ function PagoServicios(props){
                                 name="codigopagoelectronico"
                                 placeholder="  Código de pago electrónico"
                                 style={styles.textInput}
-                                onChangeText={handleChange}
+                                onChangeText={handleChange('codigopagoelectronico')}
                                 onBlur={handleBlur('codigopagoelectronico')}
                                 value={values.codigopagoelectronico}
                               />
+
+                              <TouchableOpacity style={{ height: "25%", width: "70%",left:"0%", top:"7%"}} onPress={handleSubmit}>
+                                <Image
+                                    source={Lupa}
+                                    style={{top:"10%", height: "50%", width: "15%" }}
+                                />
+                              </TouchableOpacity>
                             
                           </>
                         )}
                     </Formik>
                    
-                    <TouchableOpacity style={{ height: "25%", width: "70%",left:"0%", top:"7%"}} onPress={() => getDataUsingSimpleGetCall3(codigoPago)}>
-                      <Image
-                          source={Lupa}
-                          style={{top:"10%", height: "50%", width: "15%" }}
-                      />
-                    </TouchableOpacity>
+                    
                 </View>
                 <View style={{top:"-15%"}}>
                   <SelectPicker

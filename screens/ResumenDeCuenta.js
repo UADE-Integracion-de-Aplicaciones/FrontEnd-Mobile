@@ -75,57 +75,6 @@ function ResumenDeCuenta(props){
 
         }
 
-        useEffect(() => {
-          
-
-          // axios
-          // .get('https://integracion-banco.herokuapp.com/cuenta/getSaldo', numero, {
-          //   headers: {
-          //     Authorization: 'Bearer ' + token
-          //   }
-          // } )
-          // .then(res => {
-          //   // console.log(res);
-          //   var temp = [];
-          //   for (let i = 0; i < res.data.cuentas.length; ++i) {
-          //     console.log(res.data.cuentas[i].numero_cuenta);
-          //     temp.push(res.data.cuentas[i].numero_cuenta);
-              
-          //   }
-          //   setCuentasPicker(temp);
-          // })
-          // .catch(function (error) {
-          //   // handle error
-          //   alert(error.message);
-          // });
-          
-          // setNombreUsuario(nombreUsuario.replace('"',""));
-        }, [selected]);
-        //// ---------------------------------------------------------- TERMINA PICKER CON CUENTAS CARGADAS DE BD ----------------------------------------------------
-        //// ---------------------------------------------------------- INICIA SALDO DE CUENTA ----------------------------------------------------
-        // const getDataUsingSimpleGetCall2 = async (nrocuenta) => {
-        //   console.log(nrocuenta);
-        //     axios
-        //     .get('https://integracion-banco.herokuapp.com/cuentas/'+nrocuenta+'/resumen', {
-        //       headers: {
-        //         Authorization: 'Bearer ' + token
-        //       }
-        //     })
-        //     .then(res => {
-        //       // console.log(res);
-        //       var temp = 0;
-        //       temp=res.data.cuenta.saldo;
-        //       console.log(temp);
-        //       setSaldo(temp);
-             
-        //     })
-        //     .catch(function (error) {
-        //       // handle error
-        //       alert(error.message);
-        //     });
-        //   };
-      
-        //// ---------------------------------------------------------- TERMINA SALDO DE CUENTA ----------------------------------------------------
         //// ---------------------------------------------------------- INICIA RESUMEN DE CUENTA ----------------------------------------------------
         const getDataUsingSimpleGetCall3 = async (nrocuenta) => {
           console.log(nrocuenta);
@@ -151,7 +100,7 @@ function ResumenDeCuenta(props){
                 var cantidad = parseFloat(res.data.movimientos[i].cantidad);
                 cantidad = cantidad.toFixed(2);
 
-                var date = moment(res.data.movimientos[i].fecha_creacion).format("YYYY-MM-DD");
+                var date = moment(res.data.movimientos[i].fecha_creacion).format("DD-MM-YYYY");
 
                 tempi.push(date, res.data.movimientos[i].concepto, cantidad );
                 temp.push(tempi);
