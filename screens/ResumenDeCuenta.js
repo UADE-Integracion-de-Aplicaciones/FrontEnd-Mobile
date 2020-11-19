@@ -19,7 +19,7 @@ import { Table, Row, Rows } from 'react-native-table-component';
 import materialTheme from '../constants/Theme';
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
-// 
+import moment from 'moment';
 
 function ResumenDeCuenta(props){
         // const [cuenta, setCuenta] = useState("");import { Table, Row, Rows } from 'react-native-table-component';
@@ -47,7 +47,6 @@ function ResumenDeCuenta(props){
             for (let i = 0; i < res.data.cuentas.length; ++i) {
               console.log(res.data.cuentas[i].numero_cuenta);
               temp.push(res.data.cuentas[i].numero_cuenta);
-              
             }
             setCuentasPicker(temp);
           })
@@ -75,57 +74,6 @@ function ResumenDeCuenta(props){
 
         }
 
-        useEffect(() => {
-          
-
-          // axios
-          // .get('https://integracion-banco.herokuapp.com/cuenta/getSaldo', numero, {
-          //   headers: {
-          //     Authorization: 'Bearer ' + token
-          //   }
-          // } )
-          // .then(res => {
-          //   // console.log(res);
-          //   var temp = [];
-          //   for (let i = 0; i < res.data.cuentas.length; ++i) {
-          //     console.log(res.data.cuentas[i].numero_cuenta);
-          //     temp.push(res.data.cuentas[i].numero_cuenta);
-              
-          //   }
-          //   setCuentasPicker(temp);
-          // })
-          // .catch(function (error) {
-          //   // handle error
-          //   alert(error.message);
-          // });
-          
-          // setNombreUsuario(nombreUsuario.replace('"',""));
-        }, [selected]);
-        //// ---------------------------------------------------------- TERMINA PICKER CON CUENTAS CARGADAS DE BD ----------------------------------------------------
-        //// ---------------------------------------------------------- INICIA SALDO DE CUENTA ----------------------------------------------------
-        const getDataUsingSimpleGetCall2 = async (nrocuenta) => {
-          console.log(nrocuenta);
-            axios
-            .get('https://integracion-banco.herokuapp.com/cuentas/'+nrocuenta+'/resumen', {
-              headers: {
-                Authorization: 'Bearer ' + token
-              }
-            })
-            .then(res => {
-              // console.log(res);
-              var temp = 0;
-              temp=res.data.cuenta.saldo;
-              console.log(temp);
-              setSaldo(temp);
-             
-            })
-            .catch(function (error) {
-              // handle error
-              alert(error.message);
-            });
-          };
-      
-        //// ---------------------------------------------------------- TERMINA SALDO DE CUENTA ----------------------------------------------------
         //// ---------------------------------------------------------- INICIA RESUMEN DE CUENTA ----------------------------------------------------
         const getDataUsingSimpleGetCall3 = async (nrocuenta) => {
           console.log(nrocuenta);
@@ -137,11 +85,23 @@ function ResumenDeCuenta(props){
             })
             .then(res => {
               // console.log(res);
+              var tempsaldo = 0;
+              tempsaldo=res.data.cuenta.saldo;
+              tempsaldo = parseFloat(tempsaldo);
+              tempsaldo = tempsaldo.toFixed(2);
+              console.log(tempsaldo);
+              setSaldo(tempsaldo);
+
               var temp = [];
               for (let i = 0; i < res.data.movimientos.length; ++i) {
                 var tempi=[];
                 // console.log(res.data.cuentas[i].numero_cuenta);
-                tempi.push(res.data.movimientos[i].fecha_creacion, res.data.movimientos[i].concepto, res.data.movimientos[i].cantidad );
+                var cantidad = parseFloat(res.data.movimientos[i].cantidad);
+                cantidad = cantidad.toFixed(2);
+
+                var date = moment(res.data.movimientos[i].fecha_creacion).format("DD-MM-YYYY");
+
+                tempi.push(date, res.data.movimientos[i].concepto, cantidad );
                 temp.push(tempi);
               }
               setMovimientos(temp);
@@ -160,7 +120,7 @@ function ResumenDeCuenta(props){
                           onValueChange={(value) => {
                               setSelected(value);
                               // setNumero({numero_cuenta: value});/
-                              getDataUsingSimpleGetCall2(value)
+                              // getDataUsingSimpleGetCall2(value)
                               getDataUsingSimpleGetCall3(value)
                           }}
                           selected={selected}
