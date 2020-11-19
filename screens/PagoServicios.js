@@ -1,45 +1,22 @@
 import React, {useState, useEffect} from 'react';
 import {
-  SafeAreaView,
   StyleSheet,
   View,
-  StatusBar,
   TextInput,
-  Button,
   Dimensions,
-  ImageBackground,
   Keyboard,
   ScrollView,
   FlatList, 
   TouchableOpacity,
   Image,
-  KeyboardAvoidingView,
 } from 'react-native';
 import { Formik, Field, Form } from 'formik';
 import { Block, theme, Text } from 'galio-framework';
 import materialTheme from '../constants/Theme';
 const { height, width } = Dimensions.get('screen');
-
-import Logo from '../assets/images/LogoBankMe.png';
-// import { Picker } from "@react-native-community/picker";
-// import {Picker} from '@react-native-picker/picker';
 import moment from 'moment';
 import * as yup from 'yup';
-import CustomInput from './componenteRegistro/CustomInput';
-// import Icon from "react-native-vector-icons/Feather";
-import {
-  handleTextInput,
-  withNextInputAutoFocusForm,
-  withNextInputAutoFocusInput,
-  withPickerValues
-} from "react-native-formik";
-import { TextField } from "react-native-material-textfield";
-import { compose } from "recompose";
-// import {Picker} from "@react-native-community/picker";
-// import {Picker} from "@react-native-picker/picker";
 import SelectPicker from 'react-native-form-select-picker';
-import CustomMultiPicker from "react-native-multiple-select-list";
-import { findLastKey } from 'lodash';
 import AsyncStorage from '@react-native-community/async-storage';
 import axios from 'axios';
 import Lupa from '../assets/icons/lupa.png';
@@ -47,9 +24,6 @@ import Lupa from '../assets/icons/lupa.png';
 
 
 function PagoServicios(props){
-  const { navigation } = props
-  const [cuenta, setCuenta] = useState("");
-  const [cbucuenta, setCBUPicker] = useState([]);
   const [selected, setSelected] = useState();
   const [loading, setLoading] = useState(false);
   const [facturas, setFacturas] = useState([]);
@@ -58,21 +32,52 @@ function PagoServicios(props){
   const [saldoCuentaSeleccionada, setSaldo]=useState(0);
   const [token, setToken] = useState("");
   const [total, setTotal] = useState(0);
-  const [codigoPago, setCodigoPago] = useState("");
+  const [pagoId, setPagoId] = useState([]);
+  // const [codigoPago, setCodigoPago] = useState("");
+  
 
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
+  
+  const postPagoServicio = async (monto) => {
 
-  // useEffect(() => {
-  //   fetchData();
-  // }, [yourDependency]);
+    var pagarInfo = {
+      "facturas_ids": [],
+      "numero_cuenta": selected,
+      "cantidad": 0
+    };
+    for(let i = 0; i<facturas.length; ++i){
+      if(facturas[i].isSelect){
+        pagarInfo.facturas_ids.push(parseInt(facturas[i].numero_factura))
+      }
+    }
+    pagarInfo.cantidad = parseFloat(monto);
+    pagarInfo.cantidad.toFixed(2);
+    console.log(pagarInfo);
+
+      axios
+      .post('https://integracion-banco.herokuapp.com/transacciones/clientes/pagar_servicio', pagarInfo ,{
+        headers: {
+          Authorization: 'Bearer ' + token
+        }
+      })
+      .then(res => {
+        // console.log(res);
+        alert("El pago se ha realizado con exito");
+       
+      })
+      .catch(function (error) {
+        // handle error
+        alert(error.message);
+      });
+    };
+
+
 
   const getDataUsingSimpleGetCall3 = async (codigoPago) => {
     
     var codigo = "";
     codigo = codigoPago.codigopagoelectronico;
     console.log(codigo);
+    console.log(selected);
     // codigoPago = "2223145421332"
     setLoading(true);
       axios
@@ -126,17 +131,6 @@ function PagoServicios(props){
       });
     };
 
-  // const fetchData = () => {
-  //   fetch("https://jsonplaceholder.typicode.com/photos")
-  //   .then(response => response.json())
-  //   .then(responseJson => {
-  //     // facturaList.
-      
-  //   setLoading(false);
-  //   setFacturas(facturaList);
-  //   }).catch(error => {setLoading(false);
-  //   });
-  //   };
 
     const FlatListItemSeparator = () => <View style={styles.line} />;
 
@@ -153,7 +147,6 @@ function PagoServicios(props){
       };
 
 
-//// -----------------INICIA VALIDACION DEL CODIGO DE PAGO ELECTRONICO ----------------------  
   const pagosValidationSchema = yup.object().shape({
     codigopagoelectronico: yup
         .number()
@@ -161,9 +154,7 @@ function PagoServicios(props){
         .typeError('Solo se permiten números')
         .required('El código es obligatorio para realizar pagos'),
     });
-//// -----------------TERMINA VALIDACION DEL CODIGO DE PAGO ELECTRONICO ----------------------  
 
-//// ---------------------------------------------------------- INICIA PICKER CON CUENTAS CARGADAS DE BD ----------------------------------------------------
     const getDataUsingSimpleGetCall = async (token) => {
           
       //   await AsyncStorage.getItem('client_id').then(value =>
@@ -212,12 +203,11 @@ function PagoServicios(props){
 
         }
 
-      
 
         const getDataUsingSimpleGetCall2 = async (nrocuenta) => {
           console.log(nrocuenta);
             axios
-            .get('https://integracion-banco.herokuapp.com/cuentas/'+nrocuenta+'/resumen', {
+            .get('https://integracion-banco.herokuapp.com/cuentas/'+nrocuenta+'', {
               headers: {
                 Authorization: 'Bearer ' + token
               }
@@ -237,9 +227,9 @@ function PagoServicios(props){
               alert(error.message);
             });
           };
-//// ---------------------------------------------------------- TERMINA PICKER CON CUENTAS CARGADAS DE BD ----------------------------------------------------
-        
-//// ---------------------------------------------------------- INICIA ESTILO DE FACTURAS ----------------------------------------------------
+
+      
+
 
     const renderItem = data =>
     <TouchableOpacity
@@ -251,7 +241,7 @@ function PagoServicios(props){
       style={{ width: 40, height: 40, margin: 6 }}
     /> */}
     {/* <Text style={styles.lightText}>  {data.item.title.charAt(0).toUpperCase() + data.item.title.slice(1)}  </Text> */}
-    <Text style={styles.lightText}> Numero cuenta: {data.item.numero_factura.charAt(0).toUpperCase() + data.item.numero_factura.slice(1)}</Text>
+    <Text style={styles.lightText}> Numero factura: {data.item.numero_factura.charAt(0).toUpperCase() + data.item.numero_factura.slice(1)}</Text>
     <Text style={styles.lightText}> Importe: ${data.item.importe}</Text>
     <Text style={styles.lightText}> Vence: {data.item.fecha_vencimiento}</Text>
     
@@ -273,10 +263,10 @@ function PagoServicios(props){
             <ScrollView  onPress={Keyboard.dismiss} >
               <View style={styles.pagosContainer}>
               <Block flex style={{backgroundColor: materialTheme.COLORS.BACKGROUND, width:width, height:height}} >
-                <View style={{flexDirection:'row', height:'25%', width:"60%", left:"10%"}}>
+                <View style={{flexDirection:'row', height:'25%', width:"60%", left:"8%"}}>
                     <Formik
                         enableReinitialize
-                        validationSchema={pagosValidationSchema}
+                        // validationSchema={pagosValidationSchema}
                         initialValues={{ codigopagoelectronico: ''}}
                         onSubmit={values => getDataUsingSimpleGetCall3(values)}
                       >
@@ -367,9 +357,9 @@ function PagoServicios(props){
                     </Text>
                     <Formik
                         enableReinitialize
-                        validationSchema={pagosValidationSchema}
+                        // validationSchema={pagosValidationSchema}
                         initialValues={{ montoapagar: ''}}
-                        onSubmit={values => console.log(values)}
+                        onSubmit={values => postPagoServicio(values.montoapagar)}
                       >
                         {({
                           handleChange,
@@ -390,19 +380,18 @@ function PagoServicios(props){
                               value={values.montoapagar}
                               keyboardType= 'number-pad'
                             />
+
+                            <TouchableOpacity                 
+                              onPress={handleSubmit}
+                              // disabled={!isValid}
+                              style={{...styles.button, justifyContent:"center"}}>
+                                <Text style={{alignSelf:"center", color:"white"}}>Pagar </Text>
+                            </TouchableOpacity>
+                            
                           </>
                         )}
                     </Formik>
-                    <View style={{top: "3%"}}>
-                      <Button
-                            // onPress={handleSubmit}
-                            title="Pagar"
-                            // disabled={!isValid}
-                            
-                            color={materialTheme.COLORS.BUTTON_COLOR}
-                          
-                        />
-                    </View>
+                    
                   </View>
                 </View>
                 </Block>
@@ -427,7 +416,7 @@ const styles = StyleSheet.create({
   containerSelect:{
     backgroundColor:"white",
     alignSelf:"center",
-    width:"100%",
+    width:"90%",
     margin:10,
     alignItems:"center",
     borderRadius:10,
@@ -484,6 +473,15 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     elevation: 10,
     borderWidth: 2
+  },
+  button: {
+    width: width - theme.SIZES.BASE * 15,
+    height: theme.SIZES.BASE * 2,
+    backgroundColor: materialTheme.COLORS.BUTTON_COLOR,
+    borderRadius:5,
+    shadowRadius: 0,
+    shadowOpacity: 0,
+    top:"5%",
   },
 })
 

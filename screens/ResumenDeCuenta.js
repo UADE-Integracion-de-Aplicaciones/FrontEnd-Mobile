@@ -47,7 +47,6 @@ function ResumenDeCuenta(props){
             for (let i = 0; i < res.data.cuentas.length; ++i) {
               console.log(res.data.cuentas[i].numero_cuenta);
               temp.push(res.data.cuentas[i].numero_cuenta);
-              
             }
             setCuentasPicker(temp);
           })

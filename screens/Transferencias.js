@@ -38,6 +38,7 @@ function Transferencias(props){
     const [modalVisible, setModalVisible] = useState(false);
     const [cuentasPicker, setCuentasPicker] = useState([]); //setear las cuentas del usuario mediante consulta de bd con el id del usuario como parametro
     const [clientid, setClientId] = useState("");
+    const [token, setToken] = useState("");
 
     const getDataUsingSimpleGetCall = async (token) => {
           
@@ -46,6 +47,7 @@ function Transferencias(props){
         //  );
               // var id = {"client_id" : clientid}
           console.log(token);
+          setToken(token);
             axios
             .get('https://integracion-banco.herokuapp.com/cuentas',{
               headers: {
@@ -56,8 +58,8 @@ function Transferencias(props){
               // console.log(res);
               var temp = [];
               for (let i = 0; i < res.data.cuentas.length; ++i) {
-                console.log(res.data.cuentas[i].numero_cuenta);
-                temp.push(res.data.cuentas[i].numero_cuenta);
+                console.log(res.data.cuentas[i].cbu);
+                temp.push(res.data.cuentas[i].cbu);
                 
               }
               setCuentasPicker(temp);
@@ -67,6 +69,37 @@ function Transferencias(props){
               alert(error.message);
             });
           };
+
+          const postTransferencia = async (monto, destino) => {
+
+            var transferenciaInfo = {
+              "cbu_origen": selected,
+              "cbu_destino": destino,
+              "cantidad": 0
+            };
+            transferenciaInfo.cantidad = parseFloat(monto);
+            transferenciaInfo.cantidad.toFixed(2);
+            console.log(transferenciaInfo);
+        
+              axios
+              .post('https://integracion-banco.herokuapp.com/transacciones/clientes/transferir', transferenciaInfo ,{
+                headers: {
+                  Authorization: 'Bearer ' + token
+                }
+              })
+              .then(res => {
+                // console.log(res);
+                alert("La transferencia se ha realizado con exito");
+                navigation.navigate("TransferenciaExitosa");
+
+               
+              })
+              .catch(function (error) {
+                // handle error
+                alert(error.message);
+              });
+            };
+
           useEffect(() => {
             AsyncStorage.getItem('clientid').then(value =>
                   setClientId(value)
@@ -123,11 +156,7 @@ function Transferencias(props){
         .number()
         // .typeError('Solo se permiten números')
         .required('El destinatario es obligatorio'),
-        
-        concepto: yup
-        .string()
-        // .typeError('Solo se permiten números')
-        .required('El concepto es obligatorio'),
+     
       }) 
 
     const initialValues={
@@ -141,9 +170,9 @@ function Transferencias(props){
                     <View style={styles.signupContainer}>
                         <Formik
                             validationSchema={codigoValidationSchema}
-                            initialValues={{montotransferencia: '', destinatario:'', selected:'', concepto:''
+                            initialValues={{montotransferencia: '', destinatario:'', selected:''
                             }}
-                            onSubmit={()=> navigation.navigate("TransferenciaExitosa")}
+                            onSubmit={values => postTransferencia(values.montotransferencia, values.destinatario)}
                             // onSubmit={() => {
                             //     setModalVisible(true);
                             //   }}
@@ -213,21 +242,7 @@ function Transferencias(props){
                                     ))}
                         
                                 </SelectPicker>
-                                <Text
-                                style={{margin:5}}
-                                // onPress={() => navigation.navigate("OlvideContrasena")}
-                                >
-                                Ingrese el concepto:
-                                </Text>
-                                <View style={{width:"90%", top:"0%",alignItems:"center", alignSelf:"center"}}>
-                                    <Field
-                                        component={CustomInput}
-                                        name="concepto"
-                                        placeholder="  Concepto"
-                                        keyboardType='default'
-                                        value={values.concepto}
-                                    />
-                                </View>
+                               
                                 <TouchableOpacity                 
                                     onPress={handleSubmit}
                                     disabled={!isValid}
