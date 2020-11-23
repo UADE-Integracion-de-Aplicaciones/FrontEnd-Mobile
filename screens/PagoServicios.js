@@ -46,7 +46,7 @@ function PagoServicios(props){
     };
     for(let i = 0; i<facturas.length; ++i){
       if(facturas[i].isSelect){
-        pagarInfo.facturas_ids.push(parseInt(facturas[i].numero_factura))
+        pagarInfo.facturas_ids.push(facturas[i].id)
       }
     }
     pagarInfo.cantidad = parseFloat(monto);
@@ -101,14 +101,14 @@ function PagoServicios(props){
       
       temp = temp.map(item => {
 
-          item.id = 0;
+          item.index = 0;
           item.isSelect = false;
           item.selectedClass = styles.list;
         return item;
         });
 
         for(let i = 0; i < temp.length; ++i){
-          temp[i].id = i + 1;
+          temp[i].index = i + 1;
           temp[i].importe = parseFloat(temp[i].importe);
           temp[i].importe.toFixed(2);
           temp[i].fecha_vencimiento = moment(temp[i].fecha_vencimiento).format("DD-MM-YYYY");
@@ -139,7 +139,7 @@ function PagoServicios(props){
       data.item.selectedClass = data.item.isSelect?
                     styles.selected: styles.list;
       const index = facturas.findIndex(
-        item => data.item.id === item.id
+        item => data.item.index === item.index
       );
       const newData = [...facturas];
       newData[index] = data.item;
