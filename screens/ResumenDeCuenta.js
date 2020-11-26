@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
   head: { height: "5%", width:"90%", backgroundColor: materialTheme.COLORS.BUTTON_COLOR, borderRadius:7, top:"4%" },
   text: { margin: 6, borderRadius:7 , alignSelf:"center",},
   containerTab: { width:"90%", height:"100%",backgroundColor:"white"},
-  textTab: { margin: 6 , alignSelf:"center"}
+  textTab: { margin: 6 , alignSelf:"flex-start"}
 })
 
 
