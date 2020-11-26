@@ -107,12 +107,24 @@ function PagoServicios(props){
         return item;
         });
 
+        var now = moment();
+
         for(let i = 0; i < temp.length; ++i){
           temp[i].index = i + 1;
           temp[i].importe = parseFloat(temp[i].importe);
           temp[i].importe.toFixed(2);
+          
+          if(now.isBefore(temp[i].fecha_vencimiento)){
+            total = temp[i].importe + total;
+          }
           temp[i].fecha_vencimiento = moment(temp[i].fecha_vencimiento).format("DD-MM-YYYY");
-          total = temp[i].importe + total;
+          if(temp[i].fecha_pagado != null){
+            temp[i].fecha_pagado = moment(temp[i].fecha_pagado).format("DD-MM-YYYY");
+          }
+          else{
+            temp[i].fecha_pagado = " - "
+          }
+          
         }
 
 
@@ -236,29 +248,15 @@ function PagoServicios(props){
       style={[styles.list, data.item.selectedClass]}      
       onPress={() => selectItem(data)}
     >
-    {/* <Image
-      source={{ uri: data.item.thumbnailUrl }}
-      style={{ width: 40, height: 40, margin: 6 }}
-    /> */}
-    {/* <Text style={styles.lightText}>  {data.item.title.charAt(0).toUpperCase() + data.item.title.slice(1)}  </Text> */}
     <Text style={styles.lightText}> Numero factura: {data.item.numero_factura.charAt(0).toUpperCase() + data.item.numero_factura.slice(1)}</Text>
     <Text style={styles.lightText}> Importe: ${data.item.importe}</Text>
     <Text style={styles.lightText}> Vence: {data.item.fecha_vencimiento}</Text>
-    <Text style={styles.lightText}> Fecha de pago: {moment(data.item.fecha_pagado).format("DD-MM-YYYY")}</Text>
+    <Text style={styles.lightText}> Fecha de pago: {data.item.fecha_pagado}</Text>
     
     
     
     </TouchableOpacity>
 
-    // render() {
-    // const itemNumber = facturas.filter(item => item.isSelect).length;
-
-    // if (loading) {return (
-    // <View style={styles.loader}>
-    // <ActivityIndicator size="large" color="purple" />
-    // </View>
-    // );
-    // }
 //// ---------------------------------------------------------- TERMINA ESTILO DE FACTURAS ----------------------------------------------------
 
     return(
