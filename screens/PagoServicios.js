@@ -244,6 +244,9 @@ function PagoServicios(props){
     <Text style={styles.lightText}> Numero factura: {data.item.numero_factura.charAt(0).toUpperCase() + data.item.numero_factura.slice(1)}</Text>
     <Text style={styles.lightText}> Importe: ${data.item.importe}</Text>
     <Text style={styles.lightText}> Vence: {data.item.fecha_vencimiento}</Text>
+    <Text style={styles.lightText}> Fecha de pago: {moment(data.item.fecha_pagado).format("DD-MM-YYYY")}</Text>
+    
+    
     
     </TouchableOpacity>
 
@@ -260,7 +263,7 @@ function PagoServicios(props){
 
     return(
                    
-            <ScrollView  onPress={Keyboard.dismiss} >
+            <ScrollView  onPress={Keyboard.dismiss} nestedScrollEnabled={true} >
               <View style={styles.pagosContainer}>
               <Block flex style={{backgroundColor: materialTheme.COLORS.BACKGROUND, width:width, height:height}} >
                 <View style={{flexDirection:'row', height:'25%', width:"60%", left:"8%"}}>
@@ -336,6 +339,7 @@ function PagoServicios(props){
                   <View style={{width: width, elevation: 10, backgroundColor: "white", top: "5%", alignItems: 'center',alignSelf:"center", height: "20%"}}>
                     <ScrollView horizontal={true} >
                       <FlatList 
+                         nestedScrollEnabled={true}
                         data={facturas}
                         ItemSeparatorComponent={FlatListItemSeparator}
                         renderItem={item => renderItem(item)} 
